@@ -13,7 +13,8 @@ router.post('/create', async(req, res, next) => {
         name: req.body.name,
         appid: req.body.appid,
         appsecret: req.body.appsecret,
-        token: req.body.token
+        token: req.body.token,
+        EncodingAESKey:"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"
     }
     let doc = await ConfigModel.create(data)
     if (doc) {
@@ -30,7 +31,8 @@ router.post('/update', async(req, res, next) => {
         name: req.body.name,
         appid: req.body.appid,
         appsecret: req.body.appsecret,
-        token: req.body.token
+        token: req.body.token,
+        EncodingAESKey:"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"
     }
     let doc = await ConfigModel.findByIdAndUpdate(id, data,{new:true})
     if (doc) {
