@@ -10,7 +10,7 @@ var ConfigSchema = new Schema({
     appid: String,
     appsecret: String,
     token:String,
-    EncodingAESKey: String
+    EncodingAESKey:{type: String, default:"tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"}
 });
 
 ConfigSchema.plugin(autoIncrement.plugin, {
