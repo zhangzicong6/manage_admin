@@ -27,6 +27,8 @@ var tag = require('./routes/tag')
 var statistics = require('./routes/statistics');
 var conf = require('./routes/conf');
 var menu = require('./routes/menu');
+var msg = require('./routes/msg');
+var reply = require('./routes/reply');
 
 
 var app = express();
@@ -81,6 +83,8 @@ app.use('/tag',tag)
 app.use('/statistics',statistics)
 app.use('/conf',conf)
 app.use('/menu',menu)
+app.use('/msg',msg)
+app.use('/reply',reply)
 
 
 app.use(express.static(path.join(__dirname, 'public')));
