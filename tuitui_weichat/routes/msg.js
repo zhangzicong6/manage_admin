@@ -30,7 +30,7 @@ router.post('/update', async(req, res, next) => {
     }
     let doc = await MsgModel.findByIdAndUpdate(id,data,{new:true})
     if(doc){
-        await mem.set("msg_" + id, doc,30*24*3600)
+        await mem.set("msg_" + doc.msgId, doc,30*24*3600)
         res.send({success: '修改成功', data: doc})
     }else{
         res.send({err: '修改失败'})

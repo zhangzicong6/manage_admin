@@ -3,11 +3,10 @@ var router = express.Router();
 var wechat = require('wechat');
 var WechatAPI = require('wechat-api');
 var crypto = require('crypto');
-var taobao_apiClient = require('../util/taobaoke/index.js').ApiClient;
-// var weichat_conf = require('../conf/weichat.json');
 var ConfigModel = require('../model/Config');
-var MenuModel = require('../model/Menu');
 var ReplyModel = require('../model/Reply');
+var MsgModel = require('../model/Msg');
+var wechat_util = require('../util/get_weichat_client.js')
 var book_wechat_conf = require('../conf/book_wechat.json');
 var taobao_conf = require('../conf/taobao.json');
 var TaobaoUtil = require('../util/taobaoke_util.js');
@@ -50,86 +49,27 @@ router.use('/:code', async function (request, response, next_fun) {
             return res.replay('')
         }
     }
-    var reply = await mem.get("replyText_" + request.params.code);
-    if (!reply) {
-        reply = await ReplyModel.find({code: request.params.code})
-        if (reply) {
-            await mem.set("replyText_" + request.params.code, reply, 30 * 24 * 3600)
-        } else {
-            return res.replay('')
-        }
-    }
     if (!request.query.openid) {
         validate(request, response);
     } else {
-        wechat(config, async function (req, res, next) {
+        wechat(config, function (req, res, next) {
             var message = req.weixin;
             var openid = message.FromUserName;
-            getUserInfo(openid, config, message, request, req, res, async function (openid, config, message, request, req, res) {
+            getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
+                console.log(message.MsgType, '--------MsgType---------')
                 if (message.MsgType === 'text') {
                     var text = message.Content.trim();
-                    if (reply.length > 0) {
-                        for(let i of reply){
-                            if(i.text == text){
-                                if (i.type == 0) {
-                                    return res.reply(i.text)
-                                } else if (i.type == 1) {
-                                    return res.reply({
-                                        type: "image",
-                                        content: {
-                                            mediaId: i.text
-                                        }
-                                    });
-                                } else if (i.type == 2) {
-                                    var client = wechat_util.getClient(request.params.code);
-                                    client.sendNews(openid, i.contents, function (err, res) {
-                                        setTimeout(function () {
-                                            return res.reply('')
-                                        }, 50)
-                                    });
-                                }else{
-                                    return res.reply('')
-                                }
-                            }
-                        }
-                        return res.reply('')
-                    } else {
-                        return res.reply('')
-                    }
+                    reply(request.params.code, res, 0, text, openid)
                 } else if (message.MsgType === 'event') {
+                    console.log(message.Event, '--------Event---------')
                     if (message.Event === 'subscribe') {
-                        subscribe(openid, config, message, res, reply.text);
+                        var client = wechat_util.getClient(request.params.code);
+                        reply(request.params.code, res, 2, '', openid)
+                        subscribe(openid, config, message, res, client);
                     } else if (message.Event === 'SCAN') {
                         scan(openid, message, res)
                     } else if (message.Event.toLowerCase() == 'click') {
-                        if (reply.length > 0) {
-                            for(let i of reply){
-                                if(i.key == message.EventKey){
-                                    if (i.type == 0) {
-                                        return res.reply(i.text)
-                                    } else if (i.type == 1) {
-                                        return res.reply({
-                                            type: "image",
-                                            content: {
-                                                mediaId: i.text
-                                            }
-                                        });
-                                    } else if (i.type == 2) {
-                                        var client = wechat_util.getClient(request.params.code);
-                                        client.sendNews(openid, i.contents, function (err, res) {
-                                            setTimeout(function () {
-                                                return res.reply('')
-                                            }, 50)
-                                        });
-                                    }else{
-                                        return res.reply('')
-                                    }
-                                }
-                            }
-                            return res.reply('')
-                        } else {
-                            return res.reply('')
-                        }
+                        reply(request.params.code, res, 1, message.EventKey, openid)
                     } else {
                         res.reply('');
                     }
@@ -160,7 +100,7 @@ async function scan(openid, message, res) {
     }
 }
 
-async function subscribe(openid, config, message, res, reply) {
+async function subscribe(openid, config, message, res, client) {
     console.log('--------subscribe------- ', config);
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
@@ -168,13 +108,18 @@ async function subscribe(openid, config, message, res, reply) {
             if (doc) {
                 UserModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
                 })
-                return res.reply(doc.content)
+                client.sendText(openid, doc.content, function (error, res) {
+                    console.log(error);
+                    setTimeout(function () {
+                        return;
+                    }, 50)
+                })
             } else {
-                return res.reply('')
+                return;
             }
         })
     } else {
-        res.reply(reply)
+        return;
     }
 }
 
@@ -258,5 +203,78 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
     });
 }
 
+async function reply(code, res, type, param, openid) {
+    var mediaId = await mem.get("reply_" + code + "_" + param);
+    console.log(mediaId, '--------mediaId1---------')
+    var content = ""
+    if (!mediaId) {
+        if (type == 0) {
+            mediaId = await ReplyModel.find({code: code, type: type, text: param})
+        } else if (type == 1) {
+            mediaId = await ReplyModel.find({code: code, type: type, key: param})
+        } else if (type == 2) {
+            mediaId = await ReplyModel.find({code: code, type: type})
+        }
+        mediaId = mediaId[0].mediaId
+        if (mediaId) {
+            console.log(mediaId, '--------mediaId2---------')
+            await mem.set("reply_" + code + "_" + param, mediaId, 30 * 24 * 3600)
+            content = await mem.get("msg_" + mediaId);
+            if (!content) {
+                content = await MsgModel.find({mediaId: mediaId})
+                if (content) {
+                    content = content[0]
+                    console.log(content, '--------content1---------')
+                    replyMsg(res, content)
+                } else {
+                    return res.replay('')
+                }
+            }else{
+                console.log(content, '--------content2---------')
+                replyMsg(res, content)
+            }
+        } else {
+            return res.replay('')
+        }
+    } else {
+        content = await mem.get("msg_" + mediaId);
+        if (!content) {
+            content = await MsgModel.find({mediaId: mediaId})
+            if (content) {
+                content = content[0]
+                console.log(content, '--------content3---------')
+                replyMsg(res, content)
+            } else {
+                return res.replay('')
+            }
+        }else{
+            console.log(content, '--------content4---------')
+            replyMsg(res, content)
+        }
+    }
+}
+
+function replyMsg(res, content) {
+    console.log(content, '--------content5---------')
+    if (content.type == 0) {
+        return res.reply(content.description)
+    } else if (content.type == 1) {
+        return res.reply({
+            type: "image",
+            content: {
+                mediaId: content.description
+            }
+        });
+    } else if (content.type == 2) {
+        var client = wechat_util.getClient(code);
+        client.sendNews(openid, content.contents, function (err, data) {
+            setTimeout(function () {
+                return res.reply('')
+            }, 50)
+        });
+    } else {
+        return res.reply('')
+    }
+}
 module.exports = router;
 
