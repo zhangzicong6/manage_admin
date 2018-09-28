@@ -7,7 +7,7 @@ autoIncrement.initialize(db);
 
 var Msgchema = new Schema({
     type: Number,  //0文字 1图片 2 图文
-    text:String,
+    description:String,
     contents:[{
         title:String,
         description:String,

@@ -10,7 +10,7 @@ router.get('/', async(req, res, next) => {
 router.post('/create', async(req, res, next) => {
     let data = {
         type:req.body.type,
-        text:req.body.text,
+        description:req.body.description,
         contents:req.body.contents
     }
     let doc = await MsgModel.create(data)
@@ -25,7 +25,7 @@ router.post('/update', async(req, res, next) => {
     let id=req.body.id
     let data = {
         type:req.body.type,
-        text:req.body.text,
+        description:req.body.description,
         contents:req.body.contents
     }
     let doc = await MsgModel.findByIdAndUpdate(id,data,{new:true})
