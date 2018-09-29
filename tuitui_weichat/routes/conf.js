@@ -18,6 +18,7 @@ router.post('/create', async(req, res, next) => {
     }
     let doc = await ConfigModel.create(data)
     if (doc) {
+        await mem.set("configure_" + doc.code, doc,30*24*3600)
         res.send({success: '创建成功', data: doc})
     } else {
         res.send({err: '创建失败'})
@@ -26,7 +27,6 @@ router.post('/create', async(req, res, next) => {
 
 router.post('/update', async(req, res, next) => {
     let id = req.body.id
-    let code = req.body.code
     let data = {
         name: req.body.name,
         appid: req.body.appid,
@@ -36,7 +36,7 @@ router.post('/update', async(req, res, next) => {
     }
     let doc = await ConfigModel.findByIdAndUpdate(id, data,{new:true})
     if (doc) {
-        await mem.set("configure_" + code, doc,30*24*3600)
+        await mem.set("configure_" + doc.code, doc,30*24*3600)
         res.send({success: '修改成功', data: doc})
     } else {
         res.send({err: '修改失败'})
@@ -46,7 +46,12 @@ router.post('/update', async(req, res, next) => {
 router.get('/del', async(req, res, next) => {
     let id = req.query.id
     var doc = await ConfigModel.findByIdAndRemove(id)
-    res.send({success: '删除成功', data: doc})
+    if (doc) {
+        await mem.set("configure_" + doc.code, '',1)
+        res.send({success: '删除成功', data: doc})
+    } else {
+        res.send({err: '删除失败'})
+    }
 })
 
 router.get('/reset', async(req, res, next) => {

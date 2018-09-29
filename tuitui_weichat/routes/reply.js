@@ -31,6 +31,11 @@ router.post('/create', async(req, res, next) => {
                 }
                 let doc = await ReplyModel.create(data)
                 if (doc) {
+                    if (req.body.text) {
+                        await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
+                    } else if (req.body.key) {
+                        await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
+                    }
                     res.send({success: '创建成功', data: doc})
                 } else {
                     res.send({err: '创建失败'})
@@ -50,6 +55,11 @@ router.post('/create', async(req, res, next) => {
         }
         let doc = await ReplyModel.create(data)
         if (doc) {
+            if (req.body.text) {
+                await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
+            } else if (req.body.key) {
+                await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
+            }
             res.send({success: '创建成功', data: doc})
         } else {
             res.send({err: '创建失败'})
@@ -78,12 +88,12 @@ router.post('/update', async(req, res, next) => {
                     text: req.body.text,
                     key: req.body.key
                 }
-                let doc = await ReplyModel.findByIdAndUpdate(id,data,{new:true})
+                let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
                 if (doc) {
                     if (req.body.text) {
-                        await mem.set("reply_" + req.body.code + "_" + req.body.text, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
                     } else if (req.body.key) {
-                        await mem.set("reply_" + req.body.code + "_" + +req.body.key, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
                     }
                     res.send({success: '修改成功', data: doc})
                 } else {
@@ -102,12 +112,12 @@ router.post('/update', async(req, res, next) => {
             key: req.body.key,
             msgId: req.body.msgId
         }
-        let doc = await ReplyModel.findByIdAndUpdate(id,data,{new:true})
+        let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
         if (doc) {
             if (req.body.text) {
-                await mem.set("reply_" + req.body.code + "_" + req.body.text, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
             } else if (req.body.key) {
-                await mem.set("reply_" + req.body.code + "_" + +req.body.key, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
             }
             res.send({success: '修改成功', data: doc})
         } else {
@@ -119,7 +129,16 @@ router.post('/update', async(req, res, next) => {
 router.get('/del', async(req, res, next) => {
     let id = req.query.id
     var doc = await ReplyModel.findByIdAndRemove(id)
-    res.send({success: '删除成功', data: doc})
+    if (doc) {
+        if (doc.text) {
+            await mem.set("reply_" + doc.code + "_" + doc.text, '', 1)
+        } else if (doc.key) {
+            await mem.set("reply_" + doc.code + "_" + doc.key, '', 1)
+        }
+        res.send({success: '删除成功', data: doc})
+    } else {
+        res.send({err: '删除失败'})
+    }
 })
 
 module.exports = router;
