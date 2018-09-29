@@ -215,23 +215,23 @@ async function reply(code, res, type, param, openid) {
             reply = await ReplyModel.find({code: code, type: type})
         }
         if (reply[0].replyType == 0) {
-            reply = reply[0].msgId
+            reply = {type:0,val:reply[0].msgId}
         } else if (reply[0].replyType == 1) {
-            reply = reply[0].media
+            reply = {type:1,val:reply[0].media}
         }
-        await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
+        await mem.set("reply_" + code + "_" + param, reply.val, 30 * 24 * 3600)
     }
 
     console.log(reply, '--------reply---------')
-    if (typeof reply == "object") {
-        return res.reply(reply)
+    if (reply.type == 1) {
+        return res.reply(reply.val)
     } else {
-        var content = await mem.get("msg_" + reply);
+        var content = await mem.get("msg_" + reply.val);
         if (!content) {
-            content = await MsgModel.find({msgId: reply})
+            content = await MsgModel.find({msgId: reply.val})
             if (content) {
                 content = content[0]
-                await mem.set("msg_" + reply, content, 30 * 24 * 3600);
+                await mem.set("msg_" + reply.val, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content)
             } else {
