@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var ReplyModel = require('../model/Reply');
 var mem = require('../util/mem.js');
+var wechat_util = require('../util/get_weichat_client.js')
 
 router.get('/', async(req, res, next) => {
     let doc = await ReplyModel.find()
