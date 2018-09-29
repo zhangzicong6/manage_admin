@@ -205,7 +205,6 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 
 async function reply(code, res, type, param, openid) {
     var reply = await mem.get("reply_" + code + "_" + param);
-    var msg = ""
 
     if (!reply) {
         if (type == 0) {
@@ -215,24 +214,24 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
-        reply = reply[0]
-        if (reply.replyType == 1) {
-            msg = reply.media
-        } else if (reply.replyType == 0 || reply.replyType == 2) {
-            msg = reply.msgId
+        if (reply[0].replyType == 1) {
+            reply = reply[0].media
+        } else if (reply[0].replyType == 0 || reply[0].replyType == 2) {
+            reply = reply[0].msgId
         }
-        await mem.set("reply_" + code + "_" + param, msg, 30 * 24 * 3600)
+        await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
 
-    if (typeof msg == "object") {
-        return res.reply(msg)
+    console.log(reply, '--------reply---------')
+    if (typeof reply == "object") {
+        return res.reply(reply)
     } else {
-        var content = await mem.get("msg_" + msg);
+        var content = await mem.get("msg_" + reply);
         if (!content) {
-            content = await MsgModel.find({msgId: msg})
+            content = await MsgModel.find({msgId: reply})
             if (content) {
                 content = content[0]
-                await mem.set("msg_" + msg, content, 30 * 24 * 3600);
+                await mem.set("msg_" + reply, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content)
             } else {
