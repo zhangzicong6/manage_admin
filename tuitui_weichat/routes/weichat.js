@@ -215,23 +215,23 @@ async function reply(code, res, type, param, openid) {
             reply = await ReplyModel.find({code: code, type: type})
         }
         if (reply[0].replyType == 0) {
-            reply = {type:0,val:reply[0].msgId}
+            reply = reply[0].msgId
         } else if (reply[0].replyType == 1) {
-            reply = {type:1,val:reply[0].media}
+            reply = reply[0].media
         }
-        await mem.set("reply_" + code + "_" + param, reply.val, 30 * 24 * 3600)
+        await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
 
     console.log(reply, '--------reply---------')
-    if (reply.type == 1) {
-        return res.reply(reply.val)
+    if (typeof reply == "object") {
+        return res.reply(reply)
     } else {
-        var content = await mem.get("msg_" + reply.val);
+        var content = await mem.get("msg_" + reply);
         if (!content) {
-            content = await MsgModel.find({msgId: reply.val})
+            content = await MsgModel.find({msgId: reply})
             if (content) {
                 content = content[0]
-                await mem.set("msg_" + reply.val, content, 30 * 24 * 3600);
+                await mem.set("msg_" + reply, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content)
             } else {
@@ -245,7 +245,7 @@ async function reply(code, res, type, param, openid) {
 }
 
 function replyMsg(res, content) {
-    console.log(content, '--------content5---------')
+    console.log(content, '--------content3---------')
     if (content.type == 0) {
         return res.reply(content.description)
     } else if (content.type == 2) {
