@@ -204,51 +204,42 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 }
 
 async function reply(code, res, type, param, openid) {
-    var mediaId = await mem.get("reply_" + code + "_" + param);
-    console.log(mediaId, '--------mediaId1---------')
-    var content = ""
-    if (!mediaId) {
+    var reply = await mem.get("reply_" + code + "_" + param);
+    var msg = ""
+
+    if (!reply) {
         if (type == 0) {
-            mediaId = await ReplyModel.find({code: code, type: type, text: param})
+            reply = await ReplyModel.find({code: code, type: type, text: param})
         } else if (type == 1) {
-            mediaId = await ReplyModel.find({code: code, type: type, key: param})
+            reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
-            mediaId = await ReplyModel.find({code: code, type: type})
+            reply = await ReplyModel.find({code: code, type: type})
         }
-        mediaId = mediaId[0].mediaId
-        if (mediaId) {
-            console.log(mediaId, '--------mediaId2---------')
-            await mem.set("reply_" + code + "_" + param, mediaId, 30 * 24 * 3600)
-            content = await mem.get("msg_" + mediaId);
-            if (!content) {
-                content = await MsgModel.find({mediaId: mediaId})
-                if (content) {
-                    content = content[0]
-                    console.log(content, '--------content1---------')
-                    replyMsg(res, content)
-                } else {
-                    return res.replay('')
-                }
-            }else{
-                console.log(content, '--------content2---------')
-                replyMsg(res, content)
-            }
-        } else {
-            return res.replay('')
+        reply = reply[0]
+        if (reply.replyType == 1) {
+            msg = reply.media
+        } else if (reply.replyType == 0 || reply.replyType == 2) {
+            msg = reply.msgId
         }
+        await mem.set("reply_" + code + "_" + param, msg, 30 * 24 * 3600)
+    }
+
+    if (typeof msg == "object") {
+        return res.reply(msg)
     } else {
-        content = await mem.get("msg_" + mediaId);
+        var content = await mem.get("msg_" + msg);
         if (!content) {
-            content = await MsgModel.find({mediaId: mediaId})
+            content = await MsgModel.find({msgId: msg})
             if (content) {
                 content = content[0]
-                console.log(content, '--------content3---------')
+                await mem.set("msg_" + msg, content, 30 * 24 * 3600);
+                console.log(content, '--------content1---------')
                 replyMsg(res, content)
             } else {
                 return res.replay('')
             }
-        }else{
-            console.log(content, '--------content4---------')
+        } else {
+            console.log(content, '--------content2---------')
             replyMsg(res, content)
         }
     }
@@ -258,13 +249,6 @@ function replyMsg(res, content) {
     console.log(content, '--------content5---------')
     if (content.type == 0) {
         return res.reply(content.description)
-    } else if (content.type == 1) {
-        return res.reply({
-            type: "image",
-            content: {
-                mediaId: content.description
-            }
-        });
     } else if (content.type == 2) {
         var client = wechat_util.getClient(code);
         client.sendNews(openid, content.contents, function (err, data) {
@@ -272,6 +256,7 @@ function replyMsg(res, content) {
                 return res.reply('')
             }, 50)
         });
+        return res.reply('')
     } else {
         return res.reply('')
     }

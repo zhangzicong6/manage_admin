@@ -5,9 +5,12 @@ var db = mongoose.createConnection(connect_url);
 
 var ReplySchema = new Schema({
     code:Number,
-    type:Number, //0文本1点击2关注
-    text:String,
-    key:String,
+    type:Number, //事件类型0文本 1点击 2关注
+    replyType:Number,//返回类型0文字 1图片 2 图文
+    text:String, //请求发送的文字
+    key:String, //请求点击的key
+    url:String,
+    media:Object,
     msgId:String
 });
 
