@@ -11,7 +11,7 @@ var ReplySchema = new Schema({
     key:String, //请求点击的key
     url:String,
     media:Object,
-    msgId:String
+    msgId:Number
 });
 
 var ReplyModel = db.model('Reply', ReplySchema);
