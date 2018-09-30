@@ -223,7 +223,7 @@ async function reply(code, res, type, param, openid) {
     }
 
     console.log(reply, '--------reply---------')
-    if (typeof reply == "object") {
+    if (typeof reply == "object" && !reply.length) {
         return res.reply(reply)
     } else {
         var content = await mem.get("msg_" + reply);
