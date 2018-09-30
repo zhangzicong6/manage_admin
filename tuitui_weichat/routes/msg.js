@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var MsgModel = require('../model/Msg');
+var mem = require('../util/mem.js');
 
 router.get('/', async(req, res, next) => {
     let doc = await MsgModel.find()
