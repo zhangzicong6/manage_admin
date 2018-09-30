@@ -42,11 +42,11 @@ router.use('/:code', async function (request, response, next_fun) {
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {
         config = await ConfigModel.find({code: request.params.code})
+        config = config[0]
         if (config) {
-            config = config[0]
             await mem.set("configure_" + request.params.code, config, 30 * 24 * 3600)
         } else {
-            return res.replay('')
+            return response.replay('')
         }
     }
     if (!request.query.openid) {
