@@ -234,6 +234,7 @@ async function reply(code, res, type, param, openid) {
             content = await MsgModel.find({msgId: reply.msg})
             if (content) {
                 content = content[0]
+                console.log(reply.msg,content,'------------------------cm')
                 await mem.set("msg_" + reply.msg, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content)
