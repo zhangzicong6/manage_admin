@@ -218,9 +218,9 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
-        if (reply && reply[0].replyType == 0) {
+        if (reply[0] && reply[0].replyType == 0) {
             reply = {type: 0, msg: reply[0].msgId}
-        } else if (reply && reply[0].replyType == 1) {
+        } else if (reply[0] && reply[0].replyType == 1) {
             reply = {type: 1, msg: reply[0].media}
         } else {
             return res.reply('')
