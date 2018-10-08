@@ -204,21 +204,23 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 
 async function reply(code, res, type, param, openid) {
     var reply = await mem.get("reply_" + code + "_" + param);
-    console.log(code,type,param, '------------------------reply1')
+    console.log(code, type, param, '------------------------reply1')
 
     if (!reply || reply.length <= 0) {
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
+            console.log(reply, '------------------------reply2')
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
-        console.log(reply, '------------------------reply2')
-        if (reply[0].replyType == 0) {
+        if (reply && reply[0].replyType == 0) {
             reply = {type: 0, msg: reply[0].msgId}
-        } else if (reply[0].replyType == 1) {
+        } else if (reply && reply[0].replyType == 1) {
             reply = {type: 1, msg: reply[0].media}
+        } else {
+            return res.replay('')
         }
         await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
