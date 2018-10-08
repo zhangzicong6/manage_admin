@@ -15,7 +15,8 @@ async function getClient(code) {
 		console.log(config,'----------------config')
         await mem.set("configure_"+code,config,30*24*3600)
     }
-	var api = new WechatAPI(config.appid, config.appsecret);
+    console.log(config,config.appid, config.appsecret,'----------------config1')
+    var api = new WechatAPI(config.appid, config.appsecret);
 	return api;
 }
 
