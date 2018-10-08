@@ -213,9 +213,10 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
+
         if (reply[0].replyType == 0) {
             reply = {type:0,msg:reply[0].msgId}
-        } else if (reply[0].replyType == 1) {
+        } else if (reply[0].replyType == 1) {console.log(reply,'------------------------reply')
             reply = {type:1,msg:reply[0].media}
         }
         await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
