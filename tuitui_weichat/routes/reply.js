@@ -3,6 +3,22 @@ var router = express.Router();
 var ReplyModel = require('../model/Reply');
 var mem = require('../util/mem.js');
 var wechat_util = require('../util/get_weichat_client.js')
+var multer = require('multer');
+var fs = require('fs')
+
+var upload = multer({
+    dest: '../public/uploads'
+});
+
+router.post('/upload', upload.single('imageFile'), function(req, res, next) {
+    fs.rename(req.file.path, "../public/uploads/"+req.file.filename+'.jpg', function(err) {
+        if (err) {
+            throw err;
+        }
+        console.log('上传成功!');
+    })
+    res.send({filename: req.file.filename + '.jpg'});
+})
 
 router.get('/', async(req, res, next) => {
     let doc = await ReplyModel.find()
