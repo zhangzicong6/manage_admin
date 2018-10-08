@@ -203,7 +203,8 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 }
 
 async function reply(code, res, type, param, openid) {
-    var reply = await mem.get("reply_" + code + "_" + param);
+    // var reply = await mem.get("reply_" + code + "_" + param);
+    var reply = "";
     console.log(code, type, param, '------------------------reply1')
     console.log(reply, '------------------------reply2')
 
@@ -222,7 +223,7 @@ async function reply(code, res, type, param, openid) {
         } else if (reply && reply[0].replyType == 1) {
             reply = {type: 1, msg: reply[0].media}
         } else {
-            return res.replay('')
+            return res.reply('')
         }
         await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
