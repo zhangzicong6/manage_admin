@@ -12,6 +12,7 @@ async function getClient(code) {
     if(!config){
         config = await ConfigModel.find({code:code})
         config = config[0]
+		console.log(config,'----------------connfig')
         await mem.set("configure_"+code,config,30*24*3600)
     }
 	// var config=weichat_conf[code];
