@@ -45,6 +45,7 @@ router.get('/del', async(req, res, next) => {
 })
 
 async function createMenu(code,menu) {
+    console.log(menu,'--------------------menu')
     var api = WechatUtil.getClient(code);
     if(menu.button.length==0){
         api.removeMenu(function(err,res){
