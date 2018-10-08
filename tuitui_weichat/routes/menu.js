@@ -41,7 +41,7 @@ router.post('/update', async(req, res, next) => {
 router.get('/del', async(req, res, next) => {
     let id=req.query.id
     var doc = await MenuModel.findByIdAndRemove(id)
-    createMenu(doc.code,[])
+    createMenu(doc.code,{button:[]})
     res.send({success: '删除成功', data: doc})
 })
 
