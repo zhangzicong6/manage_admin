@@ -15,7 +15,6 @@ router.post('/create', async(req, res, next) => {
     }
     let doc = await MenuModel.create(data)
     if(doc){
-        console.log(req.body.code,doc.values,'---------------------------')
         createMenu(req.body.code,doc.values)
         res.send({success: '创建成功', data: doc})
     }else{
@@ -46,6 +45,7 @@ router.get('/del', async(req, res, next) => {
 })
 
 async function createMenu(code,menu) {
+    var menu = {button:menu}
     var api = await WechatUtil.getClient(code);
     if(menu.button.length==0){
         api.removeMenu(function(err,res){

@@ -5,7 +5,7 @@ var db = mongoose.createConnection(connect_url);
 
 var MenuSchema = new Schema({
     code: Number,
-    values: Object
+    values: Array
 });
 
 var MenuModel = db.model('Menu', MenuSchema);
