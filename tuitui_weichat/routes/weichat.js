@@ -245,12 +245,12 @@ async function reply(code, res, type, param, openid) {
     }
 }
 
-function replyMsg(res, content) {
+async function replyMsg(res, content) {
     console.log(content, '--------content3---------')
     if (content.type == 0) {
         return res.reply(content.description)
     } else if (content.type == 2) {
-        var client = wechat_util.getClient(code);
+        var client = await wechat_util.getClient(code);
         client.sendNews(openid, content.contents, function (err, data) {
             setTimeout(function () {
                 return res.reply('')
