@@ -39,6 +39,7 @@ var getClient = require('../util/get_weichat_client');
 
 
 router.use('/:code', async function (request, response, next_fun) {
+    console.log(response,'----------------------')
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {
         config = await ConfigModel.find({code: request.params.code})
