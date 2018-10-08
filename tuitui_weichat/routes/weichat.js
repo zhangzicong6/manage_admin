@@ -46,7 +46,7 @@ router.use('/:code', async function (request, response, next_fun) {
         if (config) {
             await mem.set("configure_" + request.params.code, config, 30 * 24 * 3600)
         } else {
-            return response.replay('')
+            return response.reply('')
         }
     }
     if (!request.query.openid) {
