@@ -203,8 +203,9 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 }
 
 async function reply(code, res, type, param, openid) {
-    var reply = await mem.get("reply_" + code + "_" + param);
-
+    // var reply = await mem.get("reply_" + code + "_" + param);
+    var reply = ""
+    console.log(reply, '--------reply---------1')
     if (!reply || reply.length <= 0) {
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
@@ -213,7 +214,7 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
-        console.log(reply, '--------reply---------1')
+        console.log(reply, '--------reply---------2')
         if (reply[0] && reply[0].replyType == 0) {
             reply = {type: 0, msg: reply[0].msgId}
         } else if (reply[0] && reply[0].replyType == 1) {
