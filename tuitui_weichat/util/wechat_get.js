@@ -9,13 +9,14 @@ var mem = require('../util/mem.js');
 
 async function getClient(code) {
     // var config = await mem.get("configure_"+code);
+    var config = '';
     if(!config){
         config = await ConfigModel.find({code:code})
         config = config[0]
 		console.log(config,'----------------config')
         await mem.set("configure_"+code,config,30*24*3600)
     }
-	var api = await new WechatAPI(config.appid, config.appsecret);
+	var api = new WechatAPI(config.appid, config.appsecret);
 	return api;
 }
 
