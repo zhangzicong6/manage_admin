@@ -213,6 +213,7 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
+        console.log(reply, '--------reply---------1')
         if (reply[0] && reply[0].replyType == 0) {
             reply = {type: 0, msg: reply[0].msgId}
         } else if (reply[0] && reply[0].replyType == 1) {
