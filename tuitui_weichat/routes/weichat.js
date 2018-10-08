@@ -131,6 +131,7 @@ async function validate(req, res) {
     if (!config) {
         config = await ConfigModel.find({code: req.params.code})
         config = config[0]
+        console.log(config,'--------------------------config')
         await mem.set("configure_" + req.params.code, config, 30 * 24 * 3600)
     }
     var token = config.token;
