@@ -45,8 +45,6 @@ router.use('/:code', async function (request, response, next_fun) {
         config = config[0]
         if (config) {
             await mem.set("configure_" + request.params.code, config, 30 * 24 * 3600)
-        } else {
-            return response.replay('')
         }
     }
     if (!request.query.openid) {
@@ -133,6 +131,7 @@ async function validate(req, res) {
     if (!config) {
         config = await ConfigModel.find({code: req.params.code})
         config = config[0]
+        console.log(config, '--------------------------config')
         await mem.set("configure_" + req.params.code, config, 30 * 24 * 3600)
     }
     var token = config.token;
@@ -206,7 +205,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 async function reply(code, res, type, param, openid) {
     var reply = await mem.get("reply_" + code + "_" + param);
 
-    if (!reply) {
+    if (!reply || reply.length <= 0) {
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
         } else if (type == 1) {
@@ -214,24 +213,26 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
         }
-        if (reply[0].replyType == 0) {
-            reply = reply[0].msgId
-        } else if (reply[0].replyType == 1) {
-            reply = reply[0].media
+        if (reply[0] && reply[0].replyType == 0) {
+            reply = {type: 0, msg: reply[0].msgId}
+        } else if (reply[0] && reply[0].replyType == 1) {
+            reply = {type: 1, msg: reply[0].media}
+        } else {
+            return res.reply('')
         }
         await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
 
     console.log(reply, '--------reply---------')
-    if (typeof reply == "object" && !reply.length) {
-        return res.reply(reply)
+    if (reply.type == 1) {
+        return res.reply(reply.msg)
     } else {
-        var content = await mem.get("msg_" + reply);
+        var content = await mem.get("msg_" + reply.msg);
         if (!content) {
-            content = await MsgModel.find({msgId: reply})
+            content = await MsgModel.find({msgId: reply.msg})
             if (content) {
                 content = content[0]
-                await mem.set("msg_" + reply, content, 30 * 24 * 3600);
+                await mem.set("msg_" + reply.msg, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content)
             } else {
