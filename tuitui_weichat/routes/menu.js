@@ -15,6 +15,7 @@ router.post('/create', async(req, res, next) => {
     }
     let doc = await MenuModel.create(data)
     if(doc){
+        console.log(req.body.code,doc.values,'---------------------------')
         createMenu(req.body.code,doc.values)
         res.send({success: '创建成功', data: doc})
     }else{
