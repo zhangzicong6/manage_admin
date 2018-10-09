@@ -62,7 +62,7 @@ router.use('/:code', async function (request, response, next_fun) {
                     console.log(message.Event, '--------Event---------')
                     if (message.Event === 'subscribe') {
                         var client = wechat_util.getClient(request.params.code);
-                        reply(request.params.code, res, 2, '', openid)
+                        reply(request.params.code, res, 2, 'subscribe', openid)
                         subscribe(openid, config, message, res, client);
                     } else if (message.Event === 'SCAN') {
                         scan(openid, message, res)
