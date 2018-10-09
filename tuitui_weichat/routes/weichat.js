@@ -204,7 +204,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 
 async function reply(code, res, type, param, openid) {
     // var reply = await mem.get("reply_" + code + "_" + param);
-    var reply = {}
+    var reply = ''
     console.log(reply, '--------reply---------1')
     if (!reply) {
         console.log(reply, '--------reply---------a')
