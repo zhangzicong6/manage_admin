@@ -35,7 +35,7 @@ router.post('/create', async(req, res, next) => {
                 let media = {
                     type: "image",
                     content: {
-                        mediaId: result
+                        mediaId: result.media_id
                     }
                 }
                 let data = {
@@ -100,7 +100,7 @@ router.post('/update', async(req, res, next) => {
                 let media = {
                     type: "image",
                     content: {
-                        mediaId: result
+                        mediaId: result.media_id
                     }
                 }
                 let data = {
