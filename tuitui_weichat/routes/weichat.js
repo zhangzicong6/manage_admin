@@ -233,6 +233,7 @@ async function reply(code, res, type, param, openid) {
         var content = await mem.get("msg_" + reply.msg);
         if (!content) {
             content = await MsgModel.find({msgId: reply.msg})
+            console.log(content,'------------------------content')
             if (content) {
                 content = content[0]
                 console.log(reply.msg,content,'------------------------cm')
