@@ -207,7 +207,7 @@ async function reply(code, res, type, param, openid) {
     var reply = ''
     console.log(reply, '--------reply---------1')
     if (!reply) {
-        console.log(reply, '--------reply---------a')
+        console.log(code,type,param,reply, '--------reply---------a')
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
         } else if (type == 1) {
