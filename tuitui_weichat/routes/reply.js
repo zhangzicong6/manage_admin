@@ -73,6 +73,7 @@ router.post('/create', async(req, res, next) => {
         }
         let doc = await ReplyModel.create(data)
         if (doc) {
+            console.log(doc.code,doc.text,doc.key,'---------------------ttttttttt')
             if (req.body.text) {
                 await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
             } else if (req.body.key) {
