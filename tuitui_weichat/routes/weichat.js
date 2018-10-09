@@ -203,8 +203,8 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 }
 
 async function reply(code, res, type, param, openid) {
-    // var reply = await mem.get("reply_" + code + "_" + param);
-    var reply = ''
+    var reply = await mem.get("reply_" + code + "_" + param);
+    // var reply = ''
     console.log(reply, '--------reply---------1')
     if (!reply) {
         console.log(code, type, param, reply, '--------reply---------a')
@@ -239,18 +239,18 @@ async function reply(code, res, type, param, openid) {
                 console.log(reply.msg, content, '------------------------cm')
                 await mem.set("msg_" + reply.msg, content, 30 * 24 * 3600);
                 console.log(content, '--------content1---------')
-                replyMsg(res, content, code)
+                replyMsg(res, content, code, openid)
             } else {
                 return res.replay('')
             }
         } else {
             console.log(content, '--------content2---------')
-            replyMsg(res, content, code)
+            replyMsg(res, content, code, openid)
         }
     }
 }
 
-async function replyMsg(res, content, code) {
+async function replyMsg(res, content, code, openid) {
     console.log(content, '--------content3---------')
     if (content.type == 0) {
         return res.reply(content.description)
