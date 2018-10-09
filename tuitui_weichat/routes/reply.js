@@ -30,7 +30,7 @@ router.post('/create', async(req, res, next) => {
         let client = await wechat_util.getClient(req.body.code);
         console.log(req.body.code, req.body.url, client, '-------------------')
         client.uploadImageMaterial(req.body.url, async function (error, result) {
-            console.log(result,'---------------------result')
+            console.log(error,result,'---------------------result')
             if (result) {
                 let media = {
                     type: "image",
