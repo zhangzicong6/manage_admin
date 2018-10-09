@@ -226,7 +226,7 @@ async function reply(code, res, type, param, openid) {
         await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
     }
 
-    console.log(reply, '--------reply---------')
+    console.log(reply, '--------lllreply---------')
     if (reply.type == 1) {
         return res.reply(reply.msg)
     } else {
