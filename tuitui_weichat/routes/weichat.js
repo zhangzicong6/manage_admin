@@ -261,7 +261,6 @@ async function replyMsg(res, content, code, openid) {
                 return res.reply('')
             }, 50)
         });
-        return res.reply('')
     } else {
         return res.reply('')
     }
