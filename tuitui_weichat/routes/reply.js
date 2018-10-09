@@ -7,11 +7,11 @@ var multer = require('multer');
 var fs = require('fs')
 
 var upload = multer({
-    dest: __dirname+'/../public/uploads'
+    dest: __dirname+'/./public/uploads'
 });
 
 router.post('/upload', upload.single('imageFile'), function(req, res, next) {
-    fs.rename(req.file.path, __dirname+"/../public/uploads/"+req.file.filename+'.jpg', function(err) {
+    fs.rename(req.file.path, __dirname+"/./public/uploads/"+req.file.filename+'.jpg', function(err) {
         if (err) {
             throw err;
         }
