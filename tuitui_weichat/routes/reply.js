@@ -38,7 +38,6 @@ router.post('/create', async(req, res, next) => {
                         mediaId: result.media_id
                     }
                 }
-                console.log(media,'-----------------media')
                 let data = {
                     code: req.body.code,
                     type: req.body.type,
