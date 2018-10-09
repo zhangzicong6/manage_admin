@@ -203,10 +203,11 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
 }
 
 async function reply(code, res, type, param, openid) {
-    var reply = await mem.get("reply_" + code + "_" + param);
-    // var reply = ""
+    // var reply = await mem.get("reply_" + code + "_" + param);
+    var reply = {}
     console.log(reply, '--------reply---------1')
-    if (!reply || reply.length <= 0) {
+    if (!reply) {
+        console.log(reply, '--------reply---------a')
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
         } else if (type == 1) {
