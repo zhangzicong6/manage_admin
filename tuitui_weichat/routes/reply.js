@@ -10,8 +10,8 @@ var upload = multer({
     dest: './public/uploads'
 });
 
-router.post('/upload', upload.single('imageFile'), function(req, res, next) {
-    fs.rename(req.file.path, "./public/uploads/"+req.file.filename+'.jpg', function(err) {
+router.post('/upload', upload.single('imageFile'), function (req, res, next) {
+    fs.rename(req.file.path, "./public/uploads/" + req.file.filename + '.jpg', function (err) {
         if (err) {
             throw err;
         }
@@ -28,7 +28,7 @@ router.get('/', async(req, res, next) => {
 router.post('/create', async(req, res, next) => {
     if (req.body.replyType == 1 && req.body.url) {
         let client = await wechat_util.getClient(req.body.code);
-        console.log(req.body.code,req.body.url,client,'-------------------')
+        console.log(req.body.code, req.body.url, client, '-------------------')
         client.uploadImageMaterial(req.body.url, async function (error, result) {
             if (result) {
                 let media = {
@@ -52,7 +52,7 @@ router.post('/create', async(req, res, next) => {
                         await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
                     } else if (req.body.key) {
                         await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
-                    }else{
+                    } else {
                         await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
                     }
                     res.send({success: '创建成功', data: doc})
@@ -74,12 +74,12 @@ router.post('/create', async(req, res, next) => {
         }
         let doc = await ReplyModel.create(data)
         if (doc) {
-            console.log(req.body.replyType,doc.code,doc.text,doc.key,'---------------------ttttttttt')
+            console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
                 await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
             } else if (req.body.key) {
                 await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
-            }else{
+            } else {
                 await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
             }
             res.send({success: '创建成功', data: doc})
@@ -116,7 +116,7 @@ router.post('/update', async(req, res, next) => {
                         await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
                     } else if (req.body.key) {
                         await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
-                    }else{
+                    } else {
                         await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
                     }
                     res.send({success: '修改成功', data: doc})
@@ -138,12 +138,12 @@ router.post('/update', async(req, res, next) => {
         }
         let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
         if (doc) {
-            console.log(req.body.replyType,doc.code,doc.text,doc.key,'---------------------ttttttttt')
+            console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
                 await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
             } else if (req.body.key) {
                 await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
-            }else{
+            } else {
                 await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
             }
             res.send({success: '修改成功', data: doc})
