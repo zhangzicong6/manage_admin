@@ -114,6 +114,7 @@ router.post('/update', async(req, res, next) => {
                 }
                 let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
                 if (doc) {
+                    console.log(req.body.type,doc.media,'-------------------------media')
                     if (req.body.text) {
                         await mem.set("reply_" + doc.code + "_" + doc.text, {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     } else if (req.body.key) {
