@@ -51,11 +51,11 @@ router.post('/create', async(req, res, next) => {
                 let doc = await ReplyModel.create(data)
                 if (doc) {
                     if (req.body.text) {
-                        await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.text, {type: req.body.type, msg: doc.media}, 30 * 24 * 3600)
                     } else if (req.body.key) {
-                        await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.key, {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     } else {
-                        await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_subscribe", {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     }
                     res.send({success: '创建成功', data: doc})
                 } else {
@@ -78,11 +78,11 @@ router.post('/create', async(req, res, next) => {
         if (doc) {
             console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
-                await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.text, {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             } else if (req.body.key) {
-                await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.key, {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             } else {
-                await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_subscribe", {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             }
             res.send({success: '创建成功', data: doc})
         } else {
@@ -115,11 +115,11 @@ router.post('/update', async(req, res, next) => {
                 let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
                 if (doc) {
                     if (req.body.text) {
-                        await mem.set("reply_" + doc.code + "_" + doc.text, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.text, {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     } else if (req.body.key) {
-                        await mem.set("reply_" + doc.code + "_" + doc.key, doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_" + doc.key, {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     } else {
-                        await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
+                        await mem.set("reply_" + doc.code + "_subscribe", {type:req.body.type,msg:doc.media}, 30 * 24 * 3600)
                     }
                     res.send({success: '修改成功', data: doc})
                 } else {
@@ -142,11 +142,11 @@ router.post('/update', async(req, res, next) => {
         if (doc) {
             console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
-                await mem.set("reply_" + doc.code + "_" + doc.text, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.text, {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             } else if (req.body.key) {
-                await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_" + doc.key, {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             } else {
-                await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_subscribe", {type:req.body.type,msg:doc.msgId}, 30 * 24 * 3600)
             }
             res.send({success: '修改成功', data: doc})
         } else {
