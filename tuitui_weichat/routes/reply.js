@@ -79,7 +79,7 @@ router.post('/create', async(req, res, next) => {
             } else if (req.body.key) {
                 await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
             }else{
-                await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
             }
             res.send({success: '创建成功', data: doc})
         } else {
@@ -143,7 +143,7 @@ router.post('/update', async(req, res, next) => {
             } else if (req.body.key) {
                 await mem.set("reply_" + doc.code + "_" + doc.key, doc.msgId, 30 * 24 * 3600)
             }else{
-                await mem.set("reply_" + doc.code + "_subscribe", doc.media, 30 * 24 * 3600)
+                await mem.set("reply_" + doc.code + "_subscribe", doc.msgId, 30 * 24 * 3600)
             }
             res.send({success: '修改成功', data: doc})
         } else {
