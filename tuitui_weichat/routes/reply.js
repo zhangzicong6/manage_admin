@@ -43,6 +43,7 @@ router.post('/create', async(req, res, next) => {
                     type: req.body.type,
                     replyType: req.body.replyType,
                     url: req.body.url,
+                    showUrl:req.body.showUrl,
                     media: media,
                     text: req.body.text,
                     key: req.body.key
@@ -108,6 +109,7 @@ router.post('/update', async(req, res, next) => {
                     type: req.body.type,
                     replyType: req.body.replyType,
                     url: req.body.url,
+                    showUrl:req.body.showUrl,
                     media: media,
                     text: req.body.text,
                     key: req.body.key
