@@ -10,6 +10,7 @@ var ReplySchema = new Schema({
     text:String, //请求发送的文字
     key:String, //请求点击的key
     url:String,
+    showUrl:String,
     media:Object,
     msgId:Number
 });

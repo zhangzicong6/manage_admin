@@ -22,13 +22,7 @@ router.post('/upload', upload.single('imageFile'), function (req, res, next) {
 
 router.get('/', async(req, res, next) => {
     let doc = await ReplyModel.find()
-    let data = []
-    for(d of doc){
-        d.url = d.url.replace('./','http://test.oorggt.top/uploads/')
-        data.push(d)
-    }
-    console.log(data,'---------------------------')
-    res.send({data: data})
+    res.send({data: doc})
 })
 
 router.post('/create', async(req, res, next) => {
