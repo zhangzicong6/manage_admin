@@ -1,20 +1,12 @@
 var schedule = require("node-schedule");
 var UserModel = require('../model/User.js');
-var WechatAPI = require('wechat-api');
+// var WechatAPI = require('wechat-api');
 var weichat_conf = require('../conf/weichat.json');
-var clients = {}
-
-// for (var item in weichat_conf) {
-//     var config = weichat_conf[item]
-//     var client = new WechatAPI(config.appid, config.appsecret);
-//     clients[item] = client
-// }
-var config = weichat_conf['1']
-var client = new WechatAPI(config.appid, config.appsecret);
-clients['1'] = client
+var getClient = require('../util/get_weichat_client');
+var async = require('async');
 
 function next_up(_id, code) {
-    if (code && code <= Object.keys(clients).length) {
+    if (code && code <= Object.keys(weichat_conf).length) {
         return update_user(_id, code, next_up);
     } else {
         console.log('update_user end');
@@ -32,43 +24,61 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        if(user_arr.length == 0){
-            console.log(user_arr,'-------------------user null')
-        }else if(user_arr.length ==1){
-            clients[code].getUser(user_arr[0],function (err,data) {
+        if (user_arr.length == 0) {
+            console.log(user_arr, '-------------------user null')
+            return next(null, (parseInt(code) + 1).toString())
+        } else if (user_arr.length == 1) {
+            getClient.getClient(code).getUser(user_arr[0], function (err, data) {
                 if (err) {
-                    console.log(err, '----------------err')
+                    console.log(err, '----------------nickname err1')
                 }
                 UserModel.findOneAndUpdate({openid: data.openid}, {
                     nickname: data.nickname,
-                    headimgurl: data.headimgurl
+                    headimgurl: data.headimgurl,
+                    sex:data.sex
                 }, function (err, result) {
                     if (err) {
                         console.log(err)
                     }
                 });
+                return next(null, (parseInt(code) + 1).toString())
             })
-        }else{
-            clients[code].batchGetUsers(user_arr, function (err, data) {
+        } else {
+            getClient.getClient(code).batchGetUsers(user_arr, function (err, data) {
                 if (err) {
-                    console.log(err, '----------------err')
+                    console.log(err, '----------------nickname err2')
+                    if (users.length == 50) {
+                        return next(users[49]._id, code);
+                    } else {
+                        return next(null, (parseInt(code) + 1).toString())
+                    }
                 }
                 if (data && data.user_info_list) {
-                    data.user_info_list.forEach(function (info) {
-                        UserModel.findOneAndUpdate({openid: info.openid}, {
-                            nickname: info.nickname,
-                            headimgurl: info.headimgurl
-                        }, function (err, result) {
-                            if (err) {
-                                console.log(err)
-                            }
-                        });
+                    async.eachLimit(data.user_info_list,10,function (info,callback) {
+                        if(info.nickname){
+                            UserModel.findOneAndUpdate({openid: info.openid}, {
+                                nickname: info.nickname,
+                                headimgurl: info.headimgurl,
+                                sex:info.sex
+                            }, function (err, result) {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                callback(null)
+                            });
+                        }else{
+                            callback(null)
+                        }
+                    },function (error, result){
+                        if(error){
+                            console.log(error,'--------------error')
+                        }
+                        if (users.length == 50) {
+                            return next(users[49]._id, code);
+                        } else {
+                            return next(null, (parseInt(code) + 1).toString())
+                        }
                     })
-                }
-                if (users.length == 50) {
-                    return next(users[49]._id, code);
-                } else {
-                    return next(null, code + 1)
                 }
             })
         }
@@ -76,7 +86,7 @@ function update_user(_id, code, next) {
 }
 
 function next_up_nickname(_id, code) {
-    if (code && code <= Object.keys(clients).length) {
+    if (code && code <= Object.keys(weichat_conf).length) {
         return update_nickname(_id, code, next_up_nickname);
     } else {
         console.log('update_nickname end');
@@ -89,70 +99,92 @@ function get_nickname() {
 }
 
 function update_nickname(_id, code, next) {
+    console.log(code,'-------------code')
     UserModel.fetch_nickname(_id, code, function (error, users) {
-        console.log(users,'-------------------nicknames')
+        // console.log(users, '-------------------nicknames')
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        if(user_arr.length == 0){
-            console.log(user_arr,'-------------------nickname null')
-        }else if(user_arr.length ==1){
-            clients[code].getUser(user_arr[0],function (err,data) {
+        if (user_arr.length == 0) {
+            console.log(user_arr, '-------------------nickname null')
+            return next(null, (parseInt(code) + 1).toString())
+        } else if (user_arr.length == 1) {
+            getClient.getClient(code).getUser(user_arr[0], function (err, data) {
                 if (err) {
-                    console.log(err, '----------------nickname err')
+                    console.log(err, '----------------nickname err1')
                 }
                 UserModel.findOneAndUpdate({openid: data.openid}, {
                     nickname: data.nickname,
-                    headimgurl: data.headimgurl
+                    headimgurl: data.headimgurl,
+                    sex:data.sex
                 }, function (err, result) {
                     if (err) {
                         console.log(err)
                     }
                 });
+                return next(null, (parseInt(code) + 1).toString())
             })
-        }else {
-            clients[code].batchGetUsers(user_arr, function (err, data) {
+        } else {
+            getClient.getClient(code).batchGetUsers(user_arr, function (err, data) {
                 if (err) {
-                    console.log(err, '----------------nickname err')
+                    console.log(err, '----------------nickname err2')
+                    if (users.length == 50) {
+                        return next(users[49]._id, code);
+                    } else {
+                        return next(null, (parseInt(code) + 1).toString())
+                    }
                 }
                 if (data && data.user_info_list) {
-                    data.user_info_list.forEach(function (info) {
-                        UserModel.findOneAndUpdate({openid: info.openid}, {
-                            nickname: info.nickname,
-                            headimgurl: info.headimgurl
-                        }, function (err, result) {
-                            if (err) {
-                                console.log(err)
-                            }
-                        });
+                    async.eachLimit(data.user_info_list,10,function (info,callback) {
+                        if(info.nickname){
+                            UserModel.findOneAndUpdate({openid: info.openid}, {
+                                nickname: info.nickname,
+                                headimgurl: info.headimgurl,
+                                sex:info.sex
+                            }, function (err, result) {
+                                if (err) {
+                                    console.log(err)
+                                }
+                                callback(null)
+                            });
+                        }else{
+                            callback(null)
+                        }
+                    },function (error, result){
+                        if(error){
+                            console.log(error,'--------------error')
+                        }
+                        if (users.length == 50) {
+                            return next(users[49]._id, code);
+                        } else {
+                            return next(null, (parseInt(code) + 1).toString())
+                        }
                     })
-                }
-                if (users.length == 50) {
-                    return next(users[49]._id, code);
-                } else {
-                    return next(null, code + 1)
                 }
             })
         }
+
     })
 }
 
-console.log('更新用户昵称头像信息');
-get_nickname();
-
-var rule = new schedule.RecurrenceRule();
-var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
-rule.minute = times;
-var j = schedule.scheduleJob(rule, function () {
-    console.log('更新用户昵称头像信息');
-    get_nickname();
-});
+// console.log('更新用户昵称头像信息');
+// get_nickname();
 
 var rule_nickname = new schedule.RecurrenceRule();
-var times_nickname = [23];
-rule_nickname.hour = times_nickname;
-var j = schedule.scheduleJob(rule_nickname, function () {
+// var times_nickname = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+// rule_nickname.minute = times_nickname;
+// var times_nickname = [1];
+// rule_nickname.hour = times_nickname;
+// var j = schedule.scheduleJob(rule_nickname, function () {
+//     console.log('更新用户昵称头像信息');
+//     get_nickname();
+// });
+
+var rule = new schedule.RecurrenceRule();
+var times = [1];
+rule.hour = times;
+var j = schedule.scheduleJob(rule, function () {
     console.log('更新用户信息');
     get_user();
 });
