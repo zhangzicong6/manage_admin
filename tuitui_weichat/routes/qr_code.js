@@ -34,6 +34,7 @@ router.post('/create', (req, res, next) => {
             console.log("Error:" + err);
         } else {
             var api = weichat_util.getClient(qrInfo.code);
+            console.log(api,'-----------------api')
             var _id = data._id;
             var str = JSON.stringify({replay: _id})
             api.createLimitQRCode(str, (err, result) => {
