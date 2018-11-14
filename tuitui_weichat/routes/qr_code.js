@@ -29,11 +29,11 @@ router.post('/create', (req, res, next) => {
         tagId:req.body.tagId
     }
     var user = new QRcodeModel(qrInfo)
-    user.save(function (err, data) {
+    user.save(async function (err, data) {
         if (err) {
             console.log("Error:" + err);
         } else {
-            var api = weichat_util.getClient(qrInfo.code);
+            var api = await weichat_util.getClient(qrInfo.code);
             console.log(api,'-----------------api')
             var _id = data._id;
             var str = JSON.stringify({replay: _id})
