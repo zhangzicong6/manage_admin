@@ -21,7 +21,8 @@ router.post('/upload', upload.single('imageFile'), function (req, res, next) {
 })
 
 router.get('/', async(req, res, next) => {
-    let doc = await ReplyModel.find()
+    let code = req.query.code
+    let doc = await ReplyModel.find({code:code})
     res.send({data: doc})
 })
 
