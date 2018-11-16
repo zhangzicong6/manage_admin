@@ -87,7 +87,7 @@ app.use('/menu',menu)
 app.use('/msg',msg)
 app.use('/reply',reply)
 app.use('/management',management)
-app.use('/manage',manage)
+//app.use('/manage',manage)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

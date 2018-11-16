@@ -142,15 +142,16 @@ router.post('/update', async(req, res, next) => {
             msgId: req.body.msgId
         }
         let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
+        console.log(doc)
         if (doc) {
             console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
-            if (req.body.text) {
-                await mem.set("reply_" + doc.code + "_" + doc.text, {type:0,msg:doc.msgId}, 30 * 24 * 3600)
-            } else if (req.body.key) {
-                await mem.set("reply_" + doc.code + "_" + doc.key, {type:0,msg:doc.msgId}, 30 * 24 * 3600)
-            } else {
-                await mem.set("reply_" + doc.code + "_subscribe", {type:0,msg:doc.msgId}, 30 * 24 * 3600)
-            }
+            // if (req.body.text) {
+            //     await mem.set("reply_" + doc.code + "_" + doc.text, {type:0,msg:doc.msgId}, 30 * 24 * 3600)
+            // } else if (req.body.key) {
+            //     await mem.set("reply_" + doc.code + "_" + doc.key, {type:0,msg:doc.msgId}, 30 * 24 * 3600)
+            // } else {
+            //     await mem.set("reply_" + doc.code + "_subscribe", {type:0,msg:doc.msgId}, 30 * 24 * 3600)
+            // }
             res.send({success: '修改成功', data: doc})
         } else {
             res.send({err: '修改失败'})
