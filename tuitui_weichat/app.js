@@ -30,7 +30,7 @@ var menu = require('./routes/menu');
 var msg = require('./routes/msg');
 var reply = require('./routes/reply');
 var management = require('./routes/management');
-
+var manage = require('./routes/manage');
 
 var app = express();
 
@@ -87,7 +87,7 @@ app.use('/menu',menu)
 app.use('/msg',msg)
 app.use('/reply',reply)
 app.use('/management',management)
-
+app.use('/manage',manage)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
