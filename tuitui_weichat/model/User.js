@@ -14,7 +14,7 @@ var UserSchema = new Schema({
     valid_friend: Array,                         //有效好友
     nickname: String,
     unionid: String,
-    sex: String,
+    sex: {type: String, default: "0"},
     province: String,
     city: String,
     country: String,
