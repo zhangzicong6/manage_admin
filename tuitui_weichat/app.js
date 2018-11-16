@@ -29,6 +29,7 @@ var conf = require('./routes/conf');
 var menu = require('./routes/menu');
 var msg = require('./routes/msg');
 var reply = require('./routes/reply');
+var message = require('./routes/message');
 var management = require('./routes/management');
 
 
@@ -86,6 +87,7 @@ app.use('/conf',conf)
 app.use('/menu',menu)
 app.use('/msg',msg)
 app.use('/reply',reply)
+app.use('/message',message)
 app.use('/management',management)
 
 
