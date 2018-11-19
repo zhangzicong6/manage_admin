@@ -90,9 +90,12 @@ router.post('/update', async(req, res, next) => {
 
 router.get('/delete', async(req, res, next) => {
     var id = req.query.id;
-    var docs = await MessageModel.findByIdAndRemove(id)
-    var docs1 = await MessageModel.find()
-    res.send({success: '删除成功', data: docs1})
+    var doc = await MessageModel.findByIdAndRemove(id)
+    if (doc){
+        res.send({success: '删除成功', data: doc})
+    } else{
+        res.send({err: '删除失败'})
+    }
 })
 
 router.get('/send', async(req, res, next) => {
