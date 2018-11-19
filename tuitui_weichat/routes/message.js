@@ -36,7 +36,7 @@ router.get('/', async(req, res, next) => {
     res.send({messages: messages})
 })
 
-router.get('/get_code', async(ctx, next) => {
+router.get('/get_code', async(req, res, next) => {
     let doc = await ConfigModel.find()
     res.send({data: doc})
 })
