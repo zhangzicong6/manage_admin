@@ -53,7 +53,6 @@ router.post('/create', async(req, res, next) => {
         type: parseInt(req.body.type),
         contents: req.body.contents,
         img: req.body.img,
-        take_over: req.body.take_over,
         tagId: req.body.tagId
     }
     var docs = await MessageModel.create(message);
@@ -77,7 +76,6 @@ router.post('/update', async(req, res, next) => {
         type: parseInt(req.body.type),
         contents: req.body.contents,
         img: req.body.img,
-        take_over: req.body.take_over,
         tagId: req.body.tagId
     }
     var docs = await MessageModel.findByIdAndUpdate(id, message)
