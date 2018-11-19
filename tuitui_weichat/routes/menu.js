@@ -10,12 +10,16 @@ router.get('/', async(req, res, next) => {
 
 router.post('/create', async(req, res, next) => {
     let data = {
+        is_timing:req.body.is_timing,
+        timing_time:req.body.timing_time,
         code:req.body.code,
         values:req.body.values
     }
     let doc = await MenuModel.create(data)
-    if(doc){
+    if(!req.body.is_timing){
         createMenu(req.body.code,doc.values)
+    }
+    if(doc){
         res.send({success: '创建成功', data: doc})
     }else{
         res.send({err: '创建失败'})
@@ -25,12 +29,16 @@ router.post('/create', async(req, res, next) => {
 router.post('/update', async(req, res, next) => {
     let id=req.body.id
     let data = {
+        is_timing:req.body.is_timing,
+        timing_time:req.body.timing_time,
         code:req.body.code,
         values:req.body.values
     }
     let doc = await MenuModel.findByIdAndUpdate(id,data,{new:true})
-    if(doc){
+    if(!req.body.is_timing){
         createMenu(req.body.code,doc.values)
+    }
+    if(doc){
         res.send({success: '修改成功', data: doc})
     }else{
         res.send({err: '修改失败'})
