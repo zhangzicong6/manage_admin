@@ -12,7 +12,6 @@ var MessageSchema = new Schema({
     title: String,
     delay: Number,
     des: String,
-    take_over: Boolean,
     is_timing: Boolean,
     timing_time: Date,
     time: String,
@@ -23,7 +22,7 @@ var MessageSchema = new Schema({
         url: String,
         picurl: String
     }],
-    codes: [String],
+    codes: [Number],
     createAt: {
         type: Date,
         default: Date.now

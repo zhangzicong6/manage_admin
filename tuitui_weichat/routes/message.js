@@ -53,7 +53,6 @@ router.post('/create', async(req, res, next) => {
         type: parseInt(req.body.type),
         contents: req.body.contents,
         img: req.body.img,
-        take_over: req.body.take_over,
         tagId: req.body.tagId
     }
     var docs = await MessageModel.create(message);
@@ -77,7 +76,6 @@ router.post('/update', async(req, res, next) => {
         type: parseInt(req.body.type),
         contents: req.body.contents,
         img: req.body.img,
-        take_over: req.body.take_over,
         tagId: req.body.tagId
     }
     var docs = await MessageModel.findByIdAndUpdate(id, message)
@@ -90,7 +88,7 @@ router.post('/update', async(req, res, next) => {
 
 router.get('/delete', async(req, res, next) => {
     var id = req.query.id;
-    var docs = await MessageModel.findByIdAndDelete(id)
+    var docs = await MessageModel.findByIdAndRemove(id)
     var docs1 = await MessageModel.find()
     res.send({success: '删除成功', data: docs1})
 })
