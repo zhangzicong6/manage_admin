@@ -10,16 +10,12 @@ router.get('/', async(req, res, next) => {
 
 router.post('/create', async(req, res, next) => {
     let data = {
-        is_timing:req.body.is_timing,
-        timing_time:req.body.timing_time,
         code:req.body.code,
         values:req.body.values
     }
     let doc = await MenuModel.create(data)
-    if(!req.body.is_timing){
-        createMenu(req.body.code,doc.values)
-    }
     if(doc){
+        createMenu(req.body.code,doc.values)
         res.send({success: '创建成功', data: doc})
     }else{
         res.send({err: '创建失败'})
@@ -29,16 +25,12 @@ router.post('/create', async(req, res, next) => {
 router.post('/update', async(req, res, next) => {
     let id=req.body.id
     let data = {
-        is_timing:req.body.is_timing,
-        timing_time:req.body.timing_time,
         code:req.body.code,
         values:req.body.values
     }
     let doc = await MenuModel.findByIdAndUpdate(id,data,{new:true})
-    if(!req.body.is_timing){
-        createMenu(req.body.code,doc.values)
-    }
     if(doc){
+        createMenu(req.body.code,doc.values)
         res.send({success: '修改成功', data: doc})
     }else{
         res.send({err: '修改失败'})
@@ -54,7 +46,6 @@ router.get('/del', async(req, res, next) => {
 
 async function createMenu(code,menu) {
     var menu = {"button":menu}
-    console.log(menu,'---------------------menu')
     var api = await WechatUtil.getClient(code);
     if(menu.button.length==0){
         api.removeMenu(function(err,res){
