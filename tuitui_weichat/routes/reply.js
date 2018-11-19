@@ -142,6 +142,7 @@ router.post('/update', async(req, res, next) => {
             msgId: req.body.msgId
         }
         let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
+        console.log(doc)
         if (doc) {
             console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
