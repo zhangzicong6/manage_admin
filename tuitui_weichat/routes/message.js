@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var MessageModel = require('../model/Message');
+var ConfigModel = require('../model/Config');
 var send = require('../script/send_message');
 var sendUser = require('../script/send_user_message');
 
