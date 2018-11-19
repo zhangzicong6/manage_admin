@@ -21,7 +21,7 @@ function get_message(id) {
 }
 
 function send_users(user_id, message) {
-    UserModel.fetch(user_id, message.sex, message.codes, function (err, users) {
+    UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         var l = []
         async.eachLimit(users, 10, async function (user, callback) {
             l.push(user._id)

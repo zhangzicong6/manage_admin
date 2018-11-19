@@ -45,56 +45,27 @@ var UserSchema = new Schema({
 });
 
 UserSchema.statics = {
-    fetch(id, sex, codes, cb) {
-        if (sex) {
-            if (id) {
-                return this.find({
-                    _id: {$lt: id},
-                    subscribe_flag:true,
-                    $or: [{send_time: {$lt: Date.now() - 2 * 3600 * 1000}}, {send_time: null}],
-                    sex: sex,
-                    code: {$in: codes},
-                    action_time: {$gt: Date.now() - 48 * 3600 * 1000}
-                })
-                    .limit(50)
-                    .sort({'_id': -1})
-                    .exec(cb);
-            } else {
-                return this.find({
-                    subscribe_flag:true,
-                    $or: [{send_time: {$lt: Date.now() - 2 * 3600 * 1000}}, {send_time: null}],
-                    sex: sex,
-                    code: {$in: codes},
-                    action_time: {$gt: Date.now() - 48 * 3600 * 1000}
-                })
-                    .limit(50)
-                    .sort({'_id': -1})
-                    .exec(cb);
-            }
-        } else {
-            if (id) {
-                return this.find({
-                    _id: {$lt: id},
-                    subscribe_flag:true,
-                    $or: [{send_time: {$lt: Date.now() - 2 * 3600 * 1000}}, {send_time: null}],
-                    code: {$in: codes},
-                    action_time: {$gt: Date.now() - 48 * 3600 * 1000}
-                })
-                    .limit(50)
-                    .sort({'_id': -1})
-                    .exec(cb);
-            } else {
-                return this.find({
-                    subscribe_flag:true,
-                    $or: [{send_time: {$lt: Date.now() - 2 * 3600 * 1000}}, {send_time: null}],
-                    code: {$in: codes},
-                    action_time: {$gt: Date.now() - 48 * 3600 * 1000}
-                })
-                    .limit(50)
-                    .sort({'_id': -1})
-                    .exec(cb);
-            }
+    fetch(id, sex, tagId, codes, cb) {
+        let sql = {
+            subscribe_flag: true,
+            $or: [{send_time: {$lt: Date.now() - 2 * 3600 * 1000}}, {send_time: null}],
+            code: {$in: codes},
+            action_time: {$gt: Date.now() - 48 * 3600 * 1000}
         }
+        if (sex) {
+            sql.sex = sex
+        }
+        if (tagId) {
+            sql.tagIds = {$elemMatch: {$eq: tagId}}
+        }
+        if (id) {
+            sql._id = {$lt: id}
+        }
+
+        return this.find(sql)
+            .limit(50)
+            .sort({'_id': -1})
+            .exec(cb);
 
     }
 }
