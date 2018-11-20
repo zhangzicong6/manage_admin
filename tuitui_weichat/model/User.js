@@ -62,6 +62,7 @@ UserSchema.statics = {
             sql._id = {$lt: id}
         }
 
+        console.log(sql,'----------------sql')
         return this.find(sql)
             .limit(50)
             .sort({'_id': -1})
