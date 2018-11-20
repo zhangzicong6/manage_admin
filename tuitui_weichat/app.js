@@ -27,6 +27,7 @@ var tag = require('./routes/tag')
 var statistics = require('./routes/statistics');
 var conf = require('./routes/conf');
 var menu = require('./routes/menu');
+var menuTime = require('./routes/menuTime');
 var msg = require('./routes/msg');
 var reply = require('./routes/reply');
 var message = require('./routes/message');
@@ -85,6 +86,7 @@ app.use('/tag',tag)
 app.use('/statistics',statistics)
 app.use('/conf',conf)
 app.use('/menu',menu)
+app.use('/menuTime',menuTime)
 app.use('/msg',msg)
 app.use('/reply',reply)
 app.use('/message',message)
