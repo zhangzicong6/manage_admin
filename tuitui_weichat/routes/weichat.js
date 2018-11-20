@@ -190,6 +190,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
             if (message.Event === 'subscribe') {
                 user.subscribe_time = Date.now();
                 user.subscribe_flag = true;
+                console.log(user,'--------------user')
                 user.save(function () {
                 })
             } else if (message.Event === 'unsubscribe') {
