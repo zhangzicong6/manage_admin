@@ -21,6 +21,7 @@ function get_message(id) {
 }
 
 function send_users(user_id, message) {
+    console.log(message,'-------------------')
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         console.log(users,'-----------------------users')
         var l = []
