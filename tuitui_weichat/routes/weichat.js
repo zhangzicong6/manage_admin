@@ -169,7 +169,7 @@ function getUserInfo(openid, config, message, request, w_req, w_res, next) {
             if (!user) {
                 user = new UserModel();
                 user.nickname = '';
-                user.sex = '';
+                user.sex = '0';
                 user.openid = openid;
                 user.code = config.code;
                 user.current_balance = 0;
