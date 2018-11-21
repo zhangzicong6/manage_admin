@@ -8,21 +8,17 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var books = require('./routes/books');
 var weichat = require('./routes/weichat');
 var adzone = require('./routes/adzone');
 var alipay = require('./routes/alipay');
 var piclink = require('./routes/piclink');
-var top10 = require('./routes/top10');
 var reading = require('./routes/reading');
 // var youhuiquan = require('./routes/youhuiquan');
 var fetchLink = require('./routes/fetchLink');
 var goodsInfo = require('./routes/goodsInfo');
-var baokuan = require('./routes/baokuan');
 var tuiguang = require('./routes/tuiguang');
 var qr_code = require('./routes/qr_code');
 var transfer = require('./routes/transfer');
-var mp = require('./routes/miniProgram');
 var tag = require('./routes/tag')
 var statistics = require('./routes/statistics');
 var conf = require('./routes/conf');
@@ -69,19 +65,15 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/weichat',weichat);
 app.use('/adzone',adzone);
-app.use('/books',books);
 app.use('/alipay',alipay);
 app.use('/piclink',piclink);
-app.use('/top10',top10);
 app.use('/reading',reading);
 // app.use('/youhuiquan',youhuiquan);
 app.use('/fetchlink', fetchLink);
 app.use('/goodsinfo', goodsInfo);
-app.use('/baokuan', baokuan);
 app.use('/tuiguang', tuiguang);
 app.use('/qr_code', qr_code);
 app.use('/transfer', transfer);
-app.use('/mp',mp)
 app.use('/tag',tag)
 app.use('/statistics',statistics)
 app.use('/conf',conf)
