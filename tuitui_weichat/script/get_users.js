@@ -5,16 +5,21 @@ var mem = require('../util/mem.js');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        let a = await get_users(code, null);
-        console.log(a, '--------------a')
-        await get_user(code);
-        await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-        await ConfigModel.update({code: code}, {status: 1})
-        console.log('jieguan end')
+        // let a = await get_users(code, null);
+        // console.log(a, '--------------a')
+        // await get_user(code);
+        get_users(code, null,function (data) {
+            get_user(code,function (data1) {
+
+            })
+        })
+        // await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+        // await ConfigModel.update({code: code}, {status: 1})
+        // console.log('jieguan end')
     });
 }
 
-async function get_users(code, openid) {
+async function get_users(code, openid,callback) {
     console.log('code : ' + code + ' , openid : ' + openid);
     let client = await wechat_util.getClient(code)
     if (openid) {
@@ -23,7 +28,7 @@ async function get_users(code, openid) {
                 console.log('-------getFollowers error-------')
                 console.log(err)
             }
-            console.log(result);
+            // console.log(result);
             if (result && result.data && result.data.openid) {
                 var users = [];
                 for (var index in result.data.openid) {
@@ -42,7 +47,7 @@ async function get_users(code, openid) {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
                             console.log(resolve,'------------resolve')
-                            resolve('aa')
+                            resolve('')
                         })
                     }
                 })
@@ -50,7 +55,7 @@ async function get_users(code, openid) {
                 console.log('not have openid arr-----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
                     console.log(resolve,'------------resolve')
-                    resolve('aa')
+                    resolve('')
                 })
             }
         });
@@ -60,7 +65,7 @@ async function get_users(code, openid) {
                 console.log('-------getFollowers error-------')
                 console.log(err)
             }
-            console.log(result);
+            // console.log(result);
             if (result && result.data && result.data.openid) {
                 var users = [];
                 for (var index in result.data.openid) {
@@ -79,7 +84,7 @@ async function get_users(code, openid) {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
                             console.log(resolve,'------------resolve')
-                            resolve('aa')
+                            resolve('')
                         })
                     }
                 })
@@ -87,7 +92,7 @@ async function get_users(code, openid) {
                 console.log('not have openid arr -----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
                     console.log(resolve,'------------resolve')
-                    resolve('aa')
+                    resolve('')
                 })
             }
         });
@@ -100,7 +105,7 @@ function next_up(_id, code) {
     } else {
         console.log('update_user end');
         return new Promise((resolve, reject) => {
-            resolve('aa');
+            resolve(null);
         })
     }
 }
