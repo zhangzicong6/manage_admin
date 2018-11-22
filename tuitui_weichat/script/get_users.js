@@ -41,14 +41,16 @@ async function get_users(code, openid) {
                     } else {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
-                            resolve(null)
+                            console.log(resolve,'------------resolve')
+                            resolve('')
                         })
                     }
                 })
             } else {
                 console.log('not have openid arr-----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
-                    resolve(null)
+                    console.log(resolve,'------------resolve')
+                    resolve('')
                 })
             }
         });
@@ -76,14 +78,16 @@ async function get_users(code, openid) {
                     } else {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
-                            resolve(null)
+                            console.log(resolve,'------------resolve')
+                            resolve('')
                         })
                     }
                 })
             } else {
                 console.log('not have openid arr -----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
-                    resolve(null)
+                    console.log(resolve,'------------resolve')
+                    resolve('')
                 })
             }
         });
