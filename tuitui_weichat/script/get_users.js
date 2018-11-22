@@ -109,7 +109,6 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        console.log(user_arr,'-----------------user_arr')
         let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
@@ -149,6 +148,7 @@ function update_user(_id, code, next) {
                                 sex: info.sex,
                                 sign: 1
                             })
+                            console.log(userArr,'----------------userArr')
                         } else {
                             callback(null)
                         }
