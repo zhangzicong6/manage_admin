@@ -99,7 +99,7 @@ function next_up(_id, code) {
 }
 
 async function get_user(code) {
-    console.log('updateuser',-----------------------------)
+    console.log('updateuser-----------------------------')
     update_user(null, code, next_up);
 }
 
