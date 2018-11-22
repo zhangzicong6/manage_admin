@@ -148,12 +148,12 @@ function update_user(_id, code, next) {
                                 sign: 1
                             })
                         }
-                        callback(null,userArr)
+                        console.log(userArr,'------------------userArr')
                     }, function (error, userArr) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        console.log(userArr,'------------------userArr')
+                        // console.log(userArr,'------------------userArr')
                         UserconfModel.insertMany(userArr, async function (error, docs) {
                             if (error) {
                                 console.log('------insertMany error--------');
