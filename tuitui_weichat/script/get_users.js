@@ -5,87 +5,83 @@ var mem = require('../util/mem.js');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        let a = await get_users(code, null);
-        console.log(a, '--------------a')
-        await get_user(code);
+        // let a = await get_users(code, null);
+        // console.log(a, '--------------a')
+        get_users(code, null, async function (data) {
+            await get_user(code);
+        })
         await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
         await ConfigModel.update({code: code}, {status: 1})
         console.log('jieguan end')
     });
 }
 
-async function get_users(code, openid) {
+async function get_users(code, openid, callback) {
     console.log('code : ' + code + ' , openid : ' + openid);
     let client = await wechat_util.getClient(code)
-    return new Promise((resolve, reject) => {
-        if (openid) {
-            client.getFollowers(openid, async function (err, result) {
-                if (err) {
-                    console.log('-------getFollowers error-------')
-                    console.log(err)
+    if (openid) {
+        client.getFollowers(openid, async function (err, result) {
+            if (err) {
+                console.log('-------getFollowers error-------')
+                console.log(err)
+            }
+            // console.log(result);
+            if (result && result.data && result.data.openid) {
+                var users = [];
+                for (var index in result.data.openid) {
+                    users.push({'openid': result.data.openid[index], 'code': code});
                 }
-                // console.log(result);
-                if (result && result.data && result.data.openid) {
-                    var users = [];
-                    for (var index in result.data.openid) {
-                        users.push({'openid': result.data.openid[index], 'code': code});
+                UserconfModel.insertMany(users, async function (error, docs) {
+                    if (error) {
+                        console.log('------insertMany error--------');
+                        console.log(error);
+                        console.log('------------------------------');
                     }
-                    UserconfModel.insertMany(users, async function (error, docs) {
-                        if (error) {
-                            console.log('------insertMany error--------');
-                            console.log(error);
-                            console.log('------------------------------');
-                        }
-                        if (result.next_openid) {
-                            console.log('-----------code -------' + code + '---------update--contitue------')
-                            get_users(code, result.next_openid);
-                        } else {
-                            console.log('-----------code -------' + code + '---------update--end')
-                            console.log(resolve, '------------resolve')
-                            resolve('')
-                        }
-                    })
-                } else {
-                    console.log('not have openid arr-----------code -------' + code + '---------update--end')
-                    console.log(resolve, '------------resolve')
-                    resolve('')
-                }
-            });
-        } else {
-            client.getFollowers(async function (err, result) {
-                if (err) {
-                    console.log('-------getFollowers error-------')
-                    console.log(err)
-                }
-                // console.log(result);
-                if (result && result.data && result.data.openid) {
-                    var users = [];
-                    for (var index in result.data.openid) {
-                        users.push({'openid': result.data.openid[index], 'code': code});
+                    if (result.next_openid) {
+                        console.log('-----------code -------' + code + '---------update--contitue------')
+                        get_users(code, result.next_openid, callback);
+                    } else {
+                        console.log('-----------code -------' + code + '---------update--end')
+                        callback(null)
                     }
-                    UserconfModel.insertMany(users, async function (error, docs) {
-                        if (error) {
-                            console.log('------insertMany error--------');
-                            console.log(error);
-                            console.log('------------------------------');
-                        }
-                        if (result.next_openid) {
-                            console.log('-----------code -------' + code + '---------update--contitue------')
-                            get_users(code, result.next_openid);
-                        } else {
-                            console.log('-----------code -------' + code + '---------update--end')
-                            console.log(resolve, '------------resolve')
-                            resolve('')
-                        }
-                    })
-                } else {
-                    console.log('not have openid arr -----------code -------' + code + '---------update--end')
-                    console.log(resolve, '------------resolve')
-                    resolve('')
+                })
+            } else {
+                console.log('not have openid arr-----------code -------' + code + '---------update--end')
+                callback(null)
+            }
+        });
+    } else {
+        client.getFollowers(async function (err, result) {
+            if (err) {
+                console.log('-------getFollowers error-------')
+                console.log(err)
+            }
+            // console.log(result);
+            if (result && result.data && result.data.openid) {
+                var users = [];
+                for (var index in result.data.openid) {
+                    users.push({'openid': result.data.openid[index], 'code': code});
                 }
-            });
-        }
-    })
+                UserconfModel.insertMany(users, async function (error, docs) {
+                    if (error) {
+                        console.log('------insertMany error--------');
+                        console.log(error);
+                        console.log('------------------------------');
+                    }
+                    if (result.next_openid) {
+                        console.log('-----------code -------' + code + '---------update--contitue------')
+                        get_users(code, result.next_openid, callback);
+                    } else {
+                        console.log('-----------code -------' + code + '---------update--end')
+                        callback(null)
+                    }
+                })
+            } else {
+                console.log('not have openid arr -----------code -------' + code + '---------update--end')
+                callback(null)
+            }
+        });
+    }
 }
 
 function next_up(_id, code) {
