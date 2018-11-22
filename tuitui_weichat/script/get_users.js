@@ -2,6 +2,7 @@ var UserconfModel = require('../model/Userconf');
 var ConfigModel = require('../model/Config');
 var wechat_util = require('../util/get_weichat_client.js')
 var mem = require('../util/mem.js');
+var async = require('async');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
