@@ -5,7 +5,8 @@ var mem = require('../util/mem.js');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        await get_users(code, null);
+        let a = await get_users(code, null);
+        console.log(a, '--------------a')
         await get_user(code);
         await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
         await ConfigModel.update({code: code}, {status: 1})
