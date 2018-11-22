@@ -9,11 +9,13 @@ function getUserByCode(code) {
         // let a = await get_users(code, null);
         // console.log(a, '--------------a')
         get_users(code, null, async function (data) {
+            console.log(data, '--------------data')
             await get_user(code);
+            await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+            await ConfigModel.update({code: code}, {status: 1})
+            console.log('jieguan end')
         })
-        await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-        await ConfigModel.update({code: code}, {status: 1})
-        console.log('jieguan end')
+
     });
 }
 
