@@ -148,6 +148,7 @@ function update_user(_id, code, next) {
                                 sign: 1
                             })
                         }
+                        callback(null)
                     }, function (error) {
                         if (error) {
                             console.log(error, '--------------error')
