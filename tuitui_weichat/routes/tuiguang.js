@@ -2,17 +2,19 @@ var express = require('express');
 var router = express.Router();
 var TuiGuangModel = require('../model/TuiGuang.js');
 var DomainModel = require('../model/Domain.js');
+var TokenArrModel = require('../model/TokenArr.js');
 var BannerModel = require('../model/Banner.js');
 var multer = require('multer');
 var fs = require('fs')
 var mem = require('../util/mem.js')
+var juedui_lujing = '/home/work/tuitui_program/project/public/images/tuiguang'
 
 var upload = multer({
-    dest: __dirname+'/../public/images/tuiguang'
+    dest: juedui_lujing
 });
 
 router.post('/novel/upload', upload.single('imageFile'), function(req, res, next) {
-	fs.rename(req.file.path, __dirname+"/../public/images/tuiguang/"+req.file.filename+'.jpg', function(err) {
+    fs.rename(req.file.path, juedui_lujing+"/"+req.file.filename+'.jpg', function(err) {
         if (err) {
             throw err;
         }
@@ -22,15 +24,15 @@ router.post('/novel/upload', upload.single('imageFile'), function(req, res, next
 })
 
 router.post('/update', async (req, res, next) => {
-	let id = '5b76aa2ac3ed4a4798d7045d';
-	let messages = {
-		image: req.body.image,
-		link: req.body.link,
-		position: req.body.position
-	}
-	let docs = await BannerModel.findByIdAndUpdate(id, messages)
-	let docs1 = await BannerModel.find()
-	res.send({success: 'ok', data: docs1})
+    let id = '5b76aa2ac3ed4a4798d7045d';
+    let messages = {
+        image: req.body.image,
+        link: req.body.link,
+        position: req.body.position
+    }
+    let docs = await BannerModel.findByIdAndUpdate(id, messages)
+    let docs1 = await BannerModel.find()
+    res.send({success: 'ok', data: docs1})
 })
 
 router.post('/novel/add', (req, res, next) => {
@@ -69,7 +71,7 @@ router.post('/novel/add', (req, res, next) => {
             }
         }
     })
-	
+    
 })
 
 router.post('/novel/delete_one', (req, res, next) => {
@@ -93,9 +95,15 @@ router.post('/novel/delete_one', (req, res, next) => {
 })
 
 router.get('/novel/show', async(req, res, next) => {
-    var messages = await TuiGuangModel.find();
+    var messages = await TuiGuangModel.find({},{capter1:0,capter2:0});
     var domain_names = await DomainModel.find();
     res.send({data: messages, domain_names: domain_names})
+})
+
+router.get('/novel/get_content', async(req, res, next) => {
+    var id = req.query._id
+    var messages = await TuiGuangModel.findById(id);
+    res.send({data: messages})
 })
 
 router.post('/novel/update', async(req, res, next) => {
@@ -108,14 +116,18 @@ router.post('/novel/update', async(req, res, next) => {
         name: req.body.name,
         desc: req.body.desc,
         picurl: req.body.picurl,
-        capter1: req.body.capter1,
-        capter2: req.body.capter2 || '',
         linkUrl: req.body.linkUrl || '',
         statisticsUrl1: req.body.statisticsUrl1,
         statisticsUrl2: req.body.statisticsUrl2 || '',
         tokenCodes: req.body.tokenCodes || '',
         channel: req.body.channel,
         remarks: req.body.remarks
+    }
+    if(req.body.capter1) {
+        message.capter1= req.body.capter1
+    }
+    if(req.body.capter2) {
+        message.capter2= req.body.capter2
     }
     var docs = await TuiGuangModel.findByIdAndUpdate(id, message)
     if (docs) {
@@ -135,6 +147,12 @@ router.post('/novel/update', async(req, res, next) => {
     } else {
         res.send({err: '修改失败'})
     }
+})
+
+router.get('/token_arr', async(req, res, next) => {
+    var tokenArr = req.query.tokenArr;
+    var docs = await TokenArrModel.findByIdAndUpdate('5bc06e2e2f6ed40b684421a4', {tokenArr: tokenArr})
+    res.send({success: '修改成功', data: docs})
 })
 
 module.exports = router;

@@ -29,6 +29,7 @@ var reply = require('./routes/reply');
 var message = require('./routes/message');
 var management = require('./routes/management');
 var manage = require('./routes/manage');
+var alipayLink = require('./routes/alipayLink');
 
 var app = express();
 
@@ -66,6 +67,7 @@ app.use('/users', users);
 app.use('/weichat',weichat);
 app.use('/adzone',adzone);
 app.use('/alipay',alipay);
+app.use('/alipayLink',alipayLink);
 app.use('/piclink',piclink);
 app.use('/reading',reading);
 // app.use('/youhuiquan',youhuiquan);
