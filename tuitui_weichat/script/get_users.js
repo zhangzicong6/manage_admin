@@ -29,11 +29,11 @@ async function get_users(code, openid, callback) {
             }
             // console.log(result);
             if (result && result.data && result.data.openid) {
-                var users = [];
+                var openids = [];
                 for (var index in result.data.openid) {
-                    users.push({'openid': result.data.openid[index], 'code': code});
+                    openids.push({'openid': result.data.openid[index], 'code': code});
                 }
-                OpenidModel.insertMany(users, async function (error, docs) {
+                OpenidModel.insertMany(openids, async function (error, docs) {
                     if (error) {
                         console.log('------insertMany error--------');
                         console.log(error);
@@ -60,11 +60,11 @@ async function get_users(code, openid, callback) {
             }
             // console.log(result);
             if (result && result.data && result.data.openid) {
-                var users = [];
+                var openids = [];
                 for (var index in result.data.openid) {
-                    users.push({'openid': result.data.openid[index], 'code': code});
+                    openids.push({'openid': result.data.openid[index], 'code': code});
                 }
-                OpenidModel.insertMany(users, async function (error, docs) {
+                OpenidModel.insertMany(openids, async function (error, docs) {
                     if (error) {
                         console.log('------insertMany error--------');
                         console.log(error);
@@ -151,16 +151,17 @@ function update_user(_id, code, next) {
                         } else {
                             callback(null)
                         }
-                    }, async function (error, result) {
+                    }, function (error, result) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        await UserconfModel.insertMany(userArr)
-                        if (users.length == 50) {
-                            return next(users[49]._id, code);
-                        } else {
-                            return next(null, null)
-                        }
+                        UserconfModel.insertMany(userArr, async function (error, docs) {
+                            if (users.length == 50) {
+                                return next(users[49]._id, code);
+                            } else {
+                                return next(null, null)
+                            }
+                        })
                     })
                 }
             })
