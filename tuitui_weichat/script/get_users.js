@@ -1,5 +1,6 @@
 var UserconfModel = require('../model/Userconf');
 var ConfigModel = require('../model/Config');
+var wechat_util = require('../util/get_weichat_client.js')
 var mem = require('../util/mem.js');
 
 function getUserByCode(code) {
@@ -14,7 +15,7 @@ function getUserByCode(code) {
 
 async function get_users(code, openid) {
     console.log('code : ' + code + ' , openid : ' + openid);
-    let client = await getClient.getClient(code)
+    let client = await wechat_util.getClient(code)
     return new Promise((resolve, reject) => {
         if (openid) {
             client.getFollowers(openid, async function (err, result) {
@@ -103,7 +104,7 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        let client = await getClient.getClient(parseInt(code))
+        let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
         } else if (user_arr.length == 1) {
