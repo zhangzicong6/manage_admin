@@ -147,7 +147,6 @@ function update_user(_id, code, next) {
                                 sex: info.sex,
                                 sign: 1
                             })
-                            console.log(userArr,'----------------userArr')
                         } else {
                             callback(null)
                         }
@@ -155,7 +154,13 @@ function update_user(_id, code, next) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
+                        console.log(userArr,'------------------userArr')
                         UserconfModel.insertMany(userArr, async function (error, docs) {
+                            if (error) {
+                                console.log('------insertMany error--------');
+                                console.log(error);
+                                console.log('------------------------------');
+                            }
                             if (users.length == 50) {
                                 return next(users[49]._id, code);
                             } else {
