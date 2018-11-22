@@ -42,7 +42,7 @@ async function get_users(code, openid) {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
                             console.log(resolve,'------------resolve')
-                            resolve('')
+                            resolve('aa')
                         })
                     }
                 })
@@ -50,7 +50,7 @@ async function get_users(code, openid) {
                 console.log('not have openid arr-----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
                     console.log(resolve,'------------resolve')
-                    resolve('')
+                    resolve('aa')
                 })
             }
         });
@@ -79,7 +79,7 @@ async function get_users(code, openid) {
                         console.log('-----------code -------' + code + '---------update--end')
                         return new Promise((resolve, reject) => {
                             console.log(resolve,'------------resolve')
-                            resolve('')
+                            resolve('aa')
                         })
                     }
                 })
@@ -87,7 +87,7 @@ async function get_users(code, openid) {
                 console.log('not have openid arr -----------code -------' + code + '---------update--end')
                 return new Promise((resolve, reject) => {
                     console.log(resolve,'------------resolve')
-                    resolve('')
+                    resolve('aa')
                 })
             }
         });
@@ -100,7 +100,7 @@ function next_up(_id, code) {
     } else {
         console.log('update_user end');
         return new Promise((resolve, reject) => {
-            resolve(null);
+            resolve('aa');
         })
     }
 }
