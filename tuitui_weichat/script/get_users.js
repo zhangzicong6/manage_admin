@@ -151,11 +151,11 @@ function update_user(_id, code, next) {
                         } else {
                             callback(null)
                         }
-                    }, function (error, result) {
+                    }, async function (error, result) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        UserconfModel.insertMany(userArr)
+                        await UserconfModel.insertMany(userArr)
                         if (users.length == 50) {
                             return next(users[49]._id, code);
                         } else {
