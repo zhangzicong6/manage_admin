@@ -45,18 +45,20 @@ async function get_users(code, openid,callback) {
                         get_users(code, result.next_openid);
                     } else {
                         console.log('-----------code -------' + code + '---------update--end')
-                        return new Promise((resolve, reject) => {
-                            console.log(resolve,'------------resolve')
-                            resolve('')
-                        })
+                        // return new Promise((resolve, reject) => {
+                        //     console.log(resolve,'------------resolve')
+                        //     resolve('')
+                        // })
+                        callback(null)
                     }
                 })
             } else {
                 console.log('not have openid arr-----------code -------' + code + '---------update--end')
-                return new Promise((resolve, reject) => {
-                    console.log(resolve,'------------resolve')
-                    resolve('')
-                })
+                // return new Promise((resolve, reject) => {
+                //     console.log(resolve,'------------resolve')
+                //     resolve('')
+                // })
+                callback(null)
             }
         });
     } else {
@@ -82,18 +84,20 @@ async function get_users(code, openid,callback) {
                         get_users(code, result.next_openid);
                     } else {
                         console.log('-----------code -------' + code + '---------update--end')
-                        return new Promise((resolve, reject) => {
-                            console.log(resolve,'------------resolve')
-                            resolve('')
-                        })
+                        // return new Promise((resolve, reject) => {
+                        //     console.log(resolve,'------------resolve')
+                        //     resolve('')
+                        // })
+                        callback(null)
                     }
                 })
             } else {
                 console.log('not have openid arr -----------code -------' + code + '---------update--end')
-                return new Promise((resolve, reject) => {
-                    console.log(resolve,'------------resolve')
-                    resolve('')
-                })
+                // return new Promise((resolve, reject) => {
+                //     console.log(resolve,'------------resolve')
+                //     resolve('')
+                // })
+                callback(null)
             }
         });
     }
