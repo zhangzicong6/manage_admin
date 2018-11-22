@@ -116,6 +116,8 @@ function update_user(_id, code, next) {
                     console.log(err, '----------------nickname err1')
                 }
                 UserconfModel.create({openid: data.openid}, {
+                    code:info.code,
+                    openid:info.openId,
                     nickname: data.nickname,
                     headimgurl: data.headimgurl,
                     sex: data.sex,
@@ -141,6 +143,8 @@ function update_user(_id, code, next) {
                     async.eachLimit(data.user_info_list, 50, function (info, callback) {
                         if (info.nickname) {
                             userArr.push({openid: info.openid}, {
+                                code:info.code,
+                                openid:info.openId,
                                 nickname: info.nickname,
                                 headimgurl: info.headimgurl,
                                 sex: info.sex,
