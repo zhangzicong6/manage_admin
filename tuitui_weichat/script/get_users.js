@@ -147,10 +147,9 @@ function update_user(_id, code, next) {
                                 sex: info.sex,
                                 sign: 1
                             })
-                        } else {
-                            callback(null)
                         }
-                    }, function (error, result) {
+                        callback(null,userArr)
+                    }, function (error, userArr) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
