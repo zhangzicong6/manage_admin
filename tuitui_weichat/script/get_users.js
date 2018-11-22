@@ -15,10 +15,9 @@ function getUserByCode(code) {
 }
 
 async function get_users(code, openid) {
+    console.log('code : ' + code + ' , openid : ' + openid);
+    let client = await wechat_util.getClient(code)
     return new Promise((resolve, reject) => {
-        console.log('code : ' + code + ' , openid : ' + openid);
-        let client = await
-        wechat_util.getClient(code)
         if (openid) {
             client.getFollowers(openid, async function (err, result) {
                 if (err) {
