@@ -13,7 +13,7 @@ function getUserByCode(code) {
             await get_user(code);
             await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
             await ConfigModel.update({code: code}, {status: 1})
-            console.log('jieguan end')
+            await console.log('jieguan end')
         })
 
     });
@@ -99,6 +99,7 @@ function next_up(_id, code) {
 }
 
 async function get_user(code) {
+    console.log('updateuser',-----------------------------)
     update_user(null, code, next_up);
 }
 
@@ -108,6 +109,7 @@ function update_user(_id, code, next) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
+        console.log(user_arr,'-----------------user_arr')
         let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
