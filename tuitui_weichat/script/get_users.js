@@ -1,13 +1,12 @@
 var UserconfModel = require('../model/Userconf');
 var ConfigModel = require('../model/Config');
+var OpenidModel = require('../model/Openid');
 var wechat_util = require('../util/get_weichat_client.js')
 var mem = require('../util/mem.js');
 var async = require('async');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        // let a = await get_users(code, null);
-        // console.log(a, '--------------a')
         get_users(code, null, async function (data) {
             console.log(data, '--------------data')
             await get_user(code);
@@ -34,7 +33,7 @@ async function get_users(code, openid, callback) {
                 for (var index in result.data.openid) {
                     users.push({'openid': result.data.openid[index], 'code': code});
                 }
-                UserconfModel.insertMany(users, async function (error, docs) {
+                OpenidModel.insertMany(users, async function (error, docs) {
                     if (error) {
                         console.log('------insertMany error--------');
                         console.log(error);
@@ -65,7 +64,7 @@ async function get_users(code, openid, callback) {
                 for (var index in result.data.openid) {
                     users.push({'openid': result.data.openid[index], 'code': code});
                 }
-                UserconfModel.insertMany(users, async function (error, docs) {
+                OpenidModel.insertMany(users, async function (error, docs) {
                     if (error) {
                         console.log('------insertMany error--------');
                         console.log(error);
@@ -104,7 +103,7 @@ async function get_user(code) {
 }
 
 function update_user(_id, code, next) {
-    UserconfModel.fetch_openid(_id, code, async function (error, users) {
+    OpenidModel.fetch(_id, code, async function (error, users) {
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
@@ -117,7 +116,7 @@ function update_user(_id, code, next) {
                 if (err) {
                     console.log(err, '----------------nickname err1')
                 }
-                UserconfModel.findOneAndUpdate({openid: data.openid}, {
+                UserconfModel.create({openid: data.openid}, {
                     nickname: data.nickname,
                     headimgurl: data.headimgurl,
                     sex: data.sex,
@@ -156,7 +155,7 @@ function update_user(_id, code, next) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        UserconfModel.update(userArr)
+                        UserconfModel.insertMany(userArr)
                         if (users.length == 50) {
                             return next(users[49]._id, code);
                         } else {
