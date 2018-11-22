@@ -148,7 +148,6 @@ function update_user(_id, code, next) {
                                 sign: 1
                             })
                         }
-                        console.log(userArr,'------------------userArr')
                     }, function (error) {
                         if (error) {
                             console.log(error, '--------------error')
