@@ -87,14 +87,14 @@ async function get_users(code, openid, callback) {
 }
 
 function next_up(_id, code) {
-    return new Promise((resolve, reject) => {
-        if (code) {
-            update_user(_id, code, next_up);
-        } else {
-            console.log('update_user end');
-            resolve(null);
-        }
-    })
+    if (code) {
+        update_user(_id, code, next_up);
+    } else {
+        console.log('update_user end');
+        // return new Promise((resolve, reject) => {
+        //     resolve(null);
+        // })
+    }
 }
 
 async function get_user(code) {
@@ -146,7 +146,7 @@ function update_user(_id, code, next) {
                                 console.log(error);
                                 console.log('------------------------------');
                             }
-                            console.log(users.length, '---------------users')
+                            console.log(users.length,'---------------users')
                             if (users.length == 50) {
                                 next(users[49]._id, code);
                             } else {
