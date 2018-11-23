@@ -8,7 +8,8 @@ var async = require('async');
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
         get_users(code, null, async function (data) {
-            await get_user(null, code);
+            let a= await get_user(null, code);
+            console.log(a,'--------------------a')
             await OpenidModel.remove({code: code})
             console.log('aaaaaaaaaaaaaaaaaaaa')
             await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
@@ -95,7 +96,7 @@ async function get_user(_id, code) {
             update_user(_id, code, get_user);
         } else {
             console.log('update_user end');
-            resolve('');
+            resolve('aa');
         }
     })
 }
