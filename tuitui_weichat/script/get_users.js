@@ -111,15 +111,15 @@ function update_user(_id, code, next) {
         let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
-            return next(null, null)
+            next(null, null)
         } else {
             client.batchGetUsers(user_arr, function (err, data) {
                 if (err) {
                     console.log(err, '----------------nickname err2')
                     if (users.length == 50) {
-                        return next(users[49]._id, code);
+                        next(users[49]._id, code);
                     } else {
-                        return next(null, null)
+                        next(null, null)
                     }
                 }
                 if (data && data.user_info_list) {
@@ -127,7 +127,7 @@ function update_user(_id, code, next) {
                     async.eachLimit(data.user_info_list, 50, function (info, callback) {
                         if (info.nickname) {
                             userArr.push({
-                                code:info.code,
+                                code: info.code,
                                 openid: info.openid,
                                 nickname: info.nickname,
                                 headimgurl: info.headimgurl,
@@ -147,9 +147,9 @@ function update_user(_id, code, next) {
                                 console.log('------------------------------');
                             }
                             if (users.length == 50) {
-                                return next(users[49]._id, code);
+                                next(users[49]._id, code);
                             } else {
-                                return next(null, null)
+                                next(null, null)
                             }
                         })
                     })
