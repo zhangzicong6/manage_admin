@@ -7,16 +7,15 @@ var async = require('async');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        get_users(code, null, async function (data) {
-            let a= await get_user(null, code);
-            console.log(a,'--------------------a')
-            await OpenidModel.remove({code: code})
-            console.log('aaaaaaaaaaaaaaaaaaaa')
-            await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-            await ConfigModel.update({code: code}, {status: 1})
-            await console.log('jieguan end')
+        get_users(code, null, function () {
+            get_user(null, code, async function () {
+                await OpenidModel.remove({code: code})
+                console.log('aaaaaaaaaaaaaaaaaaaa')
+                await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+                await ConfigModel.update({code: code}, {status: 1})
+                await console.log('jieguan end')
+            });
         })
-
     });
 }
 
@@ -88,17 +87,15 @@ async function get_users(code, openid, callback) {
     }
 }
 
-async function get_user(_id, code) {
-    return new Promise((resolve, reject) => {
-        console.log('updateuser-----------------------------')
-        if (code) {
-            console.log(_id, code, '-------------------code');
-            update_user(_id, code, get_user);
-        } else {
-            console.log('update_user end');
-            resolve('aa');
-        }
-    })
+async function get_user(_id, code, callback) {
+    console.log('updateuser-----------------------------')
+    if (code) {
+        console.log(_id, code, '-------------------code');
+        update_user(_id, code, get_user);
+    } else {
+        console.log('update_user end');
+        callback(null);
+    }
 }
 
 function update_user(_id, code, next) {
