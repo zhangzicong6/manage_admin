@@ -86,20 +86,16 @@ async function get_users(code, openid, callback) {
     }
 }
 
-function next_up(_id, code) {
+async function get_user(_id,code) {
+    console.log('updateuser-----------------------------')
     if (code) {
-        update_user(_id, code, next_up);
+        update_user(_id, code, get_user);
     } else {
         console.log('update_user end');
-        // return new Promise((resolve, reject) => {
-        //     resolve(null);
-        // })
+        return new Promise((resolve, reject) => {
+            resolve(null);
+        })
     }
-}
-
-async function get_user(code) {
-    console.log('updateuser-----------------------------')
-    update_user(null, code, next_up);
 }
 
 function update_user(_id, code, next) {
