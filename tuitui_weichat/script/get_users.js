@@ -88,7 +88,7 @@ async function get_users(code, openid, callback) {
 
 function next_up(_id, code) {
     if (code) {
-        return update_user(_id, code, next_up);
+        update_user(_id, code, next_up);
     } else {
         console.log('update_user end');
         return new Promise((resolve, reject) => {
