@@ -94,7 +94,7 @@ async function get_user(_id, code, back) {
         update_user(_id, code, get_user, back);
     } else {
         console.log('update_user end');
-        callback(null);
+        back(null);
     }
 }
 
