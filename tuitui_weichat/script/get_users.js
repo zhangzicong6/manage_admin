@@ -9,7 +9,7 @@ function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
         get_users(code, null, async function (data) {
             await get_user(code);
-            // await OpenidModel.remove({code: code})
+            await OpenidModel.remove({code: code})
             await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
             await ConfigModel.update({code: code}, {status: 1})
             await console.log('jieguan end')
