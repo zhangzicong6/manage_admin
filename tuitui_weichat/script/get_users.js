@@ -87,18 +87,18 @@ async function get_users(code, openid, callback) {
     }
 }
 
-async function get_user(_id, code, callback) {
+async function get_user(_id, code, back) {
     console.log('updateuser-----------------------------')
     if (code) {
         console.log(_id, code, '-------------------code');
-        update_user(_id, code, get_user);
+        update_user(_id, code, get_user, back);
     } else {
         console.log('update_user end');
         callback(null);
     }
 }
 
-function update_user(_id, code, next) {
+function update_user(_id, code, next, back) {
     OpenidModel.fetch(_id, code, async function (error, users) {
         var user_arr = [];
         users.forEach(function (user) {
@@ -107,15 +107,15 @@ function update_user(_id, code, next) {
         let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
-            next(null, null)
+            next(null, null, back)
         } else {
             client.batchGetUsers(user_arr, function (err, data) {
                 if (err) {
                     console.log(err, '----------------nickname err2')
                     if (users.length == 50) {
-                        next(users[49]._id, code);
+                        next(users[49]._id, code, back);
                     } else {
-                        next(null, null)
+                        next(null, null, back)
                     }
                 }
                 if (data && data.user_info_list) {
@@ -144,9 +144,9 @@ function update_user(_id, code, next) {
                             }
                             console.log(users.length, '---------------users')
                             if (users.length == 50) {
-                                next(users[49]._id, code);
+                                next(users[49]._id, code, back);
                             } else {
-                                next(null, null)
+                                next(null, null, back)
                             }
                         })
                     })
