@@ -10,10 +10,9 @@ function getUserByCode(code) {
         get_users(code, null, function () {
             get_user(null, code, async function () {
                 await OpenidModel.remove({code: code})
-                console.log('aaaaaaaaaaaaaaaaaaaa')
                 await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
                 await ConfigModel.update({code: code}, {status: 1})
-                await console.log('jieguan end')
+                console.log('jieguan end')
             });
         })
     });
@@ -88,9 +87,7 @@ async function get_users(code, openid, callback) {
 }
 
 async function get_user(_id, code, back) {
-    console.log('updateuser-----------------------------')
     if (code) {
-        console.log(_id, code, '-------------------code');
         update_user(_id, code, get_user, back);
     } else {
         console.log('update_user end');
@@ -111,7 +108,7 @@ function update_user(_id, code, next, back) {
         } else {
             client.batchGetUsers(user_arr, function (err, data) {
                 if (err) {
-                    console.log(err, '----------------nickname err2')
+                    console.log(err, '----------------userinfo err')
                     if (users.length == 50) {
                         next(users[49]._id, code, back);
                     } else {
@@ -142,7 +139,6 @@ function update_user(_id, code, next, back) {
                                 console.log(error);
                                 console.log('------------------------------');
                             }
-                            console.log(users.length, '---------------users')
                             if (users.length == 50) {
                                 next(users[49]._id, code, back);
                             } else {
