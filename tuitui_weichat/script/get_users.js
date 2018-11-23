@@ -109,49 +109,54 @@ function update_user(_id, code, next) {
             user_arr.push(user.openid)
         })
         let client = await wechat_util.getClient(parseInt(code))
-        client.batchGetUsers(user_arr, function (err, data) {
-            if (err) {
-                console.log(err, '----------------nickname err2')
-                if (users.length == 50) {
-                    return next(users[49]._id, code);
-                } else {
-                    return next(null, null)
+        if (user_arr.length == 0) {
+            console.log(user_arr, '-------------------user null')
+            return next(null, null)
+        } else {
+            client.batchGetUsers(user_arr, function (err, data) {
+                if (err) {
+                    console.log(err, '----------------nickname err2')
+                    if (users.length == 50) {
+                        return next(users[49]._id, code);
+                    } else {
+                        return next(null, null)
+                    }
                 }
-            }
-            if (data && data.user_info_list) {
-                let userArr = []
-                async.eachLimit(data.user_info_list, 50, function (info, callback) {
-                    if (info.nickname) {
-                        userArr.push({
-                            code: info.code,
-                            openid: info.openid,
-                            nickname: info.nickname,
-                            headimgurl: info.headimgurl,
-                            sex: info.sex,
-                            sign: 1
-                        })
-                    }
-                    callback(null)
-                }, function (error) {
-                    if (error) {
-                        console.log(error, '--------------error')
-                    }
-                    console.log(userArr, '------------------userArr')
-                    UserconfModel.insertMany(userArr, async function (error, docs) {
+                if (data && data.user_info_list) {
+                    let userArr = []
+                    async.eachLimit(data.user_info_list, 50, function (info, callback) {
+                        if (info.nickname) {
+                            userArr.push({
+                                code:info.code,
+                                openid: info.openid,
+                                nickname: info.nickname,
+                                headimgurl: info.headimgurl,
+                                sex: info.sex,
+                                sign: 1
+                            })
+                        }
+                        callback(null)
+                    }, function (error) {
                         if (error) {
-                            console.log('------insertMany error--------');
-                            console.log(error);
-                            console.log('------------------------------');
+                            console.log(error, '--------------error')
                         }
-                        if (users.length == 50) {
-                            return next(users[49]._id, code);
-                        } else {
-                            return next(null, null)
-                        }
+                        console.log(userArr,'------------------userArr')
+                        UserconfModel.insertMany(userArr, async function (error, docs) {
+                            if (error) {
+                                console.log('------insertMany error--------');
+                                console.log(error);
+                                console.log('------------------------------');
+                            }
+                            if (users.length == 50) {
+                                return next(users[49]._id, code);
+                            } else {
+                                return next(null, null)
+                            }
+                        })
                     })
-                })
-            }
-        })
+                }
+            })
+        }
     })
 }
 
