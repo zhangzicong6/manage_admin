@@ -89,6 +89,7 @@ async function get_users(code, openid, callback) {
 async function get_user(_id,code) {
     console.log('updateuser-----------------------------')
     if (code) {
+        console.log(_id, code,'-------------------code');
         update_user(_id, code, get_user);
     } else {
         console.log('update_user end');
