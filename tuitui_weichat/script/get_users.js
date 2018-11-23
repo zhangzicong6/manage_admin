@@ -8,8 +8,9 @@ var async = require('async');
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
         get_users(code, null, async function (data) {
-            await get_user(null,code);
+            await get_user(null, code);
             await OpenidModel.remove({code: code})
+            console.log('aaaaaaaaaaaaaaaaaaaa')
             await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
             await ConfigModel.update({code: code}, {status: 1})
             await console.log('jieguan end')
@@ -86,17 +87,17 @@ async function get_users(code, openid, callback) {
     }
 }
 
-async function get_user(_id,code) {
-    console.log('updateuser-----------------------------')
-    if (code) {
-        console.log(_id, code,'-------------------code');
-        update_user(_id, code, get_user);
-    } else {
-        console.log('update_user end');
-        return new Promise((resolve, reject) => {
-            resolve(null);
-        })
-    }
+async function get_user(_id, code) {
+    return new Promise((resolve, reject) => {
+        console.log('updateuser-----------------------------')
+        if (code) {
+            console.log(_id, code, '-------------------code');
+            update_user(_id, code, get_user);
+        } else {
+            console.log('update_user end');
+            resolve('');
+        }
+    })
 }
 
 function update_user(_id, code, next) {
@@ -143,7 +144,7 @@ function update_user(_id, code, next) {
                                 console.log(error);
                                 console.log('------------------------------');
                             }
-                            console.log(users.length,'---------------users')
+                            console.log(users.length, '---------------users')
                             if (users.length == 50) {
                                 next(users[49]._id, code);
                             } else {
