@@ -146,6 +146,7 @@ function update_user(_id, code, next) {
                                 console.log(error);
                                 console.log('------------------------------');
                             }
+                            console.log(users,'---------------users')
                             if (users.length == 50) {
                                 next(users[49]._id, code);
                             } else {
