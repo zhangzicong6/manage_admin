@@ -1,106 +1,102 @@
 var UserconfModel = require('../model/Userconf');
 var ConfigModel = require('../model/Config');
+var OpenidModel = require('../model/Openid');
 var wechat_util = require('../util/get_weichat_client.js')
 var mem = require('../util/mem.js');
+var async = require('async');
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
-        let a = await get_users(code, null);
-        console.log(a, '--------------a')
-        await get_user(code);
-        await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-        await ConfigModel.update({code: code}, {status: 1})
-        console.log('jieguan end')
+        get_users(code, null, function () {
+            get_user(null, code, async function () {
+                await OpenidModel.remove({code: code})
+                await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+                await ConfigModel.update({code: code}, {status: 1})
+                console.log('jieguan end')
+            });
+        })
     });
 }
 
-async function get_users(code, openid) {
+async function get_users(code, openid, callback) {
     console.log('code : ' + code + ' , openid : ' + openid);
     let client = await wechat_util.getClient(code)
-    return new Promise((resolve, reject) => {
-        if (openid) {
-            client.getFollowers(openid, async function (err, result) {
-                if (err) {
-                    console.log('-------getFollowers error-------')
-                    console.log(err)
+    if (openid) {
+        client.getFollowers(openid, async function (err, result) {
+            if (err) {
+                console.log('-------getFollowers error-------')
+                console.log(err)
+            }
+            // console.log(result);
+            if (result && result.data && result.data.openid) {
+                var openids = [];
+                for (var index in result.data.openid) {
+                    openids.push({'openid': result.data.openid[index], 'code': code});
                 }
-                console.log(result);
-                if (result && result.data && result.data.openid) {
-                    var users = [];
-                    for (var index in result.data.openid) {
-                        users.push({'openid': result.data.openid[index], 'code': code});
+                OpenidModel.insertMany(openids, async function (error, docs) {
+                    if (error) {
+                        console.log('------insertMany error--------');
+                        console.log(error);
+                        console.log('------------------------------');
                     }
-                    UserconfModel.insertMany(users, async function (error, docs) {
-                        if (error) {
-                            console.log('------insertMany error--------');
-                            console.log(error);
-                            console.log('------------------------------');
-                        }
-                        if (result.next_openid) {
-                            console.log('-----------code -------' + code + '---------update--contitue------')
-                            get_users(code, result.next_openid);
-                        } else {
-                            console.log('-----------code -------' + code + '---------update--end')
-                            resolve(null)
-                        }
-                    })
-                } else {
-                    console.log('not have openid arr-----------code -------' + code + '---------update--end')
-                    resolve(null)
-                }
-            });
-        } else {
-            client.getFollowers(async function (err, result) {
-                if (err) {
-                    console.log('-------getFollowers error-------')
-                    console.log(err)
-                }
-                console.log(result);
-                if (result && result.data && result.data.openid) {
-                    var users = [];
-                    for (var index in result.data.openid) {
-                        users.push({'openid': result.data.openid[index], 'code': code});
+                    if (result.next_openid) {
+                        console.log('-----------code -------' + code + '---------update--contitue------')
+                        get_users(code, result.next_openid, callback);
+                    } else {
+                        console.log('-----------code -------' + code + '---------update--end')
+                        callback(null)
                     }
-                    UserconfModel.insertMany(users, async function (error, docs) {
-                        if (error) {
-                            console.log('------insertMany error--------');
-                            console.log(error);
-                            console.log('------------------------------');
-                        }
-                        if (result.next_openid) {
-                            console.log('-----------code -------' + code + '---------update--contitue------')
-                            get_users(code, result.next_openid);
-                        } else {
-                            console.log('-----------code -------' + code + '---------update--end')
-                            resolve(null)
-                        }
-                    })
-                } else {
-                    console.log('not have openid arr -----------code -------' + code + '---------update--end')
-                    resolve(null)
-                }
-            });
-        }
-    })
-}
-
-function next_up(_id, code) {
-    if (code) {
-        return update_user(_id, code, next_up);
+                })
+            } else {
+                console.log('not have openid arr-----------code -------' + code + '---------update--end')
+                callback(null)
+            }
+        });
     } else {
-        console.log('update_user end');
-        return new Promise((resolve, reject) => {
-            resolve(null);
-        })
+        client.getFollowers(async function (err, result) {
+            if (err) {
+                console.log('-------getFollowers error-------')
+                console.log(err)
+            }
+            // console.log(result);
+            if (result && result.data && result.data.openid) {
+                var openids = [];
+                for (var index in result.data.openid) {
+                    openids.push({'openid': result.data.openid[index], 'code': code});
+                }
+                OpenidModel.insertMany(openids, async function (error, docs) {
+                    if (error) {
+                        console.log('------insertMany error--------');
+                        console.log(error);
+                        console.log('------------------------------');
+                    }
+                    if (result.next_openid) {
+                        console.log('-----------code -------' + code + '---------update--contitue------')
+                        get_users(code, result.next_openid, callback);
+                    } else {
+                        console.log('-----------code -------' + code + '---------update--end')
+                        callback(null)
+                    }
+                })
+            } else {
+                console.log('not have openid arr -----------code -------' + code + '---------update--end')
+                callback(null)
+            }
+        });
     }
 }
 
-async function get_user(code) {
-    update_user(null, code, next_up);
+async function get_user(_id, code, back) {
+    if (code) {
+        update_user(_id, code, get_user, back);
+    } else {
+        console.log('update_user end');
+        back(null);
+    }
 }
 
-function update_user(_id, code, next) {
-    UserconfModel.fetch_openid(_id, code, async function (error, users) {
+function update_user(_id, code, next, back) {
+    OpenidModel.fetch(_id, code, async function (error, users) {
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
@@ -108,55 +104,47 @@ function update_user(_id, code, next) {
         let client = await wechat_util.getClient(parseInt(code))
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
-        } else if (user_arr.length == 1) {
-            client.getUser(user_arr[0], function (err, data) {
-                if (err) {
-                    console.log(err, '----------------nickname err1')
-                }
-                UserconfModel.findOneAndUpdate({openid: data.openid}, {
-                    nickname: data.nickname,
-                    headimgurl: data.headimgurl,
-                    sex: data.sex,
-                    sign: 1
-                }, function (err, result) {
-                    if (err) {
-                        console.log(err)
-                    }
-                });
-            })
+            next(null, null, back)
         } else {
             client.batchGetUsers(user_arr, function (err, data) {
                 if (err) {
-                    console.log(err, '----------------nickname err2')
+                    console.log(err, '----------------userinfo err')
                     if (users.length == 50) {
-                        return next(users[49]._id, code);
+                        next(users[49]._id, code, back);
                     } else {
-                        return next(null, null)
+                        next(null, null, back)
                     }
                 }
                 if (data && data.user_info_list) {
                     let userArr = []
-                    async.eachLimit(data.user_info_list, 10, function (info, callback) {
+                    async.eachLimit(data.user_info_list, 50, function (info, callback) {
                         if (info.nickname) {
-                            userArr.push({openid: info.openid}, {
+                            userArr.push({
+                                code: info.code,
+                                openid: info.openid,
                                 nickname: info.nickname,
                                 headimgurl: info.headimgurl,
                                 sex: info.sex,
                                 sign: 1
                             })
-                        } else {
-                            callback(null)
                         }
-                    }, function (error, result) {
+                        callback(null)
+                    }, function (error) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        UserconfModel.update(userArr)
-                        if (users.length == 50) {
-                            return next(users[49]._id, code);
-                        } else {
-                            return next(null, null)
-                        }
+                        UserconfModel.insertMany(userArr, async function (error, docs) {
+                            if (error) {
+                                console.log('------insertMany error--------');
+                                console.log(error);
+                                console.log('------------------------------');
+                            }
+                            if (users.length == 50) {
+                                next(users[49]._id, code, back);
+                            } else {
+                                next(null, null, back)
+                            }
+                        })
                     })
                 }
             })

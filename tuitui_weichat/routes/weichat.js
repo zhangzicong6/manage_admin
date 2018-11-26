@@ -161,7 +161,7 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
         },
         function (user, callback) {
             if (!user) {
-                user = new UserModel();
+                user = new UserconfModel();
                 user.nickname = '';
                 user.sex = '0';
                 user.openid = openid;
