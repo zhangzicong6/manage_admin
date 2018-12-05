@@ -87,7 +87,7 @@ app.use('/reply',reply)
 app.use('/message',message)
 app.use('/management',management)
 app.use('/manage',manage)
-app.use('/novel_transfer',novelTransfer)
+app.use('/novelTransfer',novelTransfer)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
