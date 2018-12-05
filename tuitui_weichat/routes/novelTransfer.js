@@ -31,6 +31,9 @@ router.post('/update', async(req, res, next) => {
   let id = req.body._id, message = { replaceUrl: req.body.replaceUrl };
   const docs = await NovelTransferModel.findByIdAndUpdate(id, message)
   res.send({success: '修改成功', data: docs})
+  mem.set('novel_transfer_' + id, {}, 1 * 60).then(function () {
+    //console.log('---------set transfer value---------')
+  })
 })
 
 module.exports = router;
