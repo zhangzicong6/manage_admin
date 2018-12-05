@@ -28,11 +28,11 @@ router.get('/find_one', async(req, res, next) => {
 })
 
 // 修改replaceUrl
-router.post('/update', async(req, res, next) => {
-  let id = req.body._id, message = { replaceUrl: req.body.replaceUrl };
+router.get('/update', async(req, res, next) => {
+  let id = req.query._id, message = { replaceUrl: req.query.replaceUrl };
   const docs = await NovelTransferModel.findByIdAndUpdate(id, message)
   console.log('id', id)
-  console.log('req.body', req.body)
+  console.log('req.query', req.query)
   console.log('message', message)
   console.log('docs', docs)
   res.send({success: '修改成功', data: docs})
