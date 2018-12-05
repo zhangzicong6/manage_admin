@@ -31,7 +31,9 @@ router.get('/find_one', async(req, res, next) => {
 router.post('/update', async(req, res, next) => {
   let id = req.body._id, message = { replaceUrl: req.body.replaceUrl };
   const docs = await NovelTransferModel.findByIdAndUpdate(id, message)
-  console.log(docs)
+  console.log('id', id)
+  console.log('message', message)
+  console.log('docs', docs)
   res.send({success: '修改成功', data: docs})
   mem.set('novel_transfer_' + id, {}, 1 * 60).then(function () {
     //console.log('---------set transfer value---------')
