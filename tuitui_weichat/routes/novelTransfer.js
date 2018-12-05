@@ -32,6 +32,7 @@ router.post('/update', async(req, res, next) => {
   let id = req.body._id, message = { replaceUrl: req.body.replaceUrl };
   const docs = await NovelTransferModel.findByIdAndUpdate(id, message)
   console.log('id', id)
+  console.log('req.body', req.body)
   console.log('message', message)
   console.log('docs', docs)
   res.send({success: '修改成功', data: docs})
