@@ -15,17 +15,18 @@ async function get_aterials(code) {
     })
 }
 
-async function getMaterial(client, type, offset) {
+async function getMaterial(code, client, type, offset) {
     await client.getMaterials(type, offset, 20, async (err, result, res) => {
         let data = result.item
         for(let j = 0; j < data.length; j ++) {
             data[j].type = type.split('_')[0]
+            data[j].code = code
         }
         let docs = await MaterialModel.insertMany(data)
         if(docs) {
             return docs
         } else {
-            console.logg('获取素材出错')
+            console.log('获取素材出错')
         }
     });
 }
