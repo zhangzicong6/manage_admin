@@ -1,14 +1,15 @@
 var wechat_util = require('../util/get_weichat_client');
 var MessageModel = require('../model/Message');
-var UserTagModel = require('../model/UserTag');
+var UserModel = require('../model/Userconf');
+var async = require('async');
 var flags = {};
 
-function get_message(id, tagId, mediaId) {
+function get_message(id,tagId) {
     if (!flags[id]) {
         flags[id] = true;
         MessageModel.findById(id).exec(function (err, message) {
             if (message) {
-                send_users(id, message, tagId, mediaId);
+                send_users(null, message,tagId);
             } else {
                 flags[id] = false;
                 console.log('============= 未找到信息 ==========')
@@ -19,63 +20,47 @@ function get_message(id, tagId, mediaId) {
     }
 }
 
-async function send_users(id, message, tagId, mediaId) {
-    let tag = await UserTagModel.findOne({id: tagId})
-    let code = tag.code
-    var client = await wechat_util.getClient(code);
-    if (message.type == 0) {
-        client.massSendNews(mediaId, tagId, function (err, res) {
-            flags[id] = false;
-            return null
+function send_users(user_id, message,tagId) {
+    console.log(message,'-------------------')
+    UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
+        console.log(users,'-----------------------users')
+        var l = []
+        async.eachLimit(users, 10, async function (user, callback) {
+            l.push(user._id)
+            var client = await wechat_util.getClient(user.code);
+            if (message.type == 0) {
+                client.sendNews(user.openid, message.contents, function (err, res) {
+                    console.log(err);
+                    setTimeout(function () {
+                        callback(null)
+                    }, 50)
+                });
+            } else if (message.type == 1) {
+                client.sendText(user.openid, message.contents[0].description, function (error, res) {
+                    console.log(error);
+                    setTimeout(function () {
+                        callback(null)
+                    }, 50)
+                })
+            }
+        }, function (err) {
+            if (users.length == 50) {
+                UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
+                    multi: true,
+                    upsert: true
+                }, function () {
+                })
+                send_users(users[49]._id, message);
+            } else {
+                UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
+                    multi: true,
+                    upsert: true
+                }, function () {
+                })
+                flags[message._id] = false;
+            }
         })
-    } else if (message.type == 1) {
-        client.massSendText(message.contents[0].description, tagId, function (err, res) {
-            flags[id] = false;
-            return null
-        })
-    } else {
-        return null
-    }
-    // console.log(message,'-------------------')
-    // UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
-    //     console.log(users,'-----------------------users')
-    //     var l = []
-    //     async.eachLimit(users, 10, async function (user, callback) {
-    //         l.push(user._id)
-    //         var client = await wechat_util.getClient(user.code);
-    //         if (message.type == 0) {
-    //             client.sendNews(user.openid, message.contents, function (err, res) {
-    //                 console.log(err);
-    //                 setTimeout(function () {
-    //                     callback(null)
-    //                 }, 50)
-    //             });
-    //         } else if (message.type == 1) {
-    //             client.sendText(user.openid, message.contents[0].description, function (error, res) {
-    //                 console.log(error);
-    //                 setTimeout(function () {
-    //                     callback(null)
-    //                 }, 50)
-    //             })
-    //         }
-    //     }, function (err) {
-    //         if (users.length == 50) {
-    //             UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
-    //                 multi: true,
-    //                 upsert: true
-    //             }, function () {
-    //             })
-    //             send_users(users[49]._id, message);
-    //         } else {
-    //             UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
-    //                 multi: true,
-    //                 upsert: true
-    //             }, function () {
-    //             })
-    //             flags[message._id] = false;
-    //         }
-    //     })
-    // });
+    });
 }
 
 
