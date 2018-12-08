@@ -5,7 +5,7 @@ var ConfigModel = require('../model/Config');
 var send = require('../script/send_message');
 var sendUser = require('../script/send_user_message');
 
-router.get('/', async(req, res, next) => {
+router.get('/', async (req, res, next) => {
     let messages = await MessageModel.find().limit(20).sort({_id: -1});
     for (let i = 0; i < messages.length; i++) {
         let d = new Date(messages[i].timing_time);
@@ -36,13 +36,13 @@ router.get('/', async(req, res, next) => {
     res.send({messages: messages})
 })
 
-router.get('/get_code', async(req, res, next) => {
+router.get('/get_code', async (req, res, next) => {
     let doc = await ConfigModel.find()
     res.send({data: doc})
 })
 
 
-router.post('/create', async(req, res, next) => {
+router.post('/create', async (req, res, next) => {
     var message = {
         codes: req.body.codes,
         sex: req.body.sex,
@@ -64,7 +64,7 @@ router.post('/create', async(req, res, next) => {
 
 })
 
-router.post('/update', async(req, res, next) => {
+router.post('/update', async (req, res, next) => {
     var id = req.body.id;
     var message = {
         codes: req.body.codes,
@@ -86,25 +86,27 @@ router.post('/update', async(req, res, next) => {
     }
 })
 
-router.get('/delete', async(req, res, next) => {
+router.get('/delete', async (req, res, next) => {
     var id = req.query.id;
     var doc = await MessageModel.findByIdAndRemove(id)
-    if (doc){
+    if (doc) {
         res.send({success: '删除成功', data: doc})
-    } else{
+    } else {
         res.send({err: '删除失败'})
     }
 })
 
-router.get('/send', async(req, res, next) => {
+router.get('/send', async (req, res, next) => {
     var id = req.query.id;
+    var tagId = req.query.tagId;
+    var mediaId = req.query.mediaId;
     var take_over = req.query.take_over;
     console.log('take_over-------------' + take_over)
     if (take_over) {
-        sendUser.get_message(id);
+        sendUser.get_message(id, tagId, mediaId);
         res.send({success: '发送成功'})
     } else {
-        send.get_message(id);
+        send.get_message(id, tagId, mediaId);
         res.send({success: '发送成功'})
     }
 })

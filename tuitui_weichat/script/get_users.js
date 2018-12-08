@@ -4,6 +4,7 @@ var OpenidModel = require('../model/Openid');
 var wechat_util = require('../util/get_weichat_client.js')
 var mem = require('../util/mem.js');
 var async = require('async');
+var UserTagModel = require('../model/UserTag')
 
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
@@ -12,6 +13,7 @@ function getUserByCode(code) {
                 await OpenidModel.remove({code: code})
                 await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
                 await ConfigModel.update({code: code}, {status: 1})
+                tag(code)
                 console.log('jieguan end')
             });
         })
@@ -149,6 +151,46 @@ function update_user(_id, code, next, back) {
                 }
             })
         }
+    })
+}
+
+async function tag(code) {
+    let client = await wechat_util.getClient(code)
+    client.createTag("男", async function (err, data) {
+        await UserTagModel.create({id: data.tag.id, name: "男", code: code})
+        let arr1 = []
+        UserconfModel.find({sex: "1"}, function (err, data) {
+            for (d of data) {
+                arr1.push(d.openid)
+            }
+            client.membersBatchtagging(data.tag.id, arr1, function (error, res) {
+                console.log(res)
+            })
+        })
+    })
+    client.createTag("女", async function (err, data) {
+        await UserTagModel.create({id: data.tag.id, name: "女", code: code})
+        let arr2 = []
+        UserconfModel.find({sex: "2"}, function (err, data) {
+            for (d of data) {
+                arr2.push(d.openid)
+            }
+            client.membersBatchtagging(data.tag.id, arr2, function (error, res) {
+                console.log(res)
+            })
+        })
+    })
+    client.createTag("未知", async function (err, data) {
+        await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
+        let arr3 = []
+        UserconfModel.find({sex: "0"}, function (err, data) {
+            for (d of data) {
+                arr3.push(d.openid)
+            }
+            client.membersBatchtagging(data.tag.id, arr3, function (error, res) {
+                console.log(res)
+            })
+        })
     })
 }
 
