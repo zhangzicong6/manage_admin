@@ -31,7 +31,7 @@ var management = require('./routes/management');
 var manage = require('./routes/manage');
 var alipayLink = require('./routes/alipayLink');
 var novelTransfer = require('./routes/novelTransfer');
-var userTag = require('./routes/userTag')
+var material = require('./routes/material')
 
 var app = express();
 
@@ -89,7 +89,7 @@ app.use('/message',message)
 app.use('/management',management)
 app.use('/manage',manage)
 app.use('/novel_transfer',novelTransfer)
-app.use('/userTag',userTag)
+app.use('/material',material)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
