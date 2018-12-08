@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var UserTagModel = require('../model/UserTag');
 var MaterialModel = require('../model/Material');
-var getMaterials = require('../script/get_material')
+var getMaterials = require('../script/get_material');
 var sendTag = require('../script/send_tag_message');
 
 
