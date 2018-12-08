@@ -9,12 +9,13 @@ var UserTagModel = require('../model/UserTag')
 function getUserByCode(code) {
     UserconfModel.remove({code: code}, async function (err, doc) {
         get_users(code, null, function () {
-            get_user(null, code, async function () {
-                await OpenidModel.remove({code: code})
-                await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-                await ConfigModel.update({code: code}, {status: 1})
-                tag(code)
-                console.log('jieguan end')
+            get_user(null, code, function () {
+                tag(code, async function () {
+                    await OpenidModel.remove({code: code})
+                    await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+                    await ConfigModel.update({code: code}, {status: 1})
+                    console.log('jieguan end')
+                })
             });
         })
     });
@@ -154,43 +155,50 @@ function update_user(_id, code, next, back) {
     })
 }
 
-async function tag(code) {
+async function tag(code, back) {
     let client = await wechat_util.getClient(code)
-    client.createTag("男", async function (err, data) {
-        await UserTagModel.create({id: data.tag.id, name: "男", code: code})
-        let arr1 = []
-        UserconfModel.find({sex: "1"}, function (err, res) {
-            for (d of res) {
-                arr1.push(d.openid)
-            }
-            client.membersBatchtagging(data.tag.id, arr1, function (error, res) {
-                console.log(res)
+    async.waterfall([
+        function (callback) {
+            client.createTag("男", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "男", code: code})
+                let arr1 = []
+                UserconfModel.find({sex: "1"}, function (err, res) {
+                    for (d of res) {
+                        arr1.push(d.openid)
+                    }
+                    client.membersBatchtagging(data.tag.id, arr1, function (error, res) {
+                        callback(null)
+                    })
+                })
             })
-        })
-    })
-    client.createTag("女", async function (err, data) {
-        await UserTagModel.create({id: data.tag.id, name: "女", code: code})
-        let arr2 = []
-        UserconfModel.find({sex: "2"}, function (err, res) {
-            for (d of res) {
-                arr2.push(d.openid)
-            }
-            client.membersBatchtagging(data.tag.id, arr2, function (error, res) {
-                console.log(res)
+        }, function (callback) {
+            client.createTag("女", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "女", code: code})
+                let arr2 = []
+                UserconfModel.find({sex: "2"}, function (err, res) {
+                    for (d of res) {
+                        arr2.push(d.openid)
+                    }
+                    client.membersBatchtagging(data.tag.id, arr2, function (error, res) {
+                        callback(null)
+                    })
+                })
             })
-        })
-    })
-    client.createTag("未知", async function (err, data) {
-        await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
-        let arr3 = []
-        UserconfModel.find({sex: "0"}, function (err, res) {
-            for (d of res) {
-                arr3.push(d.openid)
-            }
-            client.membersBatchtagging(data.tag.id, arr3, function (error, res) {
-                console.log(res)
+        }, function (callback) {
+            client.createTag("未知", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
+                let arr3 = []
+                UserconfModel.find({sex: "0"}, function (err, res) {
+                    for (d of res) {
+                        arr3.push(d.openid)
+                    }
+                    client.membersBatchtagging(data.tag.id, arr3, function (error, res) {
+                        callback(null)
+                    })
+                })
             })
-        })
+        }], function (error) {
+        back(null)
     })
 }
 
