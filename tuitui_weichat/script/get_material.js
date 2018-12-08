@@ -2,7 +2,7 @@ var MaterialModel = require('../model/Material');
 var async = require('async');
 var weichat_util = require('../util/get_weichat_client.js')
 
-async function getMaterials(code) {
+async function get_aterials(code) {
     var api = await weichat_util.getClient(code);
     const types = ['image', 'video', 'voice', 'news']
     await api.getMaterialCount(async (err, result, res) => {
@@ -30,4 +30,4 @@ async function getMaterial(client, type, offset) {
     });
 }
 
-module.exports = getMaterials;
+module.exports = get_aterials;
