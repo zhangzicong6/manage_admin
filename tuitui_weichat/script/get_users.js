@@ -159,8 +159,8 @@ async function tag(code) {
     client.createTag("男", async function (err, data) {
         await UserTagModel.create({id: data.tag.id, name: "男", code: code})
         let arr1 = []
-        UserconfModel.find({sex: "1"}, function (err, data) {
-            for (d of data) {
+        UserconfModel.find({sex: "1"}, function (err, res) {
+            for (d of res) {
                 arr1.push(d.openid)
             }
             client.membersBatchtagging(data.tag.id, arr1, function (error, res) {
@@ -171,8 +171,8 @@ async function tag(code) {
     client.createTag("女", async function (err, data) {
         await UserTagModel.create({id: data.tag.id, name: "女", code: code})
         let arr2 = []
-        UserconfModel.find({sex: "2"}, function (err, data) {
-            for (d of data) {
+        UserconfModel.find({sex: "2"}, function (err, res) {
+            for (d of res) {
                 arr2.push(d.openid)
             }
             client.membersBatchtagging(data.tag.id, arr2, function (error, res) {
@@ -183,8 +183,8 @@ async function tag(code) {
     client.createTag("未知", async function (err, data) {
         await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
         let arr3 = []
-        UserconfModel.find({sex: "0"}, function (err, data) {
-            for (d of data) {
+        UserconfModel.find({sex: "0"}, function (err, res) {
+            for (d of res) {
                 arr3.push(d.openid)
             }
             client.membersBatchtagging(data.tag.id, arr3, function (error, res) {
