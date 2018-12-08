@@ -30,4 +30,4 @@ async function getMaterial(client, type, offset) {
     });
 }
 
-module.exports = get_aterials;
+module.exports.get_aterials = get_aterials;
