@@ -4,7 +4,7 @@ var MessageModel = require('../model/Message');
 var ConfigModel = require('../model/Config');
 var send = require('../script/send_message');
 var sendUser = require('../script/send_user_message');
-var sendTag = require('../script/send_tag_message');
+
 
 router.get('/', async (req, res, next) => {
     let messages = await MessageModel.find().limit(20).sort({_id: -1});
@@ -110,12 +110,5 @@ router.get('/send', async (req, res, next) => {
     }
 })
 
-router.get('/sendMsg', async (req, res, next) => {
-    var id = req.query.id;
-    var tagId = req.query.tagId;
-    var mediaId = req.query.mediaId;
-    sendTag.get_message(id, tagId, mediaId);
-    res.send({success: '发送成功'})
-})
 
 module.exports = router
