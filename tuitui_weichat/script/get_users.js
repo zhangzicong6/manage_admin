@@ -6,33 +6,45 @@ var mem = require('../util/mem.js');
 var async = require('async');
 var UserTagModel = require('../model/UserTag')
 
-function getUserByCode(code) {
-    UserconfModel.remove({code: code}, async function (err, doc) {
-        let client = await wechat_util.getClient(code)
-        let tagId0;
-        let tagId1;
-        let tagId2;
-        client.createTag("未知", async function (err, data) {
-            await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
-            tagId0 = data.tag.id
-        })
-        client.createTag("男", async function (err, data) {
-            await UserTagModel.create({id: data.tag.id, name: "男", code: code})
-            tagId1 = data.tag.id
-        })
-        client.createTag("女", async function (err, data) {
-            await UserTagModel.create({id: data.tag.id, name: "女", code: code})
-            tagId2 = data.tag.id
-        })
-        get_users(code, null, function () {
-            get_user(null, code, tagId0, tagId1, tagId2, async function () {
-                await OpenidModel.remove({code: code})
-                await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-                await ConfigModel.update({code: code}, {status: 1})
-                console.log('jieguan end')
-            });
-        })
-    });
+async function getUserByCode(code) {
+    let client = await wechat_util.getClient(code)
+    async.waterfall([
+        function (callback) {
+            UserconfModel.remove({code: code}, async function (err, doc) {
+                callback(null)
+            })
+        }, function (callback) {
+            get_users(code, null, function () {
+                callback(null)
+            })
+        }, function (callback) {
+            client.createTag("未知", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
+                let tagId0 = data.tag.id
+                callback(null, tagId0)
+            })
+        }, function (tagId0, callback) {
+            client.createTag("男", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "男", code: code})
+                let tagId1 = data.tag.id
+                callback(null, tagId0, tagId1)
+            })
+        }, function (tagId0, tagId1, callback) {
+            client.createTag("女", async function (err, data) {
+                await UserTagModel.create({id: data.tag.id, name: "女", code: code})
+                let tagId2 = data.tag.id
+                callback(null, tagId0, tagId1, tagId2)
+            })
+        }], function (error, tagId0, tagId1, tagId2) {
+        get_user(null, code, tagId0, tagId1, tagId2, async function () {
+            await OpenidModel.remove({code: code})
+            await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+            await ConfigModel.update({code: code}, {status: 1})
+            console.log('jieguan end')
+        });
+    })
+
+
 }
 
 async function get_users(code, openid, callback) {
