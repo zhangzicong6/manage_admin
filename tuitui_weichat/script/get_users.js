@@ -131,7 +131,7 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
         users.forEach(function (user) {
             user_arr.push(user.openid)
         })
-        let client = await wechat_util.getClient(parseInt(code))
+        let client = await wechat_util.getClient(code)
         if (user_arr.length == 0) {
             console.log(user_arr, '-------------------user null')
             next(null, null, back)
