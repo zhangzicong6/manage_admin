@@ -32,7 +32,7 @@ var manage = require('./routes/manage');
 var alipayLink = require('./routes/alipayLink');
 var novelTransfer = require('./routes/novelTransfer');
 var material = require('./routes/material')
-var manage_test = require('./routes/manage_test')
+
 var app = express();
 
 app.all('*', function(req, res, next) {
@@ -88,7 +88,6 @@ app.use('/reply',reply)
 app.use('/message',message)
 app.use('/management',management)
 app.use('/manage',manage)
-app.use('/manage_test',manage_test)
 app.use('/novel_transfer',novelTransfer)
 app.use('/material',material)
 
