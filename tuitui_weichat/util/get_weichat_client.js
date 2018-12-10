@@ -23,7 +23,6 @@ async function getClient(code) {
                     callback(null, null);
                 }
             });
-            //callback(null,null)
         },
         function saveToken(token, callback) {
             // console.log('----- saveToken ----')
