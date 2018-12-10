@@ -28,7 +28,7 @@ router.post('/create', async(req, res, next) => {
 
 router.post('/update', async(req, res, next) => {
     console.log('doc-conf', req.body)
-    let id = req.body.id
+    let id = req.body._id
     let data = {
         name: req.body.name,
         appid: req.body.appid,
