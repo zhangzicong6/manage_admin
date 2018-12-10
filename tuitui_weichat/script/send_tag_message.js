@@ -21,6 +21,7 @@ function get_message(id, tagId, mediaId) {
 
 async function send_users(id, message, tagId, mediaId) {
     //let tag = await UserTagModel.findOne({id: tagId})
+    console.log(message);
     let code = message.code
     var client = await wechat_util.getClient(code);
     var type = message.type
@@ -29,6 +30,7 @@ async function send_users(id, message, tagId, mediaId) {
         "media_id": message.media_id
     }
     opts.msgtype = type
+    console.log(opts);
     client.massSend(opts, tagId, function (err, res) {
         console.log('------------err--------');
         console.log(err);
