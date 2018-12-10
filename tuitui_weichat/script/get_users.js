@@ -175,13 +175,13 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                             console.log(error, '--------------error')
                         }
                         client.membersBatchtagging(tagId0, arr0, function (error, res) {
-                            console.log(res)
+                            // console.log(res)
                         })
                         client.membersBatchtagging(tagId1, arr1, function (error, res) {
-                            console.log(res)
+                            // console.log(res)
                         })
                         client.membersBatchtagging(tagId2, arr2, function (error, res) {
-                            console.log(res)
+                            // console.log(res)
                         })
                         UserconfModel.insertMany(userArr, async function (error, docs) {
                             if (error) {
