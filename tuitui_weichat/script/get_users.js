@@ -13,7 +13,6 @@ async function getUserByCode(code) {
             UserconfModel.remove({code: code}, async function (err, doc) {
                 callback(null)
             })
-            console.log('-------------------aaaaaaaaaaa')
         }, function (callback) {
             get_users(code, null, function () {
                 callback(null)
@@ -141,9 +140,9 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                 if (err) {
                     console.log(err, '----------------userinfo err')
                     if (users.length == 50) {
-                        next(users[49]._id, code, back);
+                        next(users[49]._id, code, tagId0, tagId1, tagId2, back);
                     } else {
-                        next(null, null, back)
+                        next(null, null, null, null, null, back)
                     }
                 }
                 if (data && data.user_info_list) {
