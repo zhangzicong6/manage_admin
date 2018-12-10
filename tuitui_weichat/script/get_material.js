@@ -17,6 +17,8 @@ async function get_aterials(code) {
 
 async function getMaterial(code, client, type, offset) {
     await client.getMaterials(type, offset, 20, async (err, result, res) => {
+        console.log('-------Material--------')
+        console.log(result)
         let data = result.item
         for(let j = 0; j < data.length; j ++) {
             data[j].type = type.split('_')[0]
