@@ -150,7 +150,6 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                     let arr1 = []
                     let arr2 = []
                     async.eachLimit(data.user_info_list, 50, function (info, callback) {
-                        console.log(info)
                         if (info.nickname) {
                             userArr.push({
                                 code: info.code,
@@ -161,9 +160,9 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                                 sign: 1
                             })
                         }
-                        if (info.sex == "1") {
+                        if (info.sex == 1) {
                             arr1.push(info.openid)
-                        } else if (info.sex == "2") {
+                        } else if (info.sex == 2) {
                             arr2.push(info.openid)
                         } else {
                             arr0.push(info.openid)
@@ -191,7 +190,7 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                             if (users.length == 50) {
                                 next(users[49]._id, code, tagId0, tagId1, tagId2, back);
                             } else {
-                                next(null, null, back)
+                                next(null, null, null, null, null, back)
                             }
                         })
                     })
