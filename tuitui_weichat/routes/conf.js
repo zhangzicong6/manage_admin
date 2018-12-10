@@ -27,6 +27,7 @@ router.post('/create', async(req, res, next) => {
 })
 
 router.post('/update', async(req, res, next) => {
+    console.log(req.body)
     let id = req.body.id
     let data = {
         name: req.body.name,
