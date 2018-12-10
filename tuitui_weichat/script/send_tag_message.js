@@ -25,7 +25,7 @@ async function send_users(id, message, tagId, mediaId) {
     let code = message.code
     var client = await wechat_util.getClient(code);
     var type = message.type;
-    type = type=='news'?'npnews':type;
+    type = type=='news'?'mpnews':type;
     var opts = {}
     opts[type] = {
         "media_id": message.media_id
