@@ -19,6 +19,7 @@ async function getUserByCode(code) {
             })
         }, function (callback) {
             client.createTag("未知", async function (err, data) {
+                console.log(data,'---------------------data')
                 await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
                 let tagId0 = data.tag.id
                 callback(null, tagId0)
