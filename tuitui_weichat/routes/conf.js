@@ -68,16 +68,14 @@ router.get('/reset', async(req, res, next) => {
 
 router.get('/jieguan', async(req, res, next) => {
     let code = req.query.code
-    // let jieguan = await mem.get("jieguan_" + code)
-    // if(!jieguan){
-    //     console.log('------------------------aaaaaaaaa')
-    //     await ConfigModel.findOneAndUpdate({code:code},{status:-1})
-    //     user.getUserByCode(code)
-    //     res.send({success: '设置接管成功'})
-    // }else{
-    //     res.send({success: '已接管'})
-    // }
+    let jieguan = await mem.get("jieguan_" + code)
+    if(!jieguan){
+        await ConfigModel.findOneAndUpdate({code:code},{status:-1})
         user.getUserByCode(code)
+        res.send({success: '设置接管成功'})
+    }else{
+        res.send({success: '已接管'})
+    }
 })
 
 module.exports = router;
