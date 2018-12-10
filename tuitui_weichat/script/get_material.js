@@ -9,7 +9,7 @@ async function get_aterials(code) {
         for( key in result) {
             let num = Math.ceil(result[key]/20)
             for(let i = 0; i < num; i ++) {
-                await getMaterial(code,api, key, i)
+                await getMaterial(code,api, key.split('_')[0], i)
             }
         }
     })
