@@ -31,7 +31,8 @@ async function send_users(id, message, tagId, mediaId) {
     }
     opts.msgtype = type
     console.log(opts);
-    client.massSend(opts, tagId, function (err, res) {
+    console.log(tagId);
+    client.massSend(opts, tagId.toString(), function (err, res) {
         console.log('------------err--------');
         console.log(err);
         console.log('------------res--------');
