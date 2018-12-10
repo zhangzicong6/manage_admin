@@ -27,7 +27,8 @@ router.post('/create', async(req, res, next) => {
 })
 
 router.post('/update', async(req, res, next) => {
-    let id = req.body.id
+    console.log('doc-conf', req.body)
+    let id = req.body._id
     let data = {
         name: req.body.name,
         appid: req.body.appid,
@@ -36,6 +37,7 @@ router.post('/update', async(req, res, next) => {
         EncodingAESKey: "tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"
     }
     let doc = await ConfigModel.findByIdAndUpdate(id, data, {new: true})
+    console.log('doc-conf', doc)
     if (doc) {
         await mem.set("configure_" + doc.code, doc, 30 * 24 * 3600)
         res.send({success: '修改成功', data: doc})
