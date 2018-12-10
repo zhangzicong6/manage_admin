@@ -15,14 +15,15 @@ async function getClient(code) {
     var api = new WechatAPI(config.appid, config.appsecret,
         function getToken(callback) {
             // console.log('----- getToken ----')
-            memcached.get('access_token' + code, function (err, token) {
-                // console.log(token)
-                if (token) {
-                    callback(null, JSON.parse(token));
-                } else {
-                    callback(null, null);
-                }
-            });
+            // memcached.get('access_token' + code, function (err, token) {
+            //     // console.log(token)
+            //     if (token) {
+            //         callback(null, JSON.parse(token));
+            //     } else {
+            //         callback(null, null);
+            //     }
+            // });
+            callback(null,null)
         },
         function saveToken(token, callback) {
             // console.log('----- saveToken ----')
