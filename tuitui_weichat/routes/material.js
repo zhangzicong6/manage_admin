@@ -13,7 +13,7 @@ router.get('/', async(req, res, next) => {
 })
 
 router.get('/show', async (req, res, next) => {
-    let docs = await MaterialModel.find({code: req.query.code}).sort({'update_time':-1})
+    let docs = await MaterialModel.find({code: req.query.code,type:'news'}).sort({'update_time':-1})
     res.send({success: '成功', data: docs})
 })
 
