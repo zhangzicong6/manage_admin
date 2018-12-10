@@ -9,7 +9,7 @@ async function get_aterials(code) {
         for( key in result) {
             let num = Math.ceil(result[key]/20)
             for(let i = 0; i < num; i ++) {
-                await getMaterial(api, key, i)
+                await getMaterial(code,api, key.split('_')[0], i)
             }
         }
     })
@@ -17,6 +17,8 @@ async function get_aterials(code) {
 
 async function getMaterial(code, client, type, offset) {
     await client.getMaterials(type, offset, 20, async (err, result, res) => {
+        console.log('-------Material--------')
+        console.log(result)
         let data = result.item
         for(let j = 0; j < data.length; j ++) {
             data[j].type = type.split('_')[0]
