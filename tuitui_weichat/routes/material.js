@@ -18,7 +18,7 @@ router.get('/show', async (req, res, next) => {
 })
 
 router.get('/tag', async (req, res, next) => {
-    let doc = await UserTagModel.find()
+    let doc = await UserTagModel.find({code:req.query.code})
     res.send({data: doc})
 })
 
