@@ -18,20 +18,20 @@ async function getUserByCode(code) {
                 callback(null)
             })
         }, function (callback) {
-            client.createTag("未知", async function (err, data) {
-                console.log(data,'---------------------data')
+            client.createTag("未知_" + code, async function (err, data) {
+                console.log(data, '---------------------data')
                 await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
                 let tagId0 = data.tag.id
                 callback(null, tagId0)
             })
         }, function (tagId0, callback) {
-            client.createTag("男", async function (err, data) {
+            client.createTag("男_" + code, async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "男", code: code})
                 let tagId1 = data.tag.id
                 callback(null, tagId0, tagId1)
             })
         }, function (tagId0, tagId1, callback) {
-            client.createTag("女", async function (err, data) {
+            client.createTag("女_" + code, async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "女", code: code})
                 let tagId2 = data.tag.id
                 callback(null, tagId0, tagId1, tagId2)
