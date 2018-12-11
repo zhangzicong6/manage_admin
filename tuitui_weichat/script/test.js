@@ -72,4 +72,6 @@ function update_tag(_id, code, tagId, sex, next, back) {
     })
 }
 
+getUserByCode(26)
+
 module.exports.getUserByCode = getUserByCode
