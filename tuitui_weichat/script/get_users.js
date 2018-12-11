@@ -154,7 +154,7 @@ function update_user(_id, code, next, back) {
                     async.eachLimit(data.user_info_list, 100, function (info, callback) {
                         if (info.nickname) {
                             userArr.push({
-                                code: info.code,
+                                code: code,
                                 openid: info.openid,
                                 nickname: info.nickname,
                                 headimgurl: info.headimgurl,
