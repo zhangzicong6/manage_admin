@@ -68,6 +68,7 @@ router.get('/reset', async(req, res, next) => {
 
 router.get('/jieguan', async(req, res, next) => {
     let code = req.query.code
+    console.log(code,'--------------code')
     let jieguan = await mem.get("jieguan_" + code)
     if(!jieguan){
         await ConfigModel.findOneAndUpdate({code:code},{status:-1})
