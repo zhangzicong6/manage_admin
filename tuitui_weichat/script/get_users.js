@@ -7,7 +7,7 @@ var async = require('async');
 var UserTagModel = require('../model/UserTag')
 
 async function getUserByCode(code) {
-    await mem.set('access_token'+code,'',10)
+    await mem.set('access_token' + code, '', 10)
     let client = await wechat_util.getClient(code)
     async.waterfall([
         function (callback) {
@@ -19,34 +19,37 @@ async function getUserByCode(code) {
                 callback(null)
             })
         }, function (callback) {
+            get_user(null, code, async function () {
+                callback(null)
+            })
+        }, function (callback) {
             client.createTag("未知", async function (err, data) {
                 console.log(data, '---------------------data')
                 await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
-                let tagId0 = data.tag.id
-                callback(null, tagId0)
+                get_tag(null, code, data.tag.id, '0', function () {
+                    callback(null)
+                })
             })
-        }, function (tagId0, callback) {
+        }, function (callback) {
             client.createTag("男", async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "男", code: code})
-                let tagId1 = data.tag.id
-                callback(null, tagId0, tagId1)
+                get_tag(null, code, data.tag.id, '1', function () {
+                    callback(null)
+                })
             })
-        }, function (tagId0, tagId1, callback) {
+        }, function (callback) {
             client.createTag("女", async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "女", code: code})
-                let tagId2 = data.tag.id
-                callback(null, tagId0, tagId1, tagId2)
+                get_tag(null, code, data.tag.id, '2', function () {
+                    callback(null)
+                })
             })
-        }], function (error, tagId0, tagId1, tagId2) {
-        get_user(null, code, tagId0, tagId1, tagId2, async function () {
-            await OpenidModel.remove({code: code})
-            await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-            await ConfigModel.update({code: code}, {status: 1})
-            console.log('jieguan end')
-        });
+        }], async function (error) {
+        await OpenidModel.remove({code: code})
+        await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
+        await ConfigModel.update({code: code}, {status: 1})
+        console.log('jieguan end')
     })
-
-
 }
 
 async function get_users(code, openid, callback) {
@@ -117,16 +120,16 @@ async function get_users(code, openid, callback) {
     }
 }
 
-async function get_user(_id, code, tagId0, tagId1, tagId2, back) {
+async function get_user(_id, code, back) {
     if (code) {
-        update_user(_id, code, tagId0, tagId1, tagId2, get_user, back);
+        update_user(_id, code, get_user, back);
     } else {
         console.log('update_user end');
         back(null);
     }
 }
 
-function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
+function update_user(_id, code, next, back) {
     OpenidModel.fetch(_id, code, async function (error, users) {
         var user_arr = [];
         users.forEach(function (user) {
@@ -140,18 +143,15 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
             client.batchGetUsers(user_arr, function (err, data) {
                 if (err) {
                     console.log(err, '----------------userinfo err')
-                    if (users.length == 50) {
-                        next(users[49]._id, code, tagId0, tagId1, tagId2, back);
+                    if (users.length == 100) {
+                        next(users[99]._id, code, back);
                     } else {
-                        next(null, null, null, null, null, back)
+                        next(null, null, back)
                     }
                 }
                 if (data && data.user_info_list) {
                     let userArr = []
-                    let arr0 = []
-                    let arr1 = []
-                    let arr2 = []
-                    async.eachLimit(data.user_info_list, 50, function (info, callback) {
+                    async.eachLimit(data.user_info_list, 100, function (info, callback) {
                         if (info.nickname) {
                             userArr.push({
                                 code: info.code,
@@ -162,42 +162,58 @@ function update_user(_id, code, tagId0, tagId1, tagId2, next, back) {
                                 sign: 1
                             })
                         }
-                        if (info.sex == 1) {
-                            arr1.push(info.openid)
-                        } else if (info.sex == 2) {
-                            arr2.push(info.openid)
-                        } else {
-                            arr0.push(info.openid)
-                        }
                         callback(null)
                     }, function (error) {
                         if (error) {
                             console.log(error, '--------------error')
                         }
-                        client.membersBatchtagging(tagId0, arr0, function (error, res) {
-                            // console.log(res)
-                        })
-                        client.membersBatchtagging(tagId1, arr1, function (error, res) {
-                            // console.log(res)
-                        })
-                        client.membersBatchtagging(tagId2, arr2, function (error, res) {
-                            // console.log(res)
-                        })
                         UserconfModel.insertMany(userArr, async function (error, docs) {
                             if (error) {
                                 console.log('------insertMany error--------');
                                 console.log(error);
                                 console.log('------------------------------');
                             }
-                            if (users.length == 50) {
-                                next(users[49]._id, code, tagId0, tagId1, tagId2, back);
+                            if (users.length == 100) {
+                                next(users[99]._id, code, back);
                             } else {
-                                next(null, null, null, null, null, back)
+                                next(null, null, back)
                             }
                         })
                     })
                 }
             })
+        }
+    })
+}
+
+async function get_tag(_id, code, tagId, sex, back) {
+    if (code) {
+        update_tag(_id, code, tagId, sex, get_tag, back);
+    } else {
+        console.log('update_tag end');
+        back(null);
+    }
+}
+
+function update_tag(_id, code, tagId, sex, next, back) {
+    OpenidModel.fetchTag(_id, code, sex, async function (error, users) {
+        var user_arr = [];
+        users.forEach(function (user) {
+            user_arr.push(user.openid)
+        })
+        let client = await wechat_util.getClient(code)
+        if (user_arr.length == 0) {
+            console.log(user_arr, '-------------------user null')
+            next(null, null, null, null, back)
+        } else {
+            client.membersBatchtagging(tagId, user_arr, function (error, res) {
+                // console.log(res)
+            })
+            if (users.length == 50) {
+                next(users[49]._id, code, tagId, sex, back);
+            } else {
+                next(null, null, null, null, back)
+            }
         }
     })
 }
