@@ -196,7 +196,7 @@ async function get_tag(_id, code, tagId, sex, back) {
 }
 
 function update_tag(_id, code, tagId, sex, next, back) {
-    OpenidModel.fetchTag(_id, code, sex, async function (error, users) {
+    UserconfModel.fetchTag(_id, code, sex, async function (error, users) {
         var user_arr = [];
         users.forEach(function (user) {
             user_arr.push(user.openid)
