@@ -23,7 +23,7 @@ async function getUserByCode(code) {
                 callback(null)
             })
         }, function (callback) {
-            client.createTag("未知", async function (err, data) {
+            client.createTag("明星说未知", async function (err, data) {
                 console.log(data, '---------------------data')
                 await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
                 get_tag(null, code, data.tag.id, '0', function () {
@@ -31,14 +31,14 @@ async function getUserByCode(code) {
                 })
             })
         }, function (callback) {
-            client.createTag("男", async function (err, data) {
+            client.createTag("明星说男", async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "男", code: code})
                 get_tag(null, code, data.tag.id, '1', function () {
                     callback(null)
                 })
             })
         }, function (callback) {
-            client.createTag("女", async function (err, data) {
+            client.createTag("明星说女", async function (err, data) {
                 await UserTagModel.create({id: data.tag.id, name: "女", code: code})
                 get_tag(null, code, data.tag.id, '2', function () {
                     callback(null)
