@@ -61,7 +61,7 @@ function update_tag(_id, code, tagId, sex, next, back) {
             next(null, null, null, null, back)
         } else {
             client.membersBatchtagging(tagId, user_arr, function (error, res) {
-                // console.log(res)
+                console.log(res)
             })
             if (users.length == 50) {
                 next(users[49]._id, code, tagId, sex, back);
