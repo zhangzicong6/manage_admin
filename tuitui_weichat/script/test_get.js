@@ -1,5 +1,6 @@
 var OpenidTagModel = require('../model/OpenidTag');
 var wechat_util = require('../util/get_weichat_client.js')
+var UserTagModel = require('../model/UserTag')
 
 async function getTags(tagId, code, openId) {
     let client = await wechat_util.getClient(code)
@@ -18,12 +19,11 @@ async function getTags(tagId, code, openId) {
 }
 
 async function updateTag(code) {
-    let client = await wechat_util.getClient(code)
-    client.getTags(function (err,res) {
-        console.log(res,'------------------------res')
-        // for (let i of res) {
-        //     getTags(i.id, code, null)
-        // }
+    UserTagModel.find({code: code}, function (err, data) {
+        console.log(data,'--------------------data')
+        for (let i of data) {
+            getTags(i.id, code, null)
+        }
     })
 }
 updateTag(26)
