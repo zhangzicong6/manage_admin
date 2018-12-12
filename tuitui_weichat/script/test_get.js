@@ -27,4 +27,4 @@ async function updateTag(code) {
         }
     })
 }
-// updateTag(27)
+updateTag(27)
