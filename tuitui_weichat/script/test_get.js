@@ -7,7 +7,7 @@ async function getTags(tagId, code, openId) {
     client.getTagUsers(tagId, openId, function (err, res) {
         console.log(res,'-------------------res')
         let openids = []
-        if(res.data.openid){
+        if(res.data && res.data.openid){
             for (let openid of res.data.openid) {
                 openids.push({'openid': openid, 'code': code, tagid: tagId});
             }
