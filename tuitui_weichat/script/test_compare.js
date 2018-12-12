@@ -49,11 +49,11 @@ var subSet = function (arr1, arr2) {
     return subset;
 };
 
-function updateTag() {
-    UserTagModel.find(function (err, data) {
+function updateTag(code) {
+    UserTagModel.find({code: code}, function (err, data) {
         for (let i of data) {
             getTags(i.id, null)
         }
     })
 }
-updateTag()
+updateTag(26)
