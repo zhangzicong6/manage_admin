@@ -16,6 +16,8 @@ async function getTags(tagId, code, openId) {
                     getTags(tagId, code, res.next_openid)
                 }
             })
+        }else{
+            return
         }
     })
 }
