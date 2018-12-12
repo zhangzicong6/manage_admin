@@ -6,17 +6,17 @@ async function getTags(tagId, code, openId) {
     let client = await wechat_util.getClient(code)
     client.getTagUsers(tagId, openId, function (err, res) {
         console.log(res,'-------------------res')
-        // let openids = []
-        // if(res.data.openid){
-        //     for (let openid of res.data.openid) {
-        //         openids.push({'openid': openid, 'code': code, tagid: tagId});
-        //     }
-        //     OpenidTagModel.insertMany(openids, function (err, docs) {
-        //         if (res.next_openid) {
-        //             getTags(tagId, code, res.next_openid)
-        //         }
-        //     })
-        // }
+        let openids = []
+        if(res.data.openid){
+            for (let openid of res.data.openid) {
+                openids.push({'openid': openid, 'code': code, tagid: tagId});
+            }
+            OpenidTagModel.insertMany(openids, function (err, docs) {
+                if (res.next_openid) {
+                    getTags(tagId, code, res.next_openid)
+                }
+            })
+        }
     })
 }
 
@@ -27,4 +27,4 @@ async function updateTag(code) {
         }
     })
 }
-updateTag(27)
+updateTag(26)
