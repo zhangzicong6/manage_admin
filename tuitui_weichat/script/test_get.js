@@ -5,26 +5,32 @@ var UserTagModel = require('../model/UserTag')
 async function getTags(tagId, code, openId) {
     let client = await wechat_util.getClient(code)
     client.getTagUsers(tagId, openId, function (err, res) {
-        console.log(res, '------------------res')
+        console.log(res,'------------------res')
         // let openids = []
         // for (let openid of res.data.openid) {
         //     openids.push({'openid': openid, 'code': code, tagid: tagId});
         // }
         // OpenidTagModel.insertMany(openids, function (err, docs) {
-        // if (res.next_openid) {
-        //     getTags(tagId, code, res.next_openid)
-        // }
+            // if (res.next_openid) {
+            //     getTags(tagId, code, res.next_openid)
+            // }
         // })
     })
 }
 
 async function updateTag(code) {
-    UserTagModel.find({code: code}, function (err, data) {
-        console.log(data, '--------------------data')
-        for (let i of data) {
-            console.log(i.id, '--------------------data')
-            getTags(i.id, code, null)
+    let client = await wechat_util.getClient(code)
+    client.getTags(function (err,res) {
+        console.log(res,'------------------------res')
+        for (let i of res) {
+            // getTags(i.id, code, null)
         }
     })
+    // UserTagModel.find({code: code}, function (err, data) {
+    //     console.log(data,'--------------------data')
+    //     for (let i of data) {
+    //         getTags(i.id, code, null)
+    //     }
+    // })
 }
-updateTag(26)
+updateTag(27)
