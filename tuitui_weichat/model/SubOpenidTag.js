@@ -10,6 +10,22 @@ var SubOpenidTagSchema = new Schema({
     sex: {type: String, default: "0"}
 });
 
+SubOpenidTagSchema.statics = {
+    fetchTag(id, code, sex, cb){
+        if (id) {
+            return this.find({_id: {$lt: id}, code: code, sex: sex}, ['openid'])
+                .limit(50)
+                .sort({'_id': -1})
+                .exec(cb);
+        } else {
+            return this.find({code: code, sex: sex}, ['openid'])
+                .limit(50)
+                .sort({'_id': -1})
+                .exec(cb);
+        }
+    }
+}
+
 
 var SubOpenidTagModel = db.model('SubOpenidTag', SubOpenidTagSchema);
 
