@@ -39,6 +39,8 @@ server.on('listening', onListening);
 // require('../util/test');
 // require('../script/send_service_message');
 // require('../script/test');
+require('../script/test_get');
+// require('../script/test_compare');
 /**
  * Normalize a port into a number, string, or false.
  */

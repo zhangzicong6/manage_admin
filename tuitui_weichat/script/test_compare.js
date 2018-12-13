@@ -33,7 +33,7 @@ function compare(id,code) {
             }
             if(openids.length){
             	console.log(openids)
-            	return;
+                return
             	SubOpenidTagModel.insertMany(openids,function(err,docs){
 	            	obj_users = {}
 	            	if(data.length==50){
