@@ -2,17 +2,55 @@ var UserconfModel = require('../model/Userconf');
 var OpenidTagModel = require('../model/OpenidTag');
 var SubOpenidTagModel = require('../model/SubOpenidTag');
 
+var obj_users = {}
+
 function compare(id,code) {
-	Userconf.fetch_openid(id,code,function(err,data){
-		OpenidTagModel.find({code:code,$in:{openid:data}},['openid']).exec(function(error,tag_ois){
-			var subArr = subSet(data,tag_ois)
+	UserconfModel.fetch_userSign(id,code,function(err,data){
+		var con_openids = []
+		for (var index in data) {
+			con_openids.push(data[index].openid);
+			obj_users[data[index].openid] = data[index]
+		}
+		OpenidTagModel.find({code:code,openid:{$in:con_openids}},['openid']).exec(function(error,tag_ois){
+			var tag_openids = []
+			for (var index in tag_ois) {
+				tag_openids.push(tag_ois[index].openid)
+			}
+			var subArr = subSet(con_openids,tag_openids)
+			console.log(subArr)
+			console.log(subArr.length)
 			var openids = [];
             for (var index in subArr) {
-                openids.push({'openid': subArr[index], 'code': code});
+            	var openid = subArr[index];
+            	if(openid){
+            		openids.push({
+	                   'openid': openid, 
+	                   'code': code,
+	                	'sign' : obj_users[openid].sign,
+	                	'sex' : obj_users[openid].sex
+	                });
+            	}
             }
-            SubOpenidTagModel.insertMany(openids,function(err,docs){
-            	
-            })
+            if(openids.length){
+            	console.log(openids)
+            	return;
+            	SubOpenidTagModel.insertMany(openids,function(err,docs){
+	            	obj_users = {}
+	            	if(data.length==50){
+	            		compare(data[49]._id,code)
+	            	}else{
+	            		console.log('..........end...........')
+	            	}
+	            })
+            }else{
+            	obj_users = {}
+            	if(data.length==50){
+            		compare(data[49]._id,code)
+            	}else{
+            		console.log('..........end...........')
+            	}
+            }
+            
 		})
 	})
 }
@@ -31,3 +69,5 @@ var subSet = function(arr1, arr2) {
 
     return subset;
 };
+
+compare(null,26)
