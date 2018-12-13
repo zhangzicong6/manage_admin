@@ -81,6 +81,19 @@ UserconfSchema.statics = {
                 .exec(cb);
         }
     },
+    fetch_userSign(id, code, cb){
+        if (id) {
+            return this.find({_id: {$lt: id}, code: code}, ['openid','sign','sex'])
+                .limit(200)
+                .sort({'_id': -1})
+                .exec(cb);
+        } else {
+            return this.find({code: code}, ['openid','sign','sex'])
+                .limit(200)
+                .sort({'_id': -1})
+                .exec(cb);
+        }
+    },
     fetchTag(id, code, sex, cb){
         if (id) {
             return this.find({_id: {$lt: id}, code: code, sex: sex}, ['openid'])

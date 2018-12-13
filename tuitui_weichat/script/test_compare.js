@@ -36,16 +36,16 @@ function compare(id,code) {
                 return
             	SubOpenidTagModel.insertMany(openids,function(err,docs){
 	            	obj_users = {}
-	            	if(data.length==50){
-	            		compare(data[49]._id,code)
+	            	if(data.length==200){
+	            		compare(data[199]._id,code)
 	            	}else{
 	            		console.log('..........end...........')
 	            	}
 	            })
             }else{
             	obj_users = {}
-            	if(data.length==50){
-            		compare(data[49]._id,code)
+            	if(data.length==200){
+            		compare(data[199]._id,code)
             	}else{
             		console.log('..........end...........')
             	}
