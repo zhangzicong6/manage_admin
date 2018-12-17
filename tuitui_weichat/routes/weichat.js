@@ -29,9 +29,11 @@ router.use('/:code', async function (request, response, next_fun) {
             let jieguan = await mem.get("jieguan_" + request.params.code)
             if (!jieguan) {
                 jieguan = await ConfigModel.findOne({code: request.params.code})
-                jieguan = jieguan.status
-                if (jieguan == 1) {
-                    await mem.set("jieguan_" + request.params.code, 1, 30 * 24 * 3600)
+                if(jieguan){
+                    jieguan = jieguan.status
+                    if (jieguan == 1) {
+                        await mem.set("jieguan_" + request.params.code, 1, 30 * 24 * 3600)
+                    }
                 }
             }
             if (jieguan == 1) {
