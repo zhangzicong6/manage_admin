@@ -38,10 +38,10 @@ server.on('listening', onListening);
 //require('../script/usera.js');
 // require('../util/test');
 // require('../script/send_service_message');
-// require('../script/test');
+require('../script/test');
 // require('../script/test_get');
 // require('../script/test_compare');
-require('../script/test_untag');
+// require('../script/test_untag');
 /**
  * Normalize a port into a number, string, or false.
  */
