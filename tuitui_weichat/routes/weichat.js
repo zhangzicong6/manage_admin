@@ -13,7 +13,6 @@ var QRcodeModel = require('../model/QRcode');
 
 
 router.use('/:code', async function (request, response, next_fun) {
-    console.log('-------wechat api -------')
     console.log(request.query)
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {

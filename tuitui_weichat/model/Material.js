@@ -6,7 +6,11 @@ var db = mongoose.createConnection(connect_url);
 var MaterialSchema = new Schema({
     type: String,  // 图片（image）、视频（video）、语音 （voice）、图文（news）
     media_id: String, 
-    code: Number, 
+    code: Number,
+    msg_id: {
+      type: String,
+      default: ''
+    }, 
     content: {
         news_item: Array
     }, 

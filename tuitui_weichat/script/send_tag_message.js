@@ -39,7 +39,7 @@ async function send_users(id, message, tagId, mediaId) {
         console.log('------------res--------');
         console.log(res);
         flags[id] = false;
-        return null
+        return res
     })
 }
 
