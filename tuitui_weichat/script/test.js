@@ -72,6 +72,6 @@ function update_tag(_id, code, tagId, sex, next, back) {
     })
 }
 
-for(let i=54;i<=62;i++){
-    getUserByCode(i)
-}
+getUserByCode(28)
+
+module.exports.getUserByCode = getUserByCode
