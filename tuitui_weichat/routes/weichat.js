@@ -110,13 +110,13 @@ async function subscribe(openid, config, message, res) {
                 })
                 console.log('-----sendText------')
                 console.log(openid,'============',doc.content)
-                var client = wechat_util.getClient(config.code);
-                client.sendText(openid, doc.content, function (error, res) {
-                    console.log(error,res);
-                    setTimeout(function () {
-                        return;
-                    }, 50)
-                })
+                setTimeout(function () {
+                     var client = wechat_util.getClient(config.code);
+                     client.sendText(openid, doc.content, function (error, result) {
+                        console.log(error,result);
+                     })      
+                }, 200)
+                
             } else {
                 return;
             }
