@@ -46,9 +46,9 @@ router.use('/:code', async function (request, response, next_fun) {
                     } else if (message.MsgType === 'event') {
                         console.log(message.Event, '--------Event---------')
                         if (message.Event === 'subscribe') {
-                            var client = wechat_util.getClient(request.params.code);
+                            //var client = wechat_util.getClient(request.params.code);
                             reply(request.params.code, res, 2, 'subscribe', openid)
-                            subscribe(openid, config, message, res, client);
+                            subscribe(openid, config, message, res);
                         } else if (message.Event === 'SCAN') {
                             scan(openid, message, res)
                         } else if (message.Event.toLowerCase() == 'click') {
@@ -98,7 +98,7 @@ async function scan(openid, message, res) {
     }
 }
 
-async function subscribe(openid, config, message, res, client) {
+async function subscribe(openid, config, message, res) {
     console.log('--------subscribe------- ', config);
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
@@ -106,11 +106,13 @@ async function subscribe(openid, config, message, res, client) {
         console.log(message.EventKey)
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
-                console.log(doc)
                 UserconfModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
                 })
+                console.log('-----sendText------')
+                console.log(openid,'============',doc.content)
+                var client = wechat_util.getClient(config.code);
                 client.sendText(openid, doc.content, function (error, res) {
-                    console.log(error);
+                    console.log(error,res);
                     setTimeout(function () {
                         return;
                     }, 50)
