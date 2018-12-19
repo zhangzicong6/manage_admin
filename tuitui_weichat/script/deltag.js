@@ -11,7 +11,7 @@ async function delTag(code) {
     }
 }
 
-for (let i = 54; I <= 62; i++) {
+for (let i = 54; i <= 62; i++) {
     delTag(i)
 }
 
