@@ -34,10 +34,11 @@ router.post('/create', (req, res, next) => {
             console.log("Error:" + err);
         } else {
             var api = await weichat_util.getClient(qrInfo.code);
-            console.log(api,'-----------------api')
             var _id = data._id;
             var str = JSON.stringify({replay: _id})
             api.createLimitQRCode(str, (err, result) => {
+                console.log(err)
+                console.log(result)
                 var qrUrl = api.showQRCodeURL(result.ticket) || '';
                 if (qrUrl == '') {
                     console.log(err)
