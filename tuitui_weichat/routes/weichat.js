@@ -102,6 +102,8 @@ async function subscribe(openid, config, message, res, client) {
     console.log('--------subscribe------- ', config);
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
+        console.log('======subscribe send text ===========')
+        console.log(message.EventKey)
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
                 UserconfModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
