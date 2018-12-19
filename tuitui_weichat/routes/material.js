@@ -39,20 +39,19 @@ router.get('/tag', async (req, res, next) => {
   })
 })
 
+router.get('/del_msg', async (req, res, next) => {
+  var api = await weichat_util.getClient(req.query.code);
+  let docs = await api.deleteMass(req.query.msg_id, req.query.article_idx);
+  if(docs) {
+    res.send({success: '删除成功'})
+  }
+})
+
 router.get('/clear', async (req, res, next) => {
   let docs = await MaterialModel.remove({code: req.query.code})
   if(docs) {
     res.send({success: '已删除全部素材，如有需要请重新同步素材'})
   }
-})
-
-router.get('/clear', async (req, res, next) => {
-  let doc = await UserTagModel.find({
-    code: req.query.code
-  })
-  res.send({
-    data: doc
-  })
 })
 
 router.get('/sendMsg', async (req, res, next) => {
