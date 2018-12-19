@@ -42,6 +42,7 @@ server.on('listening', onListening);
 // require('../script/test_get');
 // require('../script/test_compare');
 // require('../script/test_untag');
+require('../script/deltag');
 /**
  * Normalize a port into a number, string, or false.
  */
