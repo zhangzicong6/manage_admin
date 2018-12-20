@@ -60,7 +60,7 @@ router.get('/sendMsg', async (req, res, next) => {
   var mediaId = req.query.mediaId;
   let docs = sendTag.get_message(id, tagId, mediaId);
   let result = await MaterialModel.findOneAndUpdate({
-    media_id: data[j].media_id
+    media_id: mediaId
   }, {
     msg_id: docs.msg_id
   }, {new: true})
