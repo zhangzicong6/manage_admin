@@ -7,7 +7,7 @@ var async = require('async');
 var UserTagModel = require('../model/UserTag')
 
 async function getUserByCode() {
-    let code = parseInt(process.argv.slice(2)[0])
+    let code = process.argv.slice(2)[0]
     console.log(code,'----------------------code')
     await mem.set('access_token' + code, '', 10)
     let client = await wechat_util.getClient(code)
