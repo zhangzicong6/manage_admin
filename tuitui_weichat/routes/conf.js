@@ -75,8 +75,9 @@ router.get('/jieguan', async(req, res, next) => {
     let cmdStr = 'node /home/work/tuitui_pro/tuitui_weichat/script/get_users.js ' + code
     console.log(cmdStr)
     exec(cmdStr, function (err, stdout, stderr) {
-        res.send({success: '设置接管成功'})
+        // res.send({success: '设置接管成功'})
     })
+    res.send({success: '设置接管成功'})
     // user.getUserByCode(code)
     // res.send({success: '设置接管成功'})
     // }else{
