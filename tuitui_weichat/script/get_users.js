@@ -6,7 +6,9 @@ var mem = require('../util/mem.js');
 var async = require('async');
 var UserTagModel = require('../model/UserTag')
 
-async function getUserByCode(code) {
+async function getUserByCode() {
+    let code = process.argv.slice(2)[0]
+    console.log(code,'----------------------code')
     await mem.set('access_token' + code, '', 10)
     let client = await wechat_util.getClient(code)
     async.waterfall([
@@ -218,9 +220,5 @@ function update_tag(_id, code, tagId, sex, next, back) {
     })
 }
 
-function test() {
-    // console.log(process.argv.slice(2)[0])
-    console.log(__dirname)
-}
-test()
-module.exports.getUserByCode = getUserByCode
+getUserByCode()
+// module.exports.getUserByCode = getUserByCode
