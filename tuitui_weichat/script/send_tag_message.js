@@ -3,19 +3,19 @@ var MaterialModel = require('../model/Material');
 var UserTagModel = require('../model/UserTag');
 var flags = {};
 
-function get_message(id, tagId, mediaId) {
+async function get_message(id, tagId, mediaId) {
     if (!flags[id]) {
         flags[id] = true;
-        MaterialModel.findById(id).exec(function (err, message) {
-            if (message) {
-                send_users(id, message, tagId, mediaId);
-            } else {
-                flags[id] = false;
-                console.log('============= 未找到信息 ==========')
-            }
-        });
+        var message = await MaterialModel.findById(id)
+        if (message) {
+            var res = await send_users(id, message, tagId, mediaId);
+            return res;
+        } else {
+            flags[id] = false;
+            return 0;
+        }
     } else {
-        console.log('============= 当前信息正在执行中 ==========')
+       return 0;
     }
 }
 
