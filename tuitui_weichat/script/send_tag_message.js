@@ -33,15 +33,21 @@ async function send_users(id, message, tagId, mediaId) {
     opts.msgtype = type
     console.log(opts);
     console.log(tagId);
-    client.massSend(opts, tagId, function (err, res) {
-        console.log('------------err--------');
-        console.log(err);
-        console.log('------------res--------');
-        console.log(res);
-        flags[id] = false;
-        return res
-    })
+    var res = await async_send(opts,tagId,client)
+    return res
 }
 
+function async_send(opts,tagId,client){
+    return new Promise((resolve, reject)=>{
+        client.massSend(opts, tagId, function (err, res) {
+            console.log('------------err--------');
+            console.log(err);
+            console.log('------------res--------');
+            console.log(res);
+            flags[id] = false;
+            resolve(res)
+        })
+    });
+}
 
 module.exports.get_message = get_message
