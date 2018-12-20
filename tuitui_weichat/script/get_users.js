@@ -11,7 +11,6 @@ async function getUserByCode() {
     console.log(code, '----------------------code')
     await mem.set('access_token' + code, '', 10)
     let client = await wechat_util.getClient(code)
-    console.log(code, '------------start')
     async.waterfall([
         function (callback) {
             UserconfModel.remove({code: code}, async function (err, doc) {
@@ -25,7 +24,6 @@ async function getUserByCode() {
             })
         }, function (callback) {
             get_user(null, code, function () {
-                console.log('------------------------------aaaaaaa')
                 callback(null)
             })
         }, function (callback) {
