@@ -103,20 +103,23 @@ async function subscribe(openid, config, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         console.log('======subscribe send text ===========')
-        console.log(message.EventKey)
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
                 UserconfModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
                 })
                 console.log('-----sendText------')
                 console.log(openid,'============',doc.content)
-                var client = wechat_util.getClient(config.code);
-                client.sendText(openid, doc.content, function (error, res) {
-                    console.log(error,res);
-                    setTimeout(function () {
-                        return;
-                    }, 50)
-                })
+                setTimeout((function (config,openid,doc) {
+                     return async function(){
+                        console.log('----消息-------')
+                        console.log(config,openid,doc)
+                        var client = await wechat_util.getClient(config.code);
+                        client.sendText(openid, doc.content, function (error, result) {
+                              console.log(error,result);
+                        })
+                     }    
+                })(config,openid,doc), 200)
+                
             } else {
                 return;
             }

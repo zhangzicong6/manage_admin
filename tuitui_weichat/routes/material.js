@@ -59,13 +59,13 @@ router.get('/sendMsg', async (req, res, next) => {
   var tagId = req.query.tagId;
   var mediaId = req.query.mediaId;
   let docs = sendTag.get_message(id, tagId, mediaId);
-  await MaterialModel.findOneAndUpdate({
-    media_id: data[j].media_id
+  let result = await MaterialModel.findOneAndUpdate({
+    media_id: mediaId
   }, {
     msg_id: docs.msg_id
-  })
+  }, {new: true})
   res.send({
-    success: '发送成功'
+    success: '发送成功', data: result, docs: docs
   })
 })
 
