@@ -2,8 +2,8 @@ var wechat_util = require('../util/get_weichat_client.js')
 var UserTagModel = require('../model/UserTag')
 
 async function delTag(code) {
+    await UserTagModel.remove({code:code})
     let client = await wechat_util.getClient(code)
-    // let tag = await UserTagModel.find(code)
     client.getTags(function (err,res) {
         if(res){
             console.log(res,'------------------res')
@@ -16,7 +16,7 @@ async function delTag(code) {
     })
 }
 
-for (let i = 54; i <= 63; i++) {
-    delTag(i)
-}
-
+// for (let i = 54; i <= 63; i++) {
+//     delTag(i)
+// }
+delTag(38)
