@@ -5,11 +5,13 @@ async function delTag(code) {
     let client = await wechat_util.getClient(code)
     // let tag = await UserTagModel.find(code)
     client.getTags(function (err,res) {
-        console.log(res,'------------------res')
-        for(let i of res.tags){
-            client.deleteTag(i.id, function (error, res) {
-                console.log(res)
-            })
+        if(res){
+            console.log(res,'------------------res')
+            for(let i of res.tags){
+                client.deleteTag(i.id, function (error, res) {
+                    console.log(res)
+                })
+            }
         }
     })
 }
