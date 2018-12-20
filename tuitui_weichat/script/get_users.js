@@ -218,4 +218,9 @@ function update_tag(_id, code, tagId, sex, next, back) {
     })
 }
 
+function test() {
+    // console.log(process.argv.slice(2)[0])
+    console.log(__dirname)
+}
+test()
 module.exports.getUserByCode = getUserByCode

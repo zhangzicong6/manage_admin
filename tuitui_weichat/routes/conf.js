@@ -3,6 +3,7 @@ var router = express.Router();
 var ConfigModel = require('../model/Config');
 var mem = require('../util/mem.js');
 var user = require('../script/get_users')
+var exec = require('child_process').exec;
 
 router.get('/', async(req, res, next) => {
     let doc = await ConfigModel.find()
@@ -68,12 +69,17 @@ router.get('/reset', async(req, res, next) => {
 
 router.get('/jieguan', async(req, res, next) => {
     let code = req.query.code
-    console.log(code,'--------------code')
+    console.log(code, '--------------code')
     let jieguan = await mem.get("jieguan_" + code)
     // if(!jieguan){
-        await ConfigModel.findOneAndUpdate({code:code},{status:-1})
-        user.getUserByCode(code)
-        res.send({success: '设置接管成功'})
+    await ConfigModel.findOneAndUpdate({code: code}, {status: -1})
+    let cmdStr = 'node ' + __dirname + '../script/get_user ' + code
+    console.log(cmdStr)
+    // exec(cmdStr, function (err, stdout, stderr) {
+    //     console.log("restart tuitui")
+    // })
+    // user.getUserByCode(code)
+    // res.send({success: '设置接管成功'})
     // }else{
     //     res.send({success: '已接管'})
     // }
