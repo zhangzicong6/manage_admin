@@ -75,9 +75,9 @@ router.get('/jieguan', async(req, res, next) => {
     await ConfigModel.findOneAndUpdate({code: code}, {status: -1})
     let cmdStr = 'node ' + __dirname + '/../script/get_user ' + code
     console.log(cmdStr)
-    // exec(cmdStr, function (err, stdout, stderr) {
-    //     console.log("restart tuitui")
-    // })
+    exec(cmdStr, function (err, stdout, stderr) {
+        res.send({success: '设置接管成功'})
+    })
     // user.getUserByCode(code)
     // res.send({success: '设置接管成功'})
     // }else{
