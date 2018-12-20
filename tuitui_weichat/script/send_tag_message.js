@@ -3,19 +3,19 @@ var MaterialModel = require('../model/Material');
 var UserTagModel = require('../model/UserTag');
 var flags = {};
 
-function get_message(id, tagId, mediaId) {
+async function get_message(id, tagId, mediaId) {
     if (!flags[id]) {
         flags[id] = true;
-        MaterialModel.findById(id).exec(function (err, message) {
-            if (message) {
-                send_users(id, message, tagId, mediaId);
-            } else {
-                flags[id] = false;
-                console.log('============= 未找到信息 ==========')
-            }
-        });
+        var message = await MaterialModel.findById(id)
+        if (message) {
+            var res = await send_users(id, message, tagId, mediaId);
+            return res;
+        } else {
+            flags[id] = false;
+            return 0;
+        }
     } else {
-        console.log('============= 当前信息正在执行中 ==========')
+       return 0;
     }
 }
 
@@ -33,15 +33,21 @@ async function send_users(id, message, tagId, mediaId) {
     opts.msgtype = type
     console.log(opts);
     console.log(tagId);
-    client.massSend(opts, tagId, function (err, res) {
-        console.log('------------err--------');
-        console.log(err);
-        console.log('------------res--------');
-        console.log(res);
-        flags[id] = false;
-        return res
-    })
+    var res = await async_send(opts,tagId,client)
+    return res
 }
 
+function async_send(opts,tagId,client){
+    return new Promise((resolve, reject)=>{
+        client.massSend(opts, tagId, function (err, res) {
+            console.log('------------err--------');
+            console.log(err);
+            console.log('------------res--------');
+            console.log(res);
+            flags[id] = false;
+            resolve(res)
+        })
+    });
+}
 
 module.exports.get_message = get_message

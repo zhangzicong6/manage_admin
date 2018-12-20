@@ -13,7 +13,7 @@ var QRcodeModel = require('../model/QRcode');
 
 
 router.use('/:code', async function (request, response, next_fun) {
-    console.log(request.query)
+    //console.log(request.query)
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {
         config = await ConfigModel.findOne({code: request.params.code})
@@ -99,7 +99,7 @@ async function scan(openid, message, res) {
 }
 
 async function subscribe(openid, config, message, res) {
-    console.log('--------subscribe------- ', config);
+    //console.log('--------subscribe------- ', config);
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
         console.log('======subscribe send text ===========')
@@ -112,7 +112,7 @@ async function subscribe(openid, config, message, res) {
                 setTimeout((function (config,openid,doc) {
                      return async function(){
                         console.log('----消息-------')
-                        console.log(config,openid,doc)
+                        //console.log(config,openid,doc)
                         var client = await wechat_util.getClient(config.code);
                         client.sendText(openid, doc.content, function (error, result) {
                               console.log(error,result);
