@@ -16,7 +16,6 @@ var RecommendNovelSchema = new Schema({
 	otherCode: String, //  其他业务代码
 	channel: String, //  渠道
 	remarks: String, //  备注
-	url: String, //  文章链接
 	reading: String //  阅读人数
 });
 
