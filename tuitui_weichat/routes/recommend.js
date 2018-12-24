@@ -85,14 +85,13 @@ router.post('/novel/create', async(req, res, next) => {
 		bannerUrl: req.body.bannerUrl,
 		capter: req.body.capter,
 		qrcode: req.body.qrcode,
-		statisticsCode: req.body.statisticsCode,
+		statisticsCode: req.body.statisticsCode || '',
 		otherCode: req.body.otherCode,
-		url: req.body.url,
 		reading: req.body.reading,
-		channel: req.body.channel,
-		remarks: req.body.remarks
+		channel: req.body.channel || '',
+		remarks: req.body.remarks || ''
 	}
-	let docs = await RecommendNovelModel.create(message);
+	let docs = await RecommendNovelModel.create(novelMessage);
 	if(docs) {
 		res.send({
 			success: '创建成功',
