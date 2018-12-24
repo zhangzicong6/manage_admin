@@ -131,7 +131,8 @@ router.post('/novel/update', async(req, res, next) => {
 //  删除小说详情页
 router.get('/novel/del', async(req, res, next) => {
 	let id = req.query.id;
-	let docs = await RecommendNovelModel.findByIdAndRemove(id);
+  let docs = await RecommendNovelModel.findByIdAndRemove(id)
+  console.log(docs)
 	if(docs) {
 		res.send({
 			success: '删除成功',
