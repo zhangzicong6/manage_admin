@@ -19,7 +19,7 @@ router.post('/', async(req, res, next) => {
           }
       docs.save()
     }
-    res.send({data: long_url,short_url:docs.shortUrl,self_rand:'http://tiexie0.top/'+docs.randomID})
+    res.send({data: long_url,short_url:docs.shortUrl,self_rand:'http://tiexie0.wang/'+docs.randomID})
   } else {
     let message = new NovelTransferModel({
       url: req.body.url,
@@ -34,7 +34,7 @@ router.post('/', async(req, res, next) => {
       console.log(e)
     }
     message.save()
-    res.send({data: long_url,short_url:message.shortUrl,self_rand:'http://tiexie0.top/'+message.randomID})
+    res.send({data: long_url,short_url:message.shortUrl,self_rand:'http://tiexie0.wang/'+message.randomID})
   }
 })
 
