@@ -7,7 +7,7 @@ var request = require('request');
 router.post('/', async(req, res, next) => {
   let docs = await NovelTransferModel.findOne({url: req.body.url });
   if(docs) {
-    let long_url = 'http://erji.rrdtjj.top/novel_transfer/' + docs._id;
+    let long_url = 'http://tiexie0.wang/novel_transfer/' + docs._id;
     if(!docs.randomID){
          docs.randomID = randomWord(8)
          try{
@@ -19,13 +19,13 @@ router.post('/', async(req, res, next) => {
           }
       docs.save()
     }
-    res.send({data: long_url,short_url:docs.shortUrl,self_rand:'http://ll.rrdtjj.top/'+docs.randomID})
+    res.send({data: long_url,short_url:docs.shortUrl,self_rand:'http://tiexie0.top/'+docs.randomID})
   } else {
     let message = new NovelTransferModel({
       url: req.body.url,
       randomID : randomWord(8)
     })
-    let long_url = 'http://erji.rrdtjj.top/novel_transfer/' + message._id;
+    let long_url = 'http://tiexie0.wang/novel_transfer/' + message._id;
     try{
       let short_url = await short_url_req(long_url)
       message.shortUrl = short_url
@@ -34,7 +34,7 @@ router.post('/', async(req, res, next) => {
       console.log(e)
     }
     message.save()
-    res.send({data: long_url,short_url:message.shortUrl,self_rand:'http://ll.rrdtjj.top/'+message.randomID})
+    res.send({data: long_url,short_url:message.shortUrl,self_rand:'http://tiexie0.top/'+message.randomID})
   }
 })
 
