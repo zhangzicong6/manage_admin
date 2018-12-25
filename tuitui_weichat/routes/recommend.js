@@ -74,6 +74,17 @@ router.get('/novel/show', async(req, res, next) => {
 	}
 })
 
+// 获取小说详情列表
+router.get('/novel', async(req, res, next) => {
+	let id = req.query.id;
+	let docs = await RecommendNovelModel.findById(id)
+	if(docs) {
+		res.send({success: 'ok', data: docs})
+	} else {
+		res.send({err: 'error'})
+	}
+})
+
 //  新增小说详情页
 router.post('/novel/create', async(req, res, next) => {
 	let novelMessage = {
