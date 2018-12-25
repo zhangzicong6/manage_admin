@@ -187,7 +187,11 @@ function update_user(_id, code, next, back) {
                             })
                         })
                     }else{
-                        next(null, null, back)
+                        if (users.length == 100) {
+                            next(users[99]._id, code, back);
+                        } else {
+                            next(null, null, back)
+                        }
                     }
                 }
             })
