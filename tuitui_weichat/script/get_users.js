@@ -22,6 +22,7 @@ async function getUserByCode() {
             //     get_users(code, null, function () {
             //         callback(null)
             //     })
+                callback(null)
             }, function (callback) {
                 get_user(null, code, function () {
                     callback(null)
