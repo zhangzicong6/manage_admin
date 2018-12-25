@@ -186,6 +186,8 @@ function update_user(_id, code, next, back) {
                                 }
                             })
                         })
+                    }else{
+                        next(null, null, back)
                     }
                 }
             })
