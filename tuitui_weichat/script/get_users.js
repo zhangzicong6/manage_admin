@@ -13,11 +13,11 @@ async function getUserByCode() {
         let client = await wechat_util.getClient(code)
         async.waterfall([
             function (callback) {
-                UserconfModel.remove({code: code}, async function (err, doc) {
-                    OpenidModel.remove({code: code}, async function (err, doc) {
-                        callback(null)
-                    })
-                })
+                // UserconfModel.remove({code: code}, async function (err, doc) {
+                //     OpenidModel.remove({code: code}, async function (err, doc) {
+                //         callback(null)
+                //     })
+                // })
             // }, function (callback) {
             //     get_users(code, null, function () {
             //         callback(null)
