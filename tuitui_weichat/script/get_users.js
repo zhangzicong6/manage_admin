@@ -8,7 +8,7 @@ var UserTagModel = require('../model/UserTag')
 
 async function getUserByCode() {
     let code = process.argv.slice(2)[0]
-    if(code) {
+    if (code) {
         await mem.set('access_token' + code, '', 10)
         let client = await wechat_util.getClient(code)
         async.waterfall([
@@ -154,39 +154,39 @@ function update_user(_id, code, next, back) {
                     } else {
                         next(null, null, back)
                     }
-                }
-                if (data && data.user_info_list) {
-                    let userArr = []
-                    async.eachLimit(data.user_info_list, 100, function (info, callback) {
-                        if (info.nickname) {
-                            userArr.push({
-                                code: code,
-                                openid: info.openid,
-                                nickname: info.nickname,
-                                headimgurl: info.headimgurl,
-                                sex: info.sex.toString(),
-                                sign: 1
-                            })
-                        }
-                        callback(null)
-                    }, function (error) {
-                        if (error) {
-                            console.log(error, '--------------error')
-                            next(null, null, back)
-                        }
-                        UserconfModel.insertMany(userArr, async function (error, docs) {
+                } else {
+                    if (data && data.user_info_list) {
+                        let userArr = []
+                        async.eachLimit(data.user_info_list, 100, function (info, callback) {
+                            if (info.nickname) {
+                                userArr.push({
+                                    code: code,
+                                    openid: info.openid,
+                                    nickname: info.nickname,
+                                    headimgurl: info.headimgurl,
+                                    sex: info.sex.toString(),
+                                    sign: 1
+                                })
+                            }
+                            callback(null)
+                        }, function (error) {
                             if (error) {
-                                console.log('------insertMany error--------');
-                                console.log(error);
-                                console.log('------------------------------');
+                                console.log(error, '--------------error')
                             }
-                            if (users.length == 100) {
-                                next(users[99]._id, code, back);
-                            } else {
-                                next(null, null, back)
-                            }
+                            UserconfModel.insertMany(userArr, async function (error, docs) {
+                                if (error) {
+                                    console.log('------insertMany error--------');
+                                    console.log(error);
+                                    console.log('------------------------------');
+                                }
+                                if (users.length == 100) {
+                                    next(users[99]._id, code, back);
+                                } else {
+                                    next(null, null, back)
+                                }
+                            })
                         })
-                    })
+                    }
                 }
             })
         }
