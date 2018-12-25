@@ -18,10 +18,10 @@ async function getUserByCode() {
                         callback(null)
                     })
                 })
-            }, function (callback) {
-                get_users(code, null, function () {
-                    callback(null)
-                })
+            // }, function (callback) {
+            //     get_users(code, null, function () {
+            //         callback(null)
+            //     })
             }, function (callback) {
                 get_user(null, code, function () {
                     callback(null)
