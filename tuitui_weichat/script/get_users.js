@@ -13,16 +13,15 @@ async function getUserByCode() {
         let client = await wechat_util.getClient(code)
         async.waterfall([
             function (callback) {
-                // UserconfModel.remove({code: code}, async function (err, doc) {
-                //     OpenidModel.remove({code: code}, async function (err, doc) {
-                //         callback(null)
-                //     })
-                // })
-            // }, function (callback) {
-            //     get_users(code, null, function () {
-            //         callback(null)
-            //     })
-                callback(null)
+                UserconfModel.remove({code: code}, async function (err, doc) {
+                    OpenidModel.remove({code: code}, async function (err, doc) {
+                        callback(null)
+                    })
+                })
+            }, function (callback) {
+                get_users(code, null, function () {
+                    callback(null)
+                })
             }, function (callback) {
                 get_user(null, code, function () {
                     callback(null)
@@ -173,6 +172,7 @@ function update_user(_id, code, next, back) {
                     }, function (error) {
                         if (error) {
                             console.log(error, '--------------error')
+                            next(null, null, back)
                         }
                         UserconfModel.insertMany(userArr, async function (error, docs) {
                             if (error) {
