@@ -8,7 +8,15 @@ var NovelTransferSchema = new Schema({
   replaceUrl: {
     type: String,
     default: ''
-  }
+  },
+  shortUrl: {
+    type: String,
+    default: ''
+  },
+  randomID: {
+    type: String,
+    default: ''
+  },
 });
 
 var NovelTransferModel = db.model('NovelTransfer', NovelTransferSchema);

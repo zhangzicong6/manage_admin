@@ -27,11 +27,11 @@ var menuTime = require('./routes/menuTime');
 var msg = require('./routes/msg');
 var reply = require('./routes/reply');
 var message = require('./routes/message');
-var management = require('./routes/management');
 var manage = require('./routes/manage');
 var alipayLink = require('./routes/alipayLink');
 var novelTransfer = require('./routes/novelTransfer');
-var material = require('./routes/material')
+var material = require('./routes/material');
+var recommend = require('./routes/recommend');
 
 var app = express();
 
@@ -87,10 +87,10 @@ app.use('/menuTime',menuTime)
 app.use('/msg',msg)
 app.use('/reply',reply)
 app.use('/message',message)
-app.use('/management',management)
 app.use('/manage',manage)
 app.use('/novel_transfer',novelTransfer)
 app.use('/material',material)
+app.use('/recommend',recommend)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

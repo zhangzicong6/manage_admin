@@ -5,6 +5,8 @@ var weichat_util = require('../util/get_weichat_client.js')
 async function get_aterials(code) {
     var api = await weichat_util.getClient(code);
     await api.getMaterialCount(async (err, result, res) => {
+        console.log('----------- get_aterials-----------')
+        console.log(err, result)
         for( key in result) {
             let num = Math.ceil(result[key]/20)
             for(let i = 0; i < num; i ++) {
