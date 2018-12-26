@@ -53,7 +53,7 @@ UserconfSchema.statics = {
             code: {$in: codes},
             action_time: {$gt: Date.now() - 48 * 3600 * 1000}
         }
-        if (sex) {
+        if (sex && sex!='all') {
             sql.sex = sex
         }
         if (tagId) {
@@ -84,12 +84,12 @@ UserconfSchema.statics = {
     fetch_userSign(id, code, cb){
         if (id) {
             return this.find({_id: {$lt: id}, code: code}, ['openid','sign','sex'])
-                .limit(200)
+                .limit(500)
                 .sort({'_id': -1})
                 .exec(cb);
         } else {
             return this.find({code: code}, ['openid','sign','sex'])
-                .limit(200)
+                .limit(500)
                 .sort({'_id': -1})
                 .exec(cb);
         }
