@@ -52,7 +52,7 @@ UserSchema.statics = {
             code: {$in: codes},
             action_time: {$gt: Date.now() - 48 * 3600 * 1000}
         }
-        if (sex) {
+        if (sex && sex!='all') {
             sql.sex = sex
         }
         if (tagId) {
