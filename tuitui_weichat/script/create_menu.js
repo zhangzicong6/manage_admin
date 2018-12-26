@@ -20,10 +20,12 @@ var menu_obj={
   	]
   }
 
-for (var i = 68; i < 88; i++) {
+/*for (var i = 68; i < 88; i++) {
 	setTimeout(create_menu,(i-68)*1000,i)
 
-}
+}*/
+
+create_menu(88)
 
 async function create_menu(code) {
 	console.log(code)
