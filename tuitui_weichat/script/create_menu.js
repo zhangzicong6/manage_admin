@@ -25,9 +25,10 @@ for (var i = 68; i < 88; i++) {
 
 }
 
-function create_menu(code) {
-	//console.log(code)
-	var client = wechat_util.getClient(code)
+async function create_menu(code) {
+	console.log(code)
+	var client = await wechat_util.getClient(code)
+	//console.log(client)
 	client.removeMenu(function(err,res){
 		if(err){
 			console.log('--------removeMenu-----err-----'+code+'-------')
