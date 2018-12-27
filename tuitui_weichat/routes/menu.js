@@ -10,6 +10,7 @@ router.get('/', async(req, res, next) => {
 
 router.post('/create', async(req, res, next) => {
     let data = {
+        title: req.body.title,
         codes: req.body.codes,
         values: req.body.values
     }
@@ -27,6 +28,7 @@ router.post('/create', async(req, res, next) => {
 router.post('/update', async(req, res, next) => {
     let id = req.body.id
     let data = {
+        title: req.body.title,
         codes: req.body.codes,
         values: req.body.values
     }
