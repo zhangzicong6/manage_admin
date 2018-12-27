@@ -13,8 +13,24 @@ async function getUserByCode() {
         let client = await wechat_util.getClient(code)
         async.waterfall([
             function (callback) {
-                UserconfModel.remove({code: code}, async function (err, doc) {
-                    OpenidModel.remove({code: code}, async function (err, doc) {
+                UserTagModel.remove({code: code}, function (err, doc) {
+                    client.getTags(function (err, res) {
+                        if (res) {
+                            console.log(res, '------------------res')
+                            for (let i of res.tags) {
+                                client.deleteTag(i.id, function (error, res) {
+                                    console.log(res)
+                                })
+                            }
+                            callback(null)
+                        } else {
+                            callback(null)
+                        }
+                    })
+                })
+            }, function (callback) {
+                UserconfModel.remove({code: code}, function (err, doc) {
+                    OpenidModel.remove({code: code}, function (err, doc) {
                         callback(null)
                     })
                 })
@@ -186,7 +202,7 @@ function update_user(_id, code, next, back) {
                                 }
                             })
                         })
-                    }else{
+                    } else {
                         if (users.length == 100) {
                             next(users[99]._id, code, back);
                         } else {
