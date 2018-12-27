@@ -20,12 +20,12 @@ var menu_obj={
   	]
   }
 
-/*for (var i = 68; i < 88; i++) {
-	setTimeout(create_menu,(i-68)*1000,i)
+for (var i = 68; i < 89; i++) {
+	setTimeout(remove_menu,(i-68)*1000,i)
 
-}*/
+}
 
-create_menu(88)
+//create_menu(88)
 
 async function create_menu(code) {
 	console.log(code)
@@ -49,5 +49,17 @@ async function create_menu(code) {
 				console.log(JSON.stringify(res_m));
 			});
 		});
+	});
+}
+
+async function remove_menu(code) {
+	console.log(code)
+	var client = await wechat_util.getClient(code)
+	//console.log(client)
+	client.removeMenu(function(err,res){
+		console.log('--------removeMenu--------'+code+'-------')
+		console.log(err)
+		console.log(res)
+		
 	});
 }
