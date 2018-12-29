@@ -12,11 +12,12 @@ async function getUserByCode() {
         await mem.set('access_token' + code, '', 10)
         let client = await wechat_util.getClient(code)
         async.waterfall([
+            // function (callback) {
+            //     get_users(code, 'o_a3s53feFMHy3HA9si6yfLiv4Ls', function () {
+            //         callback(null)
+            //     })
+            // },
             function (callback) {
-                get_users(code, 'o_a3s53feFMHy3HA9si6yfLiv4Ls', function () {
-                    callback(null)
-                })
-            }, function (callback) {
                 get_user(null, code, function () {
                     callback(null)
                 })
