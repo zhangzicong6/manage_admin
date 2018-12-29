@@ -11,6 +11,22 @@ async function getUserByCode(code) {
     let client = await wechat_util.getClient(code)
     async.waterfall([
         function (callback) {
+            UserTagModel.remove({code: code}, function (err, doc) {
+                client.getTags(function (err, res) {
+                    if (res) {
+                        console.log(res, '------------------res')
+                        for (let i of res.tags) {
+                            client.deleteTag(i.id, function (error, res) {
+                                console.log(res)
+                            })
+                        }
+                        callback(null)
+                    } else {
+                        callback(null)
+                    }
+                })
+            })
+        },function (callback) {
             client.createTag("明星说未知", async function (err, data) {
                 console.log(data, '---------------------data')
                 await UserTagModel.create({id: data.tag.id, name: "未知", code: code})
