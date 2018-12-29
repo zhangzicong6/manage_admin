@@ -4,24 +4,24 @@ var menu_obj={
   	"button":[
   		{
 	  		"type":"view",
-	        "name":"🔞刺激",
-	        "url":"http://t.cn/Eb73eOT"
+	        "name":"💌 都市",
+	        "url":"https://c66481.818tu.com/referrals/index/4186741"
   		},
   		{
 	  		"type":"view",
-	        "name":"💋激情",
-	        "url":"http://t.cn/Eb71vVb"
+	        "name":"💋 言情",
+	        "url":"https://c66481.818tu.com/referrals/index/4186749"
   		},
   		{
 	  		"type":"view",
-	        "name":"🚫香艳",
-	        "url":"http://t.cn/Eb7lIcD"
+	        "name":"🔥小说",
+	        "url":"https://c66481.818tu.com/referrals/index/4186754"
   		}
   	]
   }
 
 for (var i = 68; i < 89; i++) {
-	setTimeout(remove_menu,(i-68)*1000,i)
+	setTimeout(create_menu,(i-68)*1000,i)
 
 }
 
