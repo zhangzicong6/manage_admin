@@ -72,7 +72,7 @@ router.get('/jieguan', async(req, res, next) => {
     let jieguan = await mem.get("jieguan_" + code)
     if (!jieguan) {
         await ConfigModel.findOneAndUpdate({code: code}, {status: -1})
-        let cmdStr = 'node /home/work/tuitui_pro/tuitui_weichat/script/get_users.js ' + code
+        let cmdStr = 'nohup node /home/work/tuitui_pro/tuitui_weichat/script/get_users.js ' + code+' &'
         console.log(cmdStr)
         exec(cmdStr, function (err, stdout, stderr) {
 
