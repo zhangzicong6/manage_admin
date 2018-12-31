@@ -26,7 +26,7 @@ async function updateTag(code) {
     UserTagModel.find({code: code}, function (err, data) {
         console.log(data,'--------------------data')
         for (let i of data) {
-            if (i.name == "明星说男" || i.name == "明星说女" || i.name == "明星说未知") {
+            if (i.name == "男" || i.name == "女" || i.name == "未知") {
                 getTags(i.id, code, null)
             }
         }
