@@ -17,7 +17,9 @@ function update_tag(_id, code, tagId, sex) {
                 console.log(res)
             })
             if (users.length == 50) {
-                update_tag(users[49]._id, code, tagId, sex);
+                setTimeout(function() {
+                    update_tag(users[49]._id, code, tagId, sex)
+                },500)
             } else {
                 console.log('.........end...........')
                 return
