@@ -165,7 +165,9 @@ router.get('/del', async(req, res, next) => {
     if (doc) {
         if (doc.text) {
             await mem.set("reply_" + doc.code + "_" + doc.text, '', 1)
+            await mem.set("reply_" + code + "_" + param, '', 1)
         } else if (doc.key) {
+            await mem.set("reply_" + code + "_" + param, '', 1)
             await mem.set("reply_" + doc.code + "_" + doc.key, '', 1)
         }
         res.send({success: '删除成功', data: doc})
