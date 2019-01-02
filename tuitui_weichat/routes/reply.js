@@ -119,10 +119,13 @@ router.post('/update', async(req, res, next) => {
                 if (doc) {
                     if (req.body.text) {
                         await mem.set("reply_" + doc.code + "_" + doc.text, {type:1,msg:doc.media}, 30)
-                    } else if (req.body.key) {
+                        await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
+                      } else if (req.body.key) {
                         await mem.set("reply_" + doc.code + "_" + doc.key, {type:1,msg:doc.media}, 30)
-                    } else {
+                        await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
+                      } else {
                         await mem.set("reply_" + doc.code + "_subscribe", {type:1,msg:doc.media}, 30)
+                        await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
                     }
                     res.send({success: '修改成功', data: doc})
                 } else {
@@ -147,13 +150,13 @@ router.post('/update', async(req, res, next) => {
             console.log(req.body.replyType, doc.code, doc.text, doc.key, '---------------------ttttttttt')
             if (req.body.text) {
                 await mem.set("reply_" + doc.code + "_" + doc.text, {type:0,msg:doc.msgId}, 30)
-                await mem.set("reply_" + code + "_" +  'subscribe', '', 1)
+                await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
           } else if (req.body.key) {
                 await mem.set("reply_" + doc.code + "_" + doc.key, {type:0,msg:doc.msgId}, 30)
-                await mem.set("reply_" + code + "_" +  'subscribe', '', 1)
+                await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
           } else {
                 await mem.set("reply_" + doc.code + "_subscribe", {type:0,msg:doc.msgId}, 30)
-                await mem.set("reply_" + code + "_" +  'subscribe', '', 1)
+                await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
             }
             res.send({success: '修改成功', data: doc})
         } else {
@@ -166,12 +169,13 @@ router.get('/del', async(req, res, next) => {
     let id = req.query.id
     var doc = await ReplyModel.findByIdAndRemove(id)
     if (doc) {
+         var content = await mem.get("reply_" + code + "_" +  'subscribe');
         if (doc.text) {
             await mem.set("reply_" + doc.code + "_" + doc.text, '', 1)
-            await mem.set("reply_" + code + "_" +  'subscribe', '', 1)
+            await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
         } else if (doc.key) {
-            await mem.set("reply_" + code + "_" +  'subscribe', '', 1)
             await mem.set("reply_" + doc.code + "_" + doc.key, '', 1)
+            await mem.set("reply_" + doc.code + "_" +  'subscribe', '', 1)
         }
         res.send({success: '删除成功', data: doc})
     } else {
