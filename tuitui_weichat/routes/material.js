@@ -64,9 +64,7 @@ router.get('/sendMsg', async (req, res, next) => {
        error: '正在发送消息'
     })
   }
-  let result = await MaterialModel.findOneAndUpdate({
-    media_id: mediaId
-  }, {
+  let result = await MaterialModel.findByIdAndUpdate(id, {
     msg_id: docs.msg_id
   }, {new: true})
   res.send({
