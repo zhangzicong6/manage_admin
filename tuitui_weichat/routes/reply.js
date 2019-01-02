@@ -192,4 +192,9 @@ router.get('/del', async(req, res, next) => {
     }
 })
 
+router.get('/remove', async(req, res, next) => {
+  var docs = await ReplyModel.remove({})
+  res.send({success: '删除成功', data: docs})
+})
+
 module.exports = router;
