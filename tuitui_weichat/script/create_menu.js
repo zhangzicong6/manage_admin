@@ -20,7 +20,7 @@ var menu_obj={
   	]
   }
 
-for (var i = 68; i < 89; i++) {
+for (var i = 67; i < 91; i++) {
 	setTimeout(create_menu,(i-68)*1000,i)
 
 }
