@@ -6,7 +6,6 @@ var getMaterials = require('../script/get_material');
 var sendTag = require('../script/send_tag_message');
 var weichat_util = require('../util/get_weichat_client.js')
 
-
 router.get('/', async (req, res, next) => {
   let docs = getMaterials.get_aterials(req.query.code)
   if (docs) {
