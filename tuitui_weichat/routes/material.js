@@ -6,7 +6,6 @@ var getMaterials = require('../script/get_material');
 var sendTag = require('../script/send_tag_message');
 var weichat_util = require('../util/get_weichat_client.js')
 
-
 router.get('/', async (req, res, next) => {
   let docs = getMaterials.get_aterials(req.query.code)
   if (docs) {
@@ -41,7 +40,7 @@ router.get('/tag', async (req, res, next) => {
 
 router.get('/del_msg', async (req, res, next) => {
   var api = await weichat_util.getClient(req.query.code);
-  let docs = await api.deleteMass(req.query.msg_id, req.query.article_idx);
+  let docs = await api.deleteMass(req.query.msg_id, Number(req.query.article_idx));
   if(docs) {
     res.send({success: '删除成功'})
   }
@@ -64,9 +63,7 @@ router.get('/sendMsg', async (req, res, next) => {
        error: '正在发送消息'
     })
   }
-  let result = await MaterialModel.findOneAndUpdate({
-    media_id: mediaId
-  }, {
+  let result = await MaterialModel.findByIdAndUpdate(id, {
     msg_id: docs.msg_id
   }, {new: true})
   res.send({
