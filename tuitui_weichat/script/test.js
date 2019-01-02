@@ -16,9 +16,11 @@ async function getUserByCode(code) {
                     if (res) {
                         console.log(res, '------------------res')
                         for (let i of res.tags) {
-                            client.deleteTag(i.id, function (error, res) {
-                                console.log(res)
-                            })
+                            if (i.name == "明星说男" || i.name == "明星说女" || i.name == "明星说未知") {
+                                client.deleteTag(i.id, function (error, res) {
+                                    console.log(res)
+                                })
+                            }
                         }
                         callback(null)
                     } else {

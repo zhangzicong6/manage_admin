@@ -13,31 +13,7 @@ async function getUserByCode() {
         let client = await wechat_util.getClient(code)
         async.waterfall([
             function (callback) {
-                UserTagModel.remove({code: code}, function (err, doc) {
-                    client.getTags(function (err, res) {
-                        if (res) {
-                            console.log(res, '------------------res')
-                            for (let i of res.tags) {
-                                if (i.name == "明星说男" || i.name == "明星说女" || i.name == "明星说未知") {
-                                    client.deleteTag(i.id, function (error, res) {
-                                        console.log(res)
-                                    })
-                                }
-                            }
-                            callback(null)
-                        } else {
-                            callback(null)
-                        }
-                    })
-                })
-            }, function (callback) {
-                UserconfModel.remove({code: code}, function (err, doc) {
-                    OpenidModel.remove({code: code}, function (err, doc) {
-                        callback(null)
-                    })
-                })
-            }, function (callback) {
-                get_users(code, null, function () {
+                get_users(code, 'o_a3s52wNmYLnwBbXsnMWD8BXaXo', function () {
                     callback(null)
                 })
             }, function (callback) {
@@ -67,10 +43,7 @@ async function getUserByCode() {
                     })
                 })
             }], async function (error) {
-            await OpenidModel.remove({code: code})
-            await mem.set("jieguan_" + code, 1, 30 * 24 * 3600)
-            await ConfigModel.update({code: code}, {status: 1})
-            console.log('jieguan end')
+            console.log('end')
             return
         })
     }

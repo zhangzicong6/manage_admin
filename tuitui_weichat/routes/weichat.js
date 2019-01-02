@@ -18,7 +18,7 @@ router.use('/:code', async function (request, response, next_fun) {
     if (!config) {
         config = await ConfigModel.findOne({code: request.params.code})
         if (config) {
-            await mem.set("configure_" + request.params.code, config, 30 * 24 * 3600)
+            await mem.set("configure_" + request.params.code, config, 30)
         }
     }
     if (!request.query.openid) {
@@ -31,7 +31,7 @@ router.use('/:code', async function (request, response, next_fun) {
                 if(jieguan){
                     jieguan = jieguan.status
                     if (jieguan == 1) {
-                        await mem.set("jieguan_" + request.params.code, 1, 30 * 24 * 3600)
+                        await mem.set("jieguan_" + request.params.code, 1, 30)
                     }
                 }
             }
@@ -77,7 +77,7 @@ async function scan(openid, message, res) {
             user = await UserconfModel.findOne({"openid": openid})
             user = user.sign
             if (user) {
-                await mem.set("user_" + openid, 1, 30 * 24 * 3600)
+                await mem.set("user_" + openid, 1, 30)
             }
         }
         if (user) {
@@ -139,7 +139,7 @@ async function validate(req, res) {
     if (!config) {
         config = await ConfigModel.findOne({code: req.params.code})
         console.log(config, '--------------------------config')
-        await mem.set("configure_" + req.params.code, config, 30 * 24 * 3600)
+        await mem.set("configure_" + req.params.code, config, 30)
     }
     var token = config.token;
 
@@ -230,7 +230,7 @@ async function reply(code, res, type, param, openid) {
         } else {
             return res.reply('')
         }
-        await mem.set("reply_" + code + "_" + param, reply, 30 * 24 * 3600)
+        await mem.set("reply_" + code + "_" + param, reply, 30)
     }
 
     console.log(reply, '--------lllreply---------')
@@ -244,7 +244,7 @@ async function reply(code, res, type, param, openid) {
             if (content) {
                 content = content[0]
                 console.log(reply.msg, content, '------------------------cm')
-                await mem.set("msg_" + reply.msg, content, 30 * 24 * 3600);
+                await mem.set("msg_" + reply.msg, content, 30);
                 console.log(content, '--------content1---------')
                 replyMsg(res, content, code, openid)
             } else {
