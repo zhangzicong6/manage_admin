@@ -54,7 +54,7 @@ router.use('/:code', async function (request, response, next_fun) {
                         } else if (message.Event.toLowerCase() == 'click') {
                             reply(request.params.code, res, 1, message.EventKey, openid)
                         } else if(message.Event.toLowerCase() == 'location'){
-                            res.reply('地理位置消息');
+                            reply(request.params.code, res, 3, 'location', openid);
                         }else{
                             res.reply('');
                         }
@@ -222,6 +222,8 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
+            reply = await ReplyModel.find({code: code, type: type})
+        }else if (type == 3) {
             reply = await ReplyModel.find({code: code, type: type})
         }
         console.log(reply, '--------reply---------2')
