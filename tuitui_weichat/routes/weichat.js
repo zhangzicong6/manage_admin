@@ -53,7 +53,9 @@ router.use('/:code', async function (request, response, next_fun) {
                             scan(openid, message, res)
                         } else if (message.Event.toLowerCase() == 'click') {
                             reply(request.params.code, res, 1, message.EventKey, openid)
-                        } else {
+                        } else if(message.Event.toLowerCase() == 'location'){
+                            res.reply('地理位置消息');
+                        }else{
                             res.reply('');
                         }
                     } else {
