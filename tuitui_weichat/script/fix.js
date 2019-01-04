@@ -13,7 +13,7 @@ async function getUserByCode() {
         let client = await wechat_util.getClient(code)
         async.waterfall([
             function (callback) {
-                get_users(code, 'o_a3s52wNmYLnwBbXsnMWD8BXaXo', function () {
+                get_users(code, 'o5TWJ03zwbEB15BR7UzlBk2GOly8', function () {
                     callback(null)
                 })
             }, function (callback) {
