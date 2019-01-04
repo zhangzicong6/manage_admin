@@ -4,6 +4,7 @@ var ConfigModel = require('../model/Config');
 var mem = require('../util/mem.js');
 var user = require('../script/get_users')
 var exec = require('child_process').exec;
+var request = require('request');
 
 router.get('/', async(req, res, next) => {
     let doc = await ConfigModel.find()
@@ -72,10 +73,7 @@ router.get('/jieguan', async(req, res, next) => {
     let jieguan = await mem.get("jieguan_" + code)
     if (!jieguan) {
         await ConfigModel.findOneAndUpdate({code: code}, {status: -1})
-        let cmdStr = 'nohup node /home/work/tuitui_pro/tuitui_weichat/script/get_users.js ' + code+' &'
-        console.log(cmdStr)
-        exec(cmdStr, function (err, stdout, stderr) {
-
+        request('http://localhost:3002/get_users?code=' + code, function (err, response) {
         })
         res.send({success: '设置接管成功'})
     } else {
