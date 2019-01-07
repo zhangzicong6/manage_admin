@@ -40,7 +40,9 @@ router.get('/tag', async (req, res, next) => {
 
 router.get('/del_msg', async (req, res, next) => {
   var api = await weichat_util.getClient(req.query.code);
-  api.deleteMass(req.query.msg_id, Number(req.query.article_idx), () => {
+  api.deleteMass(req.query.msg_id, Number(req.query.article_idx), (err, result) => {
+    console.log('result------------------------', result, 'result------------------------')
+    console.log('err------------------------', err, 'err------------------------')
     res.send({success: '删除成功'})
   });
 })
