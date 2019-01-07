@@ -51,6 +51,7 @@ router.post('/', function (req, res, next) {
         console.log("有数据")
         res.send({
           success: "查询成功",
+          exist: 1,
           data: result
         })
       } else {
@@ -62,6 +63,7 @@ router.post('/', function (req, res, next) {
           console.log(error)
           res.send({
             success: "查询成功",
+            exist: 0,
             data: tm
           })
         });
