@@ -5,6 +5,7 @@ var mem = require('../util/mem.js');
 var user = require('../script/get_users')
 var exec = require('child_process').exec;
 var request = require('request');
+var UserconfModel = require('../model/Userconf');
 
 router.get('/', async(req, res, next) => {
     let doc = await ConfigModel.find()
@@ -52,6 +53,7 @@ router.get('/del', async(req, res, next) => {
     let id = req.query.id
     var doc = await ConfigModel.findByIdAndRemove(id)
     if (doc) {
+        await UserconfModel.remove({code: doc.code})
         await mem.set("configure_" + doc.code, '', 1)
         res.send({success: '删除成功', data: doc})
     } else {
