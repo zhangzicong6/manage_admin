@@ -11,7 +11,8 @@ var ConfigSchema = new Schema({
     appsecret: String,
     token: String,
     EncodingAESKey: {type: String, default: "tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"},
-    status: {type: Number, default: -2}  // -2未接管,-1接管中,1已接管
+    status: {type: Number, default: -2},  // -2未接管,-1接管中,1已接管
+    group: {type: String, default: ""}
 });
 
 ConfigSchema.plugin(autoIncrement.plugin, {
