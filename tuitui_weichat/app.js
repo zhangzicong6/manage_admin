@@ -32,6 +32,7 @@ var alipayLink = require('./routes/alipayLink');
 var novelTransfer = require('./routes/novelTransfer');
 var material = require('./routes/material');
 var recommend = require('./routes/recommend');
+var gonghaoTag = require('./routes/gonghaoTag')
 
 var app = express();
 
@@ -91,6 +92,7 @@ app.use('/manage',manage)
 app.use('/novel_transfer',novelTransfer)
 app.use('/material',material)
 app.use('/recommend',recommend)
+app.use('/gonghaoTag',gonghaoTag)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
