@@ -32,4 +32,4 @@ async function updateTag(code) {
         }
     })
 }
-updateTag(112)
+updateTag(140)

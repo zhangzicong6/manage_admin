@@ -42,4 +42,4 @@ async function getTag(code) {
     })
 }
 
-getTag(112)
+getTag(140)
