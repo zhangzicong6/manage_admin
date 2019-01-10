@@ -7,4 +7,4 @@ async function test(appid, code) {
         console.log('clearQuota end')
     })
 }
-test('wx44e6274ee3d462a0', 112)
+test('wx02c50ccfbdd93b8c', 146)
