@@ -4,24 +4,24 @@ var menu_obj={
   	"button":[
   		{
 	  		"type":"view",
-	        "name":"💌 都市",
+	        "name":"总裁媳妇",
 	        "url":"https://c66481.818tu.com/referrals/index/4186741"
   		},
   		{
 	  		"type":"view",
-	        "name":"💋 言情",
+	        "name":"贴心萌宝",
 	        "url":"https://c66481.818tu.com/referrals/index/4186749"
   		},
   		{
 	  		"type":"view",
-	        "name":"🔥小说",
+	        "name":"专职高手",
 	        "url":"https://c66481.818tu.com/referrals/index/4186754"
   		}
   	]
   }
 
-for (var i = 67; i < 91; i++) {
-	setTimeout(create_menu,(i-68)*1000,i)
+for (var i = 156; i < 166; i++) {
+	setTimeout(create_menu,(i-156)*1000,i)
 
 }
 
