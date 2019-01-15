@@ -49,29 +49,36 @@ router.get('/sendMsg', async (req, res, next) => {
   var id = req.query.id;
   var tagId = req.query.tagId;
   var mediaId = req.query.mediaId;
-  let docs = await sendTag.get_message(id, tagId, mediaId);
-  if(!docs){
-    return res.send({
-       error: '正在发送消息'
-    })
-  }
+  // let docs = await sendTag.get_message(id, tagId, mediaId);
+  // if(!docs){
+  //   return res.send({
+  //      error: '正在发送消息'
+  //   })
+  // }
   let result = await MaterialModel.findByIdAndUpdate(id, {
-    msg_id: docs.msg_id,
+    // msg_id: docs.msg_id,
     tagId: tagId
-  }, {new: true})
-  if(!result) {
-    res.send({error: "发送失败"})
-  } else {
-    result.tagId = tagId
-    console.log(result)
-    console.log("----------------------------result--------------------------------")
+  }, {new: true}, async (err, docs) => {
+    if(err) {
+      console.log("err", err)
+      return
+    }
     let message = await MsgHistoryModel.create(result)
-    console.log(message)
-    console.log("----------------------------message--------------------------------")
     res.send({
       success: '发送成功', result: result, docs: docs, message: message
     })
-  }
+  })
+  // if(!result) {
+  //   res.send({error: "发送失败"})
+  // } else {
+  //   result.tagId = tagId
+  //   console.log(result)
+  //   console.log("----------------------------result--------------------------------")
+    
+  //   console.log(message)
+  //   console.log("----------------------------message--------------------------------")
+    
+  // }
 })
 
 module.exports = router;
