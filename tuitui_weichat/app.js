@@ -33,6 +33,7 @@ var novelTransfer = require('./routes/novelTransfer');
 var material = require('./routes/material');
 var recommend = require('./routes/recommend');
 var gonghaoTag = require('./routes/gonghaoTag')
+var msgHistory = require('./routes/msgHistory')
 
 var app = express();
 
@@ -93,6 +94,7 @@ app.use('/novel_transfer',novelTransfer)
 app.use('/material',material)
 app.use('/recommend',recommend)
 app.use('/gonghaoTag',gonghaoTag)
+app.use('/history',msgHistory)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

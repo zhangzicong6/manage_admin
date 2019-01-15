@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var UserTagModel = require('../model/UserTag');
 var MaterialModel = require('../model/Material');
+var MsgHistoryModel = require('../model/MsgHistory');
 var getMaterials = require('../script/get_material');
 var sendTag = require('../script/send_tag_message');
-var weichat_util = require('../util/get_weichat_client.js')
 
 router.get('/', async (req, res, next) => {
   let docs = getMaterials.get_aterials(req.query.code)
@@ -38,15 +38,6 @@ router.get('/tag', async (req, res, next) => {
   })
 })
 
-router.get('/del_msg', async (req, res, next) => {
-  var api = await weichat_util.getClient(req.query.code);
-  api.deleteMass(req.query.msg_id, Number(req.query.article_idx), (err, result) => {
-    console.log('result------------------------', result, 'result------------------------')
-    console.log('err------------------------', err, 'err------------------------')
-    res.send({success: '删除成功'})
-  });
-})
-
 router.get('/clear', async (req, res, next) => {
   let docs = await MaterialModel.remove({code: req.query.code})
   if(docs) {
@@ -64,12 +55,18 @@ router.get('/sendMsg', async (req, res, next) => {
        error: '正在发送消息'
     })
   }
-  let result = await MaterialModel.findByIdAndUpdate(id, {
-    msg_id: docs.msg_id
-  }, {new: true})
-  res.send({
-    success: '发送成功', data: result, docs: docs
-  })
+  let result = await MaterialModel.findById(id)
+  console.log("result", result)
+  if(result) {
+    result.msg_id = docs.msg_id
+    result.tagId = tagId
+    let message = await MsgHistoryModel.create(result)
+    res.send({
+      success: '发送成功', result: result, docs: docs, message: message
+    })
+  } else {
+    res.send({error: "发送失败"})
+  }
 })
 
 module.exports = router;

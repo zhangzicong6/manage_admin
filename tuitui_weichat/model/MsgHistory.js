@@ -3,10 +3,14 @@ var Schema = mongoose.Schema;
 var connect_url = require('../conf/proj.json').mongodb;
 var db = mongoose.createConnection(connect_url);
 
-var MaterialSchema = new Schema({
+var MsgHistorySchema = new Schema({
     type: String,  // 图片（image）、视频（video）、语音 （voice）、图文（news）
     media_id: String, 
     code: Number,
+    msg_id: {
+      type: String,
+      default: ''
+    }, 
     content: {
         news_item: Array
     }, 
@@ -18,8 +22,9 @@ var MaterialSchema = new Schema({
         type: String,
         default: ''
     }, 
-    update_time: String, 
+    update_time: String,
+    tagId: Number
 });
 
-var MaterialModel = db.model('Material', MaterialSchema);
-module.exports = MaterialModel;
+var MsgHistoryModel = db.model('MsgHistory', MsgHistorySchema);
+module.exports = MsgHistoryModel;
