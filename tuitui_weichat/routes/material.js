@@ -56,7 +56,6 @@ router.get('/sendMsg', async (req, res, next) => {
     })
   }
   await MaterialModel.findById(id, async (err, result) => {
-    
     if(err) {
       res.send({error: "发送失败"})
     } else {
@@ -64,11 +63,8 @@ router.get('/sendMsg', async (req, res, next) => {
       delete result._id;
       result.tagId = tagId
       result.msg_id = docs.msg_id
-      console.log(result)
-      console.log("----------------------------result--------------------------------")
+      result.update_time = Date.now()
       let message = await MsgHistoryModel.create(result)
-      console.log(message)
-      console.log("----------------------------message--------------------------------")
       res.send({
         success: '发送成功', result: result, docs: docs, message: message
       })
