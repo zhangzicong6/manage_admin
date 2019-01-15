@@ -55,23 +55,25 @@ router.get('/sendMsg', async (req, res, next) => {
        error: '正在发送消息'
     })
   }
-  let result = await MaterialModel.findById(id)
-  if(!result) {
-    res.send({error: "发送失败"})
-  } else {
-    result = result.ToObject();
-    delete result._id;
-    result.tagId = tagId
-    result.msg_id = docs.msg_id
-    console.log(result)
-    console.log("----------------------------result--------------------------------")
-    let message = await MsgHistoryModel.create(result)
-    console.log(message)
-    console.log("----------------------------message--------------------------------")
-    res.send({
-      success: '发送成功', result: result, docs: docs, message: message
-    })
-  }
+  await MaterialModel.findById(id, async (err, result) => {
+    if(err) {
+      res.send({error: "发送失败"})
+    } else {
+      result = result.ToObject();
+      delete result._id;
+      result.tagId = tagId
+      result.msg_id = docs.msg_id
+      console.log(result)
+      console.log("----------------------------result--------------------------------")
+      let message = await MsgHistoryModel.create(result)
+      console.log(message)
+      console.log("----------------------------message--------------------------------")
+      res.send({
+        success: '发送成功', result: result, docs: docs, message: message
+      })
+    }
+  })
+  
 })
 
 module.exports = router;
