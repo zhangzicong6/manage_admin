@@ -55,10 +55,10 @@ router.get('/sendMsg', async (req, res, next) => {
   //      error: '正在发送消息'
   //   })
   // }
-  let result = await MaterialModel.findByIdAndUpdate(id, {
+  let result1 = await MaterialModel.findByIdAndUpdate(id, {
     // msg_id: docs.msg_id,
     tagId: tagId
-  }, {new: true}, async (err, docs) => {
+  }, {new: true}, async (err, result) => {
     if(err) {
       console.log("err", err)
       return
