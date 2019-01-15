@@ -56,7 +56,8 @@ router.get('/sendMsg', async (req, res, next) => {
     })
   }
   let result = await MaterialModel.findByIdAndUpdate(id, {
-    msg_id: docs.msg_id
+    msg_id: docs.msg_id,
+    tagId: tagId
   }, {new: true})
   if(!result) {
     res.send({error: "发送失败"})
