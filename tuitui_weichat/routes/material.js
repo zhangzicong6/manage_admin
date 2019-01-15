@@ -63,7 +63,7 @@ router.get('/sendMsg', async (req, res, next) => {
       delete result._id;
       result.tagId = tagId
       result.msg_id = docs.msg_id
-      result.update_time = Date.now()
+      result.update_time = Date.now() / 1000
       console.log(result)
       let message = await MsgHistoryModel.create(result)
       res.send({
