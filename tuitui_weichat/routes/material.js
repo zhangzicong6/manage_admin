@@ -65,7 +65,7 @@ router.get('/sendMsg', async (req, res, next) => {
     }
     let message = await MsgHistoryModel.create(result)
     res.send({
-      success: '发送成功', result: result, docs: docs, message: message
+      success: '发送成功', result: result, docs: "docs", message: message
     })
   })
   // if(!result) {
