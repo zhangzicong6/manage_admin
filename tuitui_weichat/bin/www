@@ -33,7 +33,7 @@ server.on('listening', onListening);
 
 // require('../script/userInfo.js');
 
-require('../script/send_timing.js');
+
 // require('../script/order_get.js');
 //require('../script/baokuan.js');
 //require('../script/usera.js');
