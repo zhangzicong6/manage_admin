@@ -29,6 +29,21 @@ router.get('/show', async (req, res, next) => {
   })
 })
 
+router.post('/timing', async (req, res, next) => {
+  let id = req.body.id,
+      message = {
+        tagId: Number(req.body.tagId),
+        isTiming: req.body.timing,
+        timing: Number(req.body.timing)
+      }
+  let result = await MaterialModel.findByIdAndUpdate(id, message, {new: true})
+  if(result) {
+    res.send({success: "设置定时成功", data: result})
+  } else {
+    res.send({err: "设置失败，请重新尝试"})
+  }
+})
+
 router.get('/tag', async (req, res, next) => {
   let doc = await UserTagModel.find({
     code: req.query.code

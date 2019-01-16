@@ -18,7 +18,19 @@ var MaterialSchema = new Schema({
         type: String,
         default: ''
     }, 
-    update_time: String
+    update_time: String,
+    timing: {
+      type: Number,
+      default: null
+    },
+    isTiming: {
+      type: Boolean,
+      default: false
+    },
+    tagId: {
+      type: Number,
+      default: null
+    }
 });
 
 var MaterialModel = db.model('Material', MaterialSchema);

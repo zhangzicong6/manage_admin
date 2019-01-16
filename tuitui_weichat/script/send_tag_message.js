@@ -1,6 +1,5 @@
 var wechat_util = require('../util/get_weichat_client');
 var MaterialModel = require('../model/Material');
-var UserTagModel = require('../model/UserTag');
 var flags = {};
 
 async function get_message(id, tagId, mediaId) {
@@ -20,7 +19,6 @@ async function get_message(id, tagId, mediaId) {
 }
 
 async function send_users(id, message, tagId, mediaId) {
-    //let tag = await UserTagModel.findOne({id: tagId})
     console.log(message);
     let code = message.code
     var client = await wechat_util.getClient(code);

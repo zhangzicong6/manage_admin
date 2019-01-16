@@ -1,61 +1,40 @@
-var wechat_util = require('../util/get_weichat_client');
-var MessageModel = require('../model/Message');
-var UserModel = require('../model/Userconf');
-var async = require('async');
+var MaterialModel = require('../model/Message');
+var MsgHistoryModel = require('../model/MsgHistory');
+var send_tag_message = require('./send_tag_message');
 var schedule = require("node-schedule");
 
-function get_timing_message() {
-    MessageModel.find({is_timing: true}, function (err, messages) {
-        if (messages) {
-            messages.forEach(function (message) {
-                send_timing(null, message);
-            })
-        } else {
-            console.log('============= 未找到信息 ==========')
-        }
-    });
+async function get_timing_message() {
+    let messages = await MaterialModel.find({is_timing: true});
+    if (messages) {
+      messages.forEach(function (message) {
+          send_timing(message._id, message.tagId, message.mediaId, message.timing);
+      })
+    } else {
+      console.log('============= 未找到群发消息的信息 ==========')
+    }
 }
 
-function send_timing(user_id, message) {
-    if (user_id || (message.timing_time && Date.now() - new Date(message.timing_time).getTime() >= 60 * 1000 && Date.now() - new Date(message.timing_time).getTime() < 120 * 1000)) {
-        UserModel.fetch(user_id, message.sex, message.tagId, message.codes, '', '', function (err, users) {
-            var l = []
-            async.eachLimit(users, 10, async function (user, callback) {
-                l.push(user._id)
-                var client = await wechat_util.getClient(user.code);
-                if (message.type == 0) {
-                    client.sendNews(user.openid, message.contents, function (err, res) {
-                        console.log(err);
-                        setTimeout(function () {
-                            callback(null)
-                        }, 50)
-                    });
-                } else if (message.type == 1) {
-                    client.sendText(user.openid, message.contents[0].description, function (error, res) {
-                        console.log(error);
-                        setTimeout(function () {
-                            callback(null)
-                        }, 50)
-                    })
-                }
-            }, function (err) {
-                if (users.length == 50) {
-                    UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
-                        multi: true,
-                        upsert: true
-                    }, function () {
-                    })
-                    send_timing(users[49]._id, message);
-                } else {
-                    UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
-                        multi: true,
-                        upsert: true
-                    }, function () {
-                    })
-                }
-            })
-        });
+async function send_timing(id, tagId, mediaId, timing) {
+  if(timing && Date.now() - timing >= 60 * 1000 && Date.now() - timing < 120 * 1000 ) {
+    let docs = await send_tag_message.get_message(id, tagId, mediaId);
+    console.log("-------------------send_timing   docs----------------------------", docs)
+    if(!docs){
+      return
     }
+    await MaterialModel.findById(id, async (err, result) => {
+      if(err) {
+        return
+      } else {
+        result = result.toObject()
+        delete result._id;
+        result.tagId = tagId
+        result.msg_id = docs.msg_id
+        result.update_time = Date.now() / 1000
+        console.log("send_timing -----result-------------------------------------", result)
+        await MsgHistoryModel.create(result)
+      }
+    })
+  }
 }
 
 var rule = new schedule.RecurrenceRule();
