@@ -5,6 +5,7 @@ var schedule = require("node-schedule");
 
 async function get_timing_message() {
     let messages = await MaterialModel.find({isTiming: true});
+    console.log("-----------------------定时任务  messages----------------------------", messages)
     if (messages.length !== 0) {
       messages.forEach(function (message) {
           send_timing(message._id, message.tagId, message.mediaId, message.timing);
@@ -41,6 +42,5 @@ var rule = new schedule.RecurrenceRule();
 var times = [1];
 rule.second = times;
 var j = schedule.scheduleJob(rule, function () {
-    console.log("-----------------定时任务-----------------------")
     get_timing_message()
 });
