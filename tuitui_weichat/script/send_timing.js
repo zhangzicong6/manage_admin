@@ -4,7 +4,7 @@ var send_tag_message = require('./send_tag_message');
 var schedule = require("node-schedule");
 
 async function get_timing_message() {
-    let messages = await MaterialModel.find({is_timing: true});
+    let messages = await MaterialModel.find({isTiming: true});
     if (messages) {
       messages.forEach(function (message) {
           send_timing(message._id, message.tagId, message.mediaId, message.timing);
