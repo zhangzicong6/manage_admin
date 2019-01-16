@@ -34,7 +34,7 @@ router.get('/send_timing', async (req, res, next) => {
   let id = req.query.id,
       message = {
         tagId: Number(req.query.tagId),
-        isTiming: req.query.timing,
+        isTiming: req.query.isTiming,
         timing: Number(req.query.timing)
       }
   let result = await MaterialModel.findByIdAndUpdate(id, message, {new: true})
