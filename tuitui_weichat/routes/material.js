@@ -30,6 +30,7 @@ router.get('/show', async (req, res, next) => {
 })
 
 router.post('/timing', async (req, res, next) => {
+  console.log(req.body.id)
   let id = req.body.id,
       message = {
         tagId: Number(req.body.tagId),
