@@ -29,13 +29,13 @@ router.get('/show', async (req, res, next) => {
   })
 })
 
-router.post('/send_timing', async (req, res, next) => {
-  console.log(req.body.id)
-  let id = req.body.id,
+router.get('/send_timing', async (req, res, next) => {
+  console.log(req.query.id)
+  let id = req.query.id,
       message = {
-        tagId: Number(req.body.tagId),
-        isTiming: req.body.timing,
-        timing: Number(req.body.timing)
+        tagId: Number(req.query.tagId),
+        isTiming: req.query.timing,
+        timing: Number(req.query.timing)
       }
   let result = await MaterialModel.findByIdAndUpdate(id, message, {new: true})
   if(result) {
