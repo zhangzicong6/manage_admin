@@ -1,4 +1,4 @@
-var MaterialModel = require('../model/Message');
+var MaterialModel = require('../model/Material');
 var MsgHistoryModel = require('../model/MsgHistory');
 var send_tag_message = require('./send_tag_message');
 var schedule = require("node-schedule");
