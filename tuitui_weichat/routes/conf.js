@@ -14,9 +14,7 @@ router.get('/', async(req, res, next) => {
 
 router.get('/find_one', async(req, res, next) => {
   let reg = new RegExp(req.query.name);
-  // let doc = await ConfigModel.find({name: {$regex: reg}})
-  console.log(req.query.name)
-  let doc = await ConfigModel.find({name: req.query.name})
+  let doc = await ConfigModel.find({name: {$regex: reg}})
   res.send({data: doc})
 })
 
