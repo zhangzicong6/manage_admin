@@ -100,7 +100,6 @@ router.get('/delete', async (req, res, next) => {
 router.get('/send', async (req, res, next) => {
     var id = req.query.id;
     var take_over = req.query.take_over;
-    console.log('take_over-------------' + take_over)
     if (take_over) {
         sendUser.get_message(id);
         res.send({success: '发送成功'})
