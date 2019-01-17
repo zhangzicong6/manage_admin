@@ -34,12 +34,12 @@ function send_users(user_id, message,tagId) {
             if (message.type == 0) {
                 client.sendNews(user.openid, message.contents, function (err, res) {
                     console.log(err);
-                    callback(null)
+                    callback(null,null)
                 });
             } else if (message.type == 1) {
                 client.sendText(user.openid, message.contents[0].description, function (error, res) {
                     console.log(error);
-                    callback(null)
+                    callback(null,null)
                 })
             }
         }, function (err) {
