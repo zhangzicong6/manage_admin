@@ -21,25 +21,25 @@ function get_message(id) {
 }
 
 async function send_users(user_id, message) {
-    var client = await wechat_util.getClient(user.code);
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         async.eachLimit(users, 10, function (user, callback) {
-            
-            if (message.type == 0) {
-                client.sendNews(user.openid, message.contents, function (err, res) {
-                    console.log(err);
-                    setTimeout(function () {
-                        callback(null)
-                    }, 50)
-                });
-            } else if (message.type == 1) {
-                client.sendText(user.openid, message.contents[0].description, function (error, res) {
-                    console.log(error);
-                    setTimeout(function () {
-                        callback(null)
-                    }, 50)
-                })
-            }
+            wechat_util.getClient(user.code).then(function(client){
+                if (message.type == 0) {
+                    client.sendNews(user.openid, message.contents, function (err, res) {
+                        console.log(err);
+                        setTimeout(function () {
+                            callback(null)
+                        }, 50)
+                    });
+                } else if (message.type == 1) {
+                    client.sendText(user.openid, message.contents[0].description, function (error, res) {
+                        console.log(error);
+                        setTimeout(function () {
+                            callback(null)
+                        }, 50)
+                    })
+                }
+            });
         }, function (err) {
             if (users.length == 50) {
                 send_users(users[49]._id, message);
