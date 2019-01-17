@@ -22,26 +22,25 @@ function get_message(id,tagId) {
 
 async function send_users(user_id, message,tagId) {
     console.log(message,'-------------------')
-    var client = await wechat_util.getClient(user.code);
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
+        console.log('-------客̀服̀消̀息̀--------')
         console.log(users,'-----------------------users')
         var l = []
         async.eachLimit(users, 10, function (user, callback) {
-          console.log("--------------------lixin user-------------------")
-          console.log(user)
-          console.log("--------------------lixin user-------------------")
-            l.push(user._id) 
-            if (message.type == 0) {
-                client.sendNews(user.openid, message.contents, function (err, res) {
-                    console.log(err);
-                    callback(null,null)
-                });
-            } else if (message.type == 1) {
-                client.sendText(user.openid, message.contents[0].description, function (error, res) {
-                    console.log(error);
-                    callback(null,null)
-                })
-            }
+            wechat_util.getClient(user.code).then(function(client){
+                l.push(user._id) 
+                if (message.type == 0) {
+                    client.sendNews(user.openid, message.contents, function (err, res) {
+                        console.log(err);
+                        callback(null,null)
+                    });
+                } else if (message.type == 1) {
+                    client.sendText(user.openid, message.contents[0].description, function (error, res) {
+                        console.log(error);
+                        callback(null,null)
+                    })
+                }
+            });
         }, function (err) {
             if (users.length == 50) {
                 UserModel.update({_id: {$in: l}}, {$set: {send_time: Date.now()}}, {
