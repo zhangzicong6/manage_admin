@@ -12,6 +12,11 @@ router.get('/', async(req, res, next) => {
     res.send({data: doc})
 })
 
+router.get('/find_one', async(req, res, next) => {
+  let doc = await ConfigModel.find({name: req.query.name})
+  res.send({data: doc})
+})
+
 router.post('/create', async(req, res, next) => {
     let data = {
         name: req.body.name,
