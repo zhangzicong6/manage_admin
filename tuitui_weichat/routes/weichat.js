@@ -39,12 +39,12 @@ router.use('/:code', async function (request, response, next_fun) {
                 var message = req.weixin;
                 var openid = message.FromUserName;
                 getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
-                    console.log(message.MsgType, '--------MsgType---------')
+                    //console.log(message.MsgType, '--------MsgType---------')
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
                         reply(request.params.code, res, 0, text, openid)
                     } else if (message.MsgType === 'event') {
-                        console.log(message.Event, '--------Event---------')
+                        //console.log(message.Event, '--------Event---------')
                         if (message.Event === 'subscribe') {
                             //var client = wechat_util.getClient(request.params.code);
                             reply(request.params.code, res, 2, 'subscribe', openid)
@@ -71,8 +71,8 @@ router.use('/:code', async function (request, response, next_fun) {
 
 async function scan(openid, message, res) {
     if (message.EventKey.indexOf("replay") != -1) {
-        console.log('---------message.EventKey---------')
-        console.log(message.EventKey)
+        //console.log('---------message.EventKey---------')
+        //console.log(message.EventKey)
         var id = JSON.parse(message.EventKey).replay;
         let user = await mem.get("user_" + openid)
         if (!user) {
@@ -104,16 +104,16 @@ async function subscribe(openid, config, message, res) {
     //console.log('--------subscribe------- ', config);
     if (message.EventKey.indexOf("replay") != -1) {
         var id = JSON.parse(message.EventKey.split('_')[1]).replay;
-        console.log('======subscribe send text ===========')
+        //console.log('======subscribe send text ===========')
         QRcodeModel.findById(id, function (err, doc) {
             if (doc) {
                 UserconfModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
                 })
-                console.log('-----sendText------')
-                console.log(openid,'============',doc.content)
+               // console.log('-----sendText------')
+                //console.log(openid,'============',doc.content)
                 setTimeout((function (config,openid,doc) {
                      return async function(){
-                        console.log('----消息-------')
+                       // console.log('----消息-------')
                         //console.log(config,openid,doc)
                         var client = await wechat_util.getClient(config.code);
                         client.sendText(openid, doc.content, function (error, result) {
@@ -140,7 +140,7 @@ async function validate(req, res) {
     var config = await mem.get("configure_" + req.params.code);
     if (!config) {
         config = await ConfigModel.findOne({code: req.params.code})
-        console.log(config, '--------------------------config')
+        //console.log(config, '--------------------------config')
         await mem.set("configure_" + req.params.code, config, 30)
     }
     var token = config.token;
@@ -153,7 +153,7 @@ async function validate(req, res) {
     var sha1Code = crypto.createHash("sha1");
     var code = sha1Code.update(str, 'utf-8').digest("hex");
 
-    console.log(echostr);
+    //console.log(echostr);
     //3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
     if (code === signature) {
         res.send(echostr);
