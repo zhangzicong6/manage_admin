@@ -20,8 +20,9 @@ function get_message(id,tagId) {
     }
 }
 
-function send_users(user_id, message,tagId) {
+async function send_users(user_id, message,tagId) {
     console.log(message,'-------------------')
+    var client = await wechat_util.getClient(user.code);
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         console.log(users,'-----------------------users')
         var l = []
@@ -29,8 +30,7 @@ function send_users(user_id, message,tagId) {
           console.log("--------------------lixin user-------------------")
           console.log(user)
           console.log("--------------------lixin user-------------------")
-            l.push(user._id)
-            var client = await wechat_util.getClient(user.code);
+            l.push(user._id) 
             if (message.type == 0) {
                 client.sendNews(user.openid, message.contents, function (err, res) {
                     console.log(err);

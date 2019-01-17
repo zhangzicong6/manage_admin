@@ -20,10 +20,11 @@ function get_message(id) {
     }
 }
 
-function send_users(user_id, message) {
+async function send_users(user_id, message) {
+    var client = await wechat_util.getClient(user.code);
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         async.eachLimit(users, 10, function (user, callback) {
-            var client = await wechat_util.getClient(user.code);
+            
             if (message.type == 0) {
                 client.sendNews(user.openid, message.contents, function (err, res) {
                     console.log(err);
