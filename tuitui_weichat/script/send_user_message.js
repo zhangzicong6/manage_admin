@@ -25,7 +25,7 @@ function send_users(user_id, message,tagId) {
     UserModel.fetch(user_id, message.sex, message.tagId, message.codes, function (err, users) {
         console.log(users,'-----------------------users')
         var l = []
-        async.eachLimit(users, 10, async function (user, callback) {
+        async.eachLimit(users, 10, function (user, callback) {
           console.log("--------------------lixin user-------------------")
           console.log(user)
           console.log("--------------------lixin user-------------------")
