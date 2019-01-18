@@ -5,28 +5,23 @@ var wechat_util = require('../util/get_weichat_client.js')
 var async = require('async');
 
 async function getUserByCode(code) {
-    console.log(code,'-------------------code')
-    if (code) {
-        async.waterfall([
-            function (callback) {
-                get_users(code, 0, function () {
-                    callback(null)
-                })
-            }, function (callback) {
-                get_user(null, code, function () {
-                    callback(null)
-                })
-            }], async function (error) {
-            console.log('update end')
-            return
-        })
-    }
+    async.waterfall([
+        function (callback) {
+            get_users(code, 0, function () {
+                callback(null)
+            })
+        }, function (callback) {
+            get_user(null, code, function () {
+                callback(null)
+            })
+        }], async function (error) {
+        console.log('update end')
+        return
+    })
 }
 
 async function get_users(code, count, callback) {
-    console.log('-----------------get_users')
     UserconfModel.find({code: code}, ['openid']).skip(count).limit(1000).exec(async function (err, data) {
-        console.log(data,'----------------data')
         var openids = [];
         for (var i of data) {
             openids.push({'openid': i.openid, 'code': code});
@@ -124,4 +119,7 @@ function update_user(_id, code, next, back) {
     })
 }
 
-getUserByCode(137)
+var arr = [138, 139, 140, 146, 147, 148, 149, 150, 91]
+for (i in arr) {
+    getUserByCode(i)
+}
