@@ -120,6 +120,6 @@ function update_user(_id, code, next, back) {
 }
 
 var arr = [138, 139, 140, 146, 147, 148, 149, 150, 91]
-for (i in arr) {
+for (var i in arr) {
     getUserByCode(i)
 }
