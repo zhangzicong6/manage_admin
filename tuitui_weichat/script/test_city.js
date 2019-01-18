@@ -27,8 +27,8 @@ async function get_users(code, count, callback) {
     console.log('-----------------get_users')
     UserconfModel.find({code: code}, ['openid']).skip(count).limit(1000).exec(async function (err, data) {
         var openids = [];
-        for (var openid of data.openid) {
-            openids.push({'openid': openid, 'code': code});
+        for (var i of data) {
+            openids.push({'openid': i.openid, 'code': code});
         }
         OpenidModel.insertMany(openids, async function (error, docs) {
             if (error) {
