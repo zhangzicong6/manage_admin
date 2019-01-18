@@ -8,6 +8,7 @@ var async = require('async');
 var UserTagModel = require('../model/UserTag')
 
 async function getUserByCode(code) {
+    console.log(code,'-------------------code')
     if (code) {
         async.waterfall([
             function (callback) {
@@ -26,7 +27,8 @@ async function getUserByCode(code) {
 }
 
 async function get_users(code, count, callback) {
-    UserconfModel.find({code: code}, ['openid']).skip(count).limit(10000).exec(async function (err, data) {
+    console.log('-----------------get_users')
+    UserconfModel.find({code: code}, ['openid']).skip(count).limit(1000).exec(async function (err, data) {
         var openids = [];
         for (var openid of data.openid) {
             openids.push({'openid': openid, 'code': code});
@@ -37,9 +39,9 @@ async function get_users(code, count, callback) {
                 console.log(error);
                 console.log('------------------------------');
             }
-            if (data && data.length == 10000) {
+            if (data && data.length == 1000) {
                 console.log('-----------code -------' + code + '---------update--contitue------')
-                get_users(code, count + 10000, callback);
+                get_users(code, count + 1000, callback);
             } else {
                 console.log('-----------code -------' + code + '---------update--end')
                 callback(null)
