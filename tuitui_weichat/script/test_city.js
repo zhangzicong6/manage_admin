@@ -1,11 +1,8 @@
 var UserconfModel = require('../model/Userconf');
 var Userconf1Model = require('../model/Userconf1');
-var ConfigModel = require('../model/Config');
 var OpenidModel = require('../model/Openid');
 var wechat_util = require('../util/get_weichat_client.js')
-var mem = require('../util/mem.js');
 var async = require('async');
-var UserTagModel = require('../model/UserTag')
 
 async function getUserByCode(code) {
     console.log(code,'-------------------code')
