@@ -26,6 +26,7 @@ async function getUserByCode(code) {
 async function get_users(code, count, callback) {
     console.log('-----------------get_users')
     UserconfModel.find({code: code}, ['openid']).skip(count).limit(1000).exec(async function (err, data) {
+        console.log(data,'----------------data')
         var openids = [];
         for (var i of data) {
             openids.push({'openid': i.openid, 'code': code});
