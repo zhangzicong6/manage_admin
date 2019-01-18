@@ -15,6 +15,7 @@ async function getUserByCode(code) {
                 callback(null)
             })
         }], async function (error) {
+        await OpenidModel.remove({code: code})
         console.log('update end')
         return
     })
