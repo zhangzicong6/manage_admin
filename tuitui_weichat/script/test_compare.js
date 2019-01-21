@@ -70,4 +70,4 @@ var subSet = function(arr1, arr2) {
     return subset;
 };
 
-compare(null,149)
+compare(null,178)
