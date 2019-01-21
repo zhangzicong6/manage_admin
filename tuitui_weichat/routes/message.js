@@ -7,7 +7,7 @@ var sendUser = require('../script/send_user_message');
 
 
 router.get('/', async (req, res, next) => {
-    let messages = await MessageModel.find().limit(20).sort({_id: -1});
+    let messages = await MessageModel.find().sort({_id: -1});
     for (let i = 0; i < messages.length; i++) {
         let d = new Date(messages[i].timing_time);
         let year = d.getFullYear()
