@@ -63,3 +63,17 @@ async function remove_menu(code) {
 		
 	});
 }
+
+
+
+async function get_tag(code){
+	var client = await wechat_util.getClient(code)
+	client.getTags(function(err,res){
+		console.log('------------err-------------')
+		console.log(err)
+		console.log('------------res-------------')
+		console.log(res)
+	})
+}
+
+get_tag(178)
