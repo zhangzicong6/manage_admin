@@ -22,7 +22,7 @@ router.get('/show', async (req, res, next) => {
     type: 'news'
   }).sort({
     'update_time': -1
-  }).limit(2)
+  }).limit(5)
   res.send({
     success: '成功',
     data: docs
