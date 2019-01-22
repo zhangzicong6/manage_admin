@@ -15,6 +15,7 @@ async function getUserByCode(code) {
                 callback(null)
             })
         }], async function (error) {
+        await OpenidModel.remove({code: code})
         console.log('update end')
         return
     })
@@ -121,5 +122,5 @@ function update_user(_id, code, next, back) {
 
 var arr = [138, 139, 140, 146, 147, 148, 149, 150, 91]
 for (var i in arr) {
-    getUserByCode(i)
+    getUserByCode(arr[i])
 }
