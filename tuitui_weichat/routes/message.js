@@ -97,6 +97,16 @@ router.get('/delete', async (req, res, next) => {
     }
 })
 
+router.get('/findTime', async (req, res, next) => {
+  var startTime = new Date(Number(req.query.startTime)), endTime = new Date(Number(req.query.endTime));
+  var docs = await MessageModel.remove({timing_time: {$gte: startTime, $lt: endTime}})
+  if (docs) {
+      res.send({success: '删除成功', data: docs})
+  } else {
+      res.send({err: '删除失败'})
+  }
+})
+
 router.get('/send', async (req, res, next) => {
     var id = req.query.id;
     var take_over = req.query.take_over;
