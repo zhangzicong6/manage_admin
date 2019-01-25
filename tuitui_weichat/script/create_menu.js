@@ -85,7 +85,7 @@ async function get_tag(code){
 
     //var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
    var opts ={ mpnews: { media_id: 'KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0' },
-   msgtype: 'mpnews' },
+   msgtype: 'mpnews' };
     client.massSend(opts, 103, function (err, res) {
             console.log('------------err--------');
             console.log(err);
