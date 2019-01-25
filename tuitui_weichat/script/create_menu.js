@@ -88,13 +88,9 @@ async function get_tag(code){
     	'type' : 'mpnews',
     	"mpnews":{
      		"media_id":media_id
-  		},
-  		"filter":{
-		      "is_to_all":false,
-		      "tag_id":103
-		}
+  		}
     }
-    client.massSend(opts, tagId, function (err, res) {
+    client.massSend(opts, 103, function (err, res) {
             console.log('------------err--------');
             console.log(err);
             console.log('------------res--------');
