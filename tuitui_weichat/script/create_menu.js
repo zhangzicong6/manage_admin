@@ -83,13 +83,9 @@ async function get_tag(code){
         console.log(res)
     })*/
 
-    var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
-    var opts ={
-    	"type" : "mpnews",
-    	"mpnews":{
-     		"media_id":media_id
-  		}
-    }
+    //var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
+   var opts ={ mpnews: { media_id: 'KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0' },
+   msgtype: 'mpnews' },
     client.massSend(opts, 103, function (err, res) {
             console.log('------------err--------');
             console.log(err);
