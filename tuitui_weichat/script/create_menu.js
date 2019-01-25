@@ -20,10 +20,10 @@ var menu_obj={
   	]
   }
 
-for (var i = 156; i < 166; i++) {
+/*for (var i = 156; i < 166; i++) {
 	setTimeout(create_menu,(i-156)*1000,i)
 
-}
+}*/
 
 //create_menu(88)
 
@@ -68,12 +68,16 @@ async function remove_menu(code) {
 
 async function get_tag(code){
 	var client = await wechat_util.getClient(code)
-	client.getTags(function(err,res){
+	client.createTag("明星说测试",async function (err, data){
+		console.log(err)
+		console.log(data)
+	})
+	/*client.getTags(function(err,res){
 		console.log('------------err-------------')
 		console.log(err)
 		console.log('------------res-------------')
 		console.log(res)
-	})
+	})*/
 }
 
 get_tag(178)
