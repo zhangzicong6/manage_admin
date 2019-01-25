@@ -84,7 +84,7 @@ async function get_tag(code){
     })*/
 
     //var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
-   var opts ={ mpnews: { media_id: 'KtjogwJlegSk9wzmQ9jiG50iqT6OLMCDB_JKS5LnCqI' },
+   var opts ={ mpnews: { media_id: 'KtjogwJlegSk9wzmQ9jiG14bdlSC5-DLYugKXr02FiA' },
    msgtype: 'mpnews' };
    /*var opts = {
 	   	"text":{
