@@ -83,9 +83,9 @@ async function get_tag(code){
         console.log(res)
     })*/
 
-    var media_id = 'KtjogwJlegSk9wzmQ9jiG0oCy-lOGY617Nm2ukG3STY';
+    var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
     var opts ={
-    	'type' : 'mpnews',
+    	"type" : "mpnews",
     	"mpnews":{
      		"media_id":media_id
   		}
