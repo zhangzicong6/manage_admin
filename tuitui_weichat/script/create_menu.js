@@ -68,16 +68,20 @@ async function remove_menu(code) {
 
 async function get_tag(code){
 	var client = await wechat_util.getClient(code)
-	client.createTag("明星说测试",async function (err, data){
+	/*client.createTag("明星说测试",async function (err, data){
 		console.log(err)
 		console.log(data)
-	})
+	})*/
 	/*client.getTags(function(err,res){
 		console.log('------------err-------------')
 		console.log(err)
 		console.log('------------res-------------')
 		console.log(res)
 	})*/
+
+	client.membersBatchtagging(103, ['o2JXO56130aGQSfHcfIIDcOVkQNE','o2JXO55e9ojX_vax-6aHI6tQU29I'], function (error, res) {
+        console.log(res)
+    })
 }
 
 get_tag(178)
