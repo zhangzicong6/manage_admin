@@ -37,6 +37,7 @@ async function send_users(id, message, tagId, mediaId) {
 
 function async_send(opts,tagId,client,id){
     return new Promise((resolve, reject)=>{
+        tagId = parseInt(tagId)
         client.massSend(opts, tagId, function (err, res) {
             console.log('------------err--------');
             console.log(err);
