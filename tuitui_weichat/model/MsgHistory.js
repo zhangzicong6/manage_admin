@@ -23,7 +23,15 @@ var MsgHistorySchema = new Schema({
         default: ''
     }, 
     update_time: String,
-    tagId: Number
+    tagId: Number,
+    timing: {
+      type: Number,
+      default: null
+    },
+    isTiming: {
+      type: Boolean,
+      default: false
+    },
 });
 
 var MsgHistoryModel = db.model('MsgHistory', MsgHistorySchema);
