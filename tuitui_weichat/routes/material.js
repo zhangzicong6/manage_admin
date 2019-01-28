@@ -23,9 +23,26 @@ router.get('/show', async (req, res, next) => {
   }).sort({
     'update_time': -1
   }).limit(10)
+  let messages = [], arr= [], results = [], item = {};
+  for (let i = 0; i < docs.length; i ++) {
+    arr = docs[i].content.news_item
+    for (let j = 0; j < arr.length; j ++) {
+      messages.push({title: arr[j].title})
+    }
+    item = {
+      update_time: docs[i].update_time,
+      media_id: docs[i].media_id,
+      content: {
+        news_item: messages
+      },
+      _id: docs[i]._id
+    }
+    results.push(item)
+    messages = []
+  }
   res.send({
     success: '成功',
-    data: docs
+    data: results
   })
 })
 
