@@ -24,7 +24,10 @@ router.get('/', async (req, res, next) => {
         news_item: messages
       },
       _id: docs[i]._id,
-      tagId: docs[i].tagId
+      timing: docs[i].timing,
+      isTiming: docs[i].isTiming,
+      tagId: docs[i].tagId,
+      code: docs[i].code
     }
     results.push(item)
     messages = []
