@@ -79,6 +79,16 @@ router.post('/copy', async (req, res, next) => {
   }
 })
 
+router.get('/del', async (req, res, next) => {
+  let id = req.query.id;
+  let result = await MaterialModel.findByIdAndRemove(id)
+  if(result) {
+    res.send({success: "删除成功", data: result})
+  } else {
+    res.send({err: "删除失败"})
+  }
+})
+
 router.get('/tag', async (req, res, next) => {
   let doc = await UserTagModel.find({
     code: req.query.code
