@@ -66,13 +66,14 @@ router.get('/send_timing', async (req, res, next) => {
   }
 })
 
-router.get('/copy', async (req, res, next) => {
-  let id = req.query.id;
+router.post('/copy', async (req, res, next) => {
+  let id = req.body.id;
   let result = await MaterialModel.findById(id)
   if(result) {
     result = result.toObject();
     delete result._id
-    res.send({success: "复制成功", data: result})
+    let doc = await MaterialModel.create(result)
+    res.send({success: "复制成功", data: doc})
   } else {
     res.send({err: "复制失败"})
   }
