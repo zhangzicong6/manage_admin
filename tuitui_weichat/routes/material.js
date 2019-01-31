@@ -23,9 +23,30 @@ router.get('/show', async (req, res, next) => {
   }).sort({
     'update_time': -1
   }).limit(10)
+  let messages = [], arr= [], results = [], item = {};
+  for (let i = 0; i < docs.length; i ++) {
+    arr = docs[i].content.news_item
+    for (let j = 0; j < arr.length; j ++) {
+      messages.push({title: arr[j].title})
+    }
+    item = {
+      update_time: docs[i].update_time,
+      media_id: docs[i].media_id,
+      content: {
+        news_item: messages
+      },
+      _id: docs[i]._id,
+      timing: docs[i].timing,
+      isTiming: docs[i].isTiming,
+      tagId: docs[i].tagId,
+      code: docs[i].code
+    }
+    results.push(item)
+    messages = []
+  }
   res.send({
     success: '成功',
-    data: docs
+    data: results
   })
 })
 
@@ -42,6 +63,29 @@ router.get('/send_timing', async (req, res, next) => {
     res.send({success: "设置定时成功", data: result})
   } else {
     res.send({err: "设置失败，请重新尝试"})
+  }
+})
+
+router.post('/copy', async (req, res, next) => {
+  let id = req.body.id;
+  let result = await MaterialModel.findById(id)
+  if(result) {
+    result = result.toObject();
+    delete result._id
+    let doc = await MaterialModel.create(result)
+    res.send({success: "复制成功", data: doc})
+  } else {
+    res.send({err: "复制失败"})
+  }
+})
+
+router.get('/del', async (req, res, next) => {
+  let id = req.query.id;
+  let result = await MaterialModel.findByIdAndRemove(id)
+  if(result) {
+    res.send({success: "删除成功", data: result})
+  } else {
+    res.send({err: "删除失败"})
   }
 })
 

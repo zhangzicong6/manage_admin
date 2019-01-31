@@ -20,10 +20,10 @@ var menu_obj={
   	]
   }
 
-for (var i = 156; i < 166; i++) {
+/*for (var i = 156; i < 166; i++) {
 	setTimeout(create_menu,(i-156)*1000,i)
 
-}
+}*/
 
 //create_menu(88)
 
@@ -63,3 +63,41 @@ async function remove_menu(code) {
 		
 	});
 }
+
+
+
+async function get_tag(code){
+	var client = await wechat_util.getClient(code)
+	/*client.createTag("明星说测试",async function (err, data){
+		console.log(err)
+		console.log(data)
+	})*/
+	/*client.getTags(function(err,res){
+		console.log('------------err-------------')
+		console.log(err)
+		console.log('------------res-------------')
+		console.log(res)
+	})*/
+
+	/*client.membersBatchtagging(103, ['o2JXO56130aGQSfHcfIIDcOVkQNE','o2JXO55e9ojX_vax-6aHI6tQU29I	'], function (error, res) {
+        console.log(res)
+    })*/
+
+    //var media_id ="KtjogwJlegSk9wzmQ9jiG7XrFjczdfiKJsVxxSko-u0";
+   var opts ={ mpnews: { media_id: 'KtjogwJlegSk9wzmQ9jiG14bdlSC5-DLYugKXr02FiA' },
+   msgtype: 'mpnews' };
+   /*var opts = {
+	   	"text":{
+	      "content":"测试文本"
+	   },
+	    "msgtype":"text"
+   }*/
+    client.massSend(opts, 103, function (err, res) {
+            console.log('------------err--------');
+            console.log(err);
+            console.log('------------res--------');
+            console.log(res);
+        })
+}
+
+get_tag(178)

@@ -7,7 +7,13 @@ var sendUser = require('../script/send_user_message');
 
 
 router.get('/', async (req, res, next) => {
-    let messages = await MessageModel.find().sort({_id: -1});
+    let sort = req.query.sort
+    let messages = null
+    if(sort === "_id") {
+      messages = await MessageModel.find().sort({_id: -1});
+    } else if(sort === "timing_time") {
+      messages = await MessageModel.find().sort({timing_time: -1});
+    }
     for (let i = 0; i < messages.length; i++) {
         let d = new Date(messages[i].timing_time);
         let year = d.getFullYear()
@@ -95,6 +101,16 @@ router.get('/delete', async (req, res, next) => {
     } else {
         res.send({err: '删除失败'})
     }
+})
+
+router.get('/remove', async (req, res, next) => {
+  var startTime = new Date(Number(req.query.startTime)), endTime = new Date(Number(req.query.endTime));
+  var docs = await MessageModel.remove({timing_time: {$gte: startTime, $lt: endTime}})
+  if (docs) {
+      res.send({success: '删除成功', data: docs})
+  } else {
+      res.send({err: '删除失败'})
+  }
 })
 
 router.get('/send', async (req, res, next) => {

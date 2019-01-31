@@ -42,6 +42,9 @@ router.use('/:code', async function (request, response, next_fun) {
                     //console.log(message.MsgType, '--------MsgType---------')
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
+                        if(text=='openid'){
+                            return res.reply(openid);
+                        }
                         reply(request.params.code, res, 0, text, openid)
                     } else if (message.MsgType === 'event') {
                         //console.log(message.Event, '--------Event---------')
