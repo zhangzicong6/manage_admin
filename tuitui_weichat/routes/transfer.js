@@ -11,7 +11,7 @@ router.get('/', async(req, res, next) => {
 
 router.get("/find_count", async(req, res, next) => {
   let messages = await TransferModel.count({_id: {$lt: "5c2359c4b221222e3cc809b1"}})
-  res.send(messages)
+  res.send({data: messages})
 })
 
 router.get('/update_links', async(req, res, next) => {
