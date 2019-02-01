@@ -29,11 +29,16 @@ router.post('/create', async(req, res, next)=> {
         title: req.body.title,
         links: req.body.links
     }
-    var docs = await TransferModel.create(message);
-    if (docs) {
-        res.send({success: '成功', data: docs})
+    var result = await TransferModel.find({id: message.id})
+    if(result.length !== 0) {
+      res.send({err: "创建失败，该id已存在"})
     } else {
-        res.send({err: '创建失败，请检查输入是否有误'})
+      var docs = await TransferModel.create(message);
+      if (docs) {
+          res.send({success: '成功', data: docs})
+      } else {
+          res.send({err: '创建失败，请检查输入是否有误'})
+      }
     }
 })
 
