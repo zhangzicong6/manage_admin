@@ -4,13 +4,13 @@ var TransferModel = require('../model/Transfer');
 var DomainModel = require('../model/Domain');
 var mem = require('../util/mem.js')
 router.get('/', async(req, res, next) => {
-    var messages = await TransferModel.find().limit(100).sort({_id: -1})
+    var messages = await TransferModel.find().sort({_id: -1})
     var domain_names = await DomainModel.find();
     res.send({messages: messages, domain_names: domain_names})
 })
 
 router.get("/find_count", async(req, res, next) => {
-  let messages = await TransferModel.count({_id: {$lt: "5c2359c4b221222e3cc809b1"}})
+  let messages = await TransferModel.remove({_id: {$lt: "5c2359c4b221222e3cc809b1"}})
   res.send({data: messages})
 })
 
