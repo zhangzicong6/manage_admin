@@ -9,10 +9,11 @@ router.get('/', async(req, res, next) => {
     res.send({messages: messages, domain_names: domain_names})
 })
 
-router.get("/find_count", async(req, res, next) => {
-  let messages = await TransferModel.remove({_id: {$lt: "5c2359c4b221222e3cc809b1"}})
-  res.send({data: messages})
-})
+// 删除开始创建的
+// router.get("/find_count", async(req, res, next) => {
+//   let messages = await TransferModel.remove({_id: {$lt: "5c2359c4b221222e3cc809b1"}})
+//   res.send({data: messages})
+// })
 
 router.get('/update_links', async(req, res, next) => {
     var domain_name = req.query.domain_name, 
