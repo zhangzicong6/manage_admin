@@ -4,7 +4,7 @@ var TransferModel = require('../model/Transfer');
 var DomainModel = require('../model/Domain');
 var mem = require('../util/mem.js')
 router.get('/', async(req, res, next) => {
-    var messages = await TransferModel.find().limit(100).sort(-1)
+    var messages = await TransferModel.find().limit(100).sort({_id: -1})
     var domain_names = await DomainModel.find();
     res.send({messages: messages, domain_names: domain_names})
 })
