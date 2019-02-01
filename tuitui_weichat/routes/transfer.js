@@ -31,7 +31,7 @@ router.post('/create', async(req, res, next)=> {
     }
     var docs = await TransferModel.create(message);
     if (docs) {
-        res.send({success: '成功'})
+        res.send({success: '成功', data: docs})
     } else {
         res.send({err: '创建失败，请检查输入是否有误'})
     }
