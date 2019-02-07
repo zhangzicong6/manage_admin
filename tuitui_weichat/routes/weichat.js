@@ -22,6 +22,7 @@ router.use('/:code', async function (request, response, next_fun) {
         }
     }
     if (!request.query.openid) {
+        console.log('11111----------------------')
         validate(request, response);
     } else {
         wechat(config, async function (req, res, next) {
