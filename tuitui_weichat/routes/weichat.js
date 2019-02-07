@@ -156,7 +156,7 @@ async function validate(req, res) {
     var sha1Code = crypto.createHash("sha1");
     var code = sha1Code.update(str, 'utf-8').digest("hex");
 
-    //console.log(echostr);
+    console.log(echostr,'-------------------------');
     //3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
     if (code === signature) {
         res.send(echostr);
