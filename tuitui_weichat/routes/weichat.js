@@ -13,7 +13,7 @@ var QRcodeModel = require('../model/QRcode');
 
 
 router.use('/:code', async function (request, response, next_fun) {
-    //console.log(request.query)
+    console.log(request.query)
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {
         config = await ConfigModel.findOne({code: request.params.code})
@@ -135,6 +135,7 @@ async function subscribe(openid, config, message, res) {
 }
 
 async function validate(req, res) {
+    console.log('aaaaaaaaaa-------------------------');
     var signature = req.query.signature;
     var timestamp = req.query.timestamp;
     var nonce = req.query.nonce;
