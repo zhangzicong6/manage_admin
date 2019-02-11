@@ -30,10 +30,23 @@ router.get('/update_links', async(req, res, next) => {
 })
 
 router.post('/create', async(req, res, next)=> {
-    var message = {
-        id:req.body.id,
-        title: req.body.title,
-        links: req.body.links
+    console.log(req.body)
+    var message;
+    if(req.body.id){
+        message = {
+            id:req.body.id,
+            title: req.body.title,
+            links: req.body.links
+        }
+    }else{
+        for (var key in req.body) {
+            var body = json.parse(key)
+            message = {
+                id:body.id,
+                title: body.title,
+                links: body.links
+            }
+        }
     }
     console.log('--------创建链接--------')
     console.log(message)
@@ -54,6 +67,7 @@ router.post('/create', async(req, res, next)=> {
 
 router.post('/update', async(req, res, next) => {
     var id = req.body._id;
+    console.log(req.body)
     var message = {
         id:req.body.id,
         title: req.body.title,
