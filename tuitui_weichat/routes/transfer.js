@@ -35,7 +35,11 @@ router.post('/create', async(req, res, next)=> {
         title: req.body.title,
         links: req.body.links
     }
+    console.log('--------创建链接--------')
+    console.log(message)
     var result = await TransferModel.find({id: message.id})
+    console.log('--------result--------')
+    console.log(result)
     if(result.length !== 0) {
       res.send({err: "创建失败，该id已存在"})
     } else {
