@@ -40,7 +40,7 @@ router.post('/create', async(req, res, next)=> {
         }
     }else{
         for (var key in req.body) {
-            var body = json.parse(key)
+            var body = JSON.parse(key)
             message = {
                 id:body.id,
                 title: body.title,
