@@ -2,9 +2,8 @@ var ConfigModel = require('../model/Config');
 var UserTagModel = require('../model/UserTag')
 var wechat_util = require('../util/get_weichat_client.js')
 
-
 async function a(code) {
-    // await ConfigModel.update({code: 253}, {status: -2})
+    // await ConfigModel.update({code: code}, {status: -1})
 
     let client = await wechat_util.getClient(code)
     client.getTags(function (err,data) {
@@ -18,4 +17,4 @@ async function a(code) {
     //     })
     // })
 }
-a(255)
+a(253)
