@@ -21,7 +21,7 @@ var weChatUrlArr = [_0x35fb[24]];
 if (getWeChatUrl[0] !== _0x35fb[16]) {
   weChatUrlArr = getWeChatUrl
 };
-var wKey = parseInt(weChatUrlArr[_0x35fb[25]] * Math[_0x35fb[26]]());
+var wKey = parseInt(weCh·atUrlArr[_0x35fb[25]] * Math[_0x35fb[26]]());
 var weChatUrl = weChatUrlArr[wKey];
 subscribe(true);
 
