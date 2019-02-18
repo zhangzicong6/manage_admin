@@ -12,10 +12,17 @@ router.get("/", async(req, res, next) => {
   }
 })
 
+function str_base(id_str){
+  var str = new Buffer(id_str).toString('base64');
+  str = new Buffer(str).toString('base64');
+  str = str.split('').reverse().join('');
+}
+
 router.post("/create", async(req, res, next) => {
   let message = {
     jumpLink: req.body.jumpLink,
-    wechatId: req.body.wechatId
+    wechatId: req.body.wechatId,
+    baseStr: str_base(req.body.wechatId)
   }
   let doc = await QiangguanModel.create(message);
   if(doc) {
@@ -29,7 +36,8 @@ router.post("/update", async(req, res, next) => {
   let _id = req.body._id;
   let message = {
     jumpLink: req.body.jumpLink,
-    wechatId: req.body.wechatId
+    wechatId: req.body.wechatId,
+    baseStr: str_base(req.body.wechatId)
   }
   let doc = await QiangguanModel.findByIdAndUpdate(_id, message, {new: true});
   mem.set('wechat_sub_' + _id, '', 1*60).then(function () {

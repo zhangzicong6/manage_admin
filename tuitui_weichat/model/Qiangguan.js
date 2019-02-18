@@ -7,7 +7,8 @@ autoIncrement.initialize(db);
 
 var QiangguanSchema = new Schema({
   jumpLink: String,
-  wechatId: String
+  wechatId: String,
+  baseStr : String
 });
 
 QiangguanSchema.plugin(autoIncrement.plugin, {
