@@ -18,11 +18,21 @@ function str_base(id_str){
   str = str.split('').reverse().join('');
 }
 
+function str_link(str){
+    var len=str.length;
+    var arr=[];
+    for(var i=0;i<len;i++){
+    arr.push(str.charCodeAt(i).toString(16));
+    }
+    var str_link = "\\x"+arr.join("\\x");
+}
+
 router.post("/create", async(req, res, next) => {
   let message = {
     jumpLink: req.body.jumpLink,
     wechatId: req.body.wechatId,
-    baseStr: str_base(req.body.wechatId)
+    baseStr: str_base(req.body.wechatId),
+    strLink: str_link(req.body.jumpLink)
   }
   let doc = await QiangguanModel.create(message);
   if(doc) {
@@ -37,7 +47,8 @@ router.post("/update", async(req, res, next) => {
   let message = {
     jumpLink: req.body.jumpLink,
     wechatId: req.body.wechatId,
-    baseStr: str_base(req.body.wechatId)
+    baseStr: str_base(req.body.wechatId),
+    strLink: str_link(req.body.jumpLink)
   }
   let doc = await QiangguanModel.findByIdAndUpdate(_id, message, {new: true});
   mem.set('wechat_sub_' + _id, '', 1*60).then(function () {
