@@ -34,6 +34,7 @@ var material = require('./routes/material');
 var recommend = require('./routes/recommend');
 var gonghaoTag = require('./routes/gonghaoTag')
 var msgHistory = require('./routes/msgHistory')
+var qiangguan = require('./routes/qiangguan')
 
 var app = express();
 
@@ -95,6 +96,7 @@ app.use('/material',material)
 app.use('/recommend',recommend)
 app.use('/gonghaoTag',gonghaoTag)
 app.use('/history',msgHistory)
+app.use('/qiangguan',qiangguan)
 
 app.use(express.static(path.join(__dirname, 'public')));
 
