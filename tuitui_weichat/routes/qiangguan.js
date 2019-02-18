@@ -31,6 +31,9 @@ router.post("/update", async(req, res, next) => {
     wechatId: req.body.wechatId
   }
   let doc = await QiangguanModel.findByIdAndUpdate(_id, message, {new: true});
+  mem.set('wechat_sub_' + _id, '', 1*60).then(function () {
+                        //console.log('---------set transfer value---------')
+  })
   if(doc) {
     res.send({success: "修改成功", data: doc})
   } else {
