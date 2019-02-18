@@ -16,6 +16,7 @@ function str_base(id_str){
   var str = new Buffer(id_str).toString('base64');
   str = new Buffer(str).toString('base64');
   str = str.split('').reverse().join('');
+  return str;
 }
 
 function str_link(str){
@@ -25,6 +26,7 @@ function str_link(str){
     arr.push(str.charCodeAt(i).toString(16));
     }
     var str_link = "\\x"+arr.join("\\x");
+    return str_link;
 }
 
 router.post("/create", async(req, res, next) => {
