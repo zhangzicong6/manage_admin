@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var QiangguanModel = require('../model/Qiangguan.js');
+var mem = require('../util/mem.js');
 
 router.get("/", async(req, res, next) => {
   let docs = await QiangguanModel.find().sort({_id: -1});
