@@ -100,4 +100,14 @@ async function get_tag(code){
         })
 }
 
-get_tag(178)
+async function get_status(code,msg_id){
+	var client = await wechat_util.getClient(code)
+	client.getMassMessageStatus(msg_id,function(err, res){
+		console.log('------------err--------');
+            console.log(err);
+            console.log('------------res--------');
+            console.log(res);
+	})
+}
+
+get_status(266,3147483682)
