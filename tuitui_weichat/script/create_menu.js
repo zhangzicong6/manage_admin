@@ -110,6 +110,8 @@ async function get_status(code,msg_id){
 	})
 }
 
+get_status(266,3147483683)
+
 get_status(266,3147483685)
 
 get_status(273,3147483680)
