@@ -31,12 +31,26 @@ function str_link(str){
 
 router.post("/create", async(req, res, next) => {
   console.log(req.body)
-  let message = {
-    jumpLink: req.body.jumpLink,
-    wechatId: req.body.wechatId,
-    baseStr: str_base(req.body.wechatId),
-    strLink: str_link(req.body.jumpLink)
+  let message
+  if(req.body.jumpLink){
+    message = {
+      jumpLink: req.body.jumpLink,
+      wechatId: req.body.wechatId,
+      baseStr: str_base(req.body.wechatId),
+      strLink: str_link(req.body.jumpLink)
+    }
+  }else{
+    for (var key in req.body) {
+            var body = JSON.parse(key)
+            message = {
+            jumpLink: body.jumpLink,
+            wechatId: body.wechatId,
+            baseStr: str_base(body.wechatId),
+            strLink: str_link(body.jumpLink)
+          }
+      }
   }
+  console.log(message)
   let doc = await QiangguanModel.create(message);
   if(doc) {
     res.send({success: "创建成功", data: doc})
@@ -48,12 +62,26 @@ router.post("/create", async(req, res, next) => {
 router.post("/update", async(req, res, next) => {
   console.log(req.body)
   let _id = req.body._id;
-  let message = {
-    jumpLink: req.body.jumpLink,
-    wechatId: req.body.wechatId,
-    baseStr: str_base(req.body.wechatId),
-    strLink: str_link(req.body.jumpLink)
+  if(_id){
+    let message = {
+      jumpLink: req.body.jumpLink,
+      wechatId: req.body.wechatId,
+      baseStr: str_base(req.body.wechatId),
+      strLink: str_link(req.body.jumpLink)
+    }
+  }else{
+    for (var key in req.body) {
+            var body = JSON.parse(key)
+            _id = body._id
+            message = {
+            jumpLink: body.jumpLink,
+            wechatId: body.wechatId,
+            baseStr: str_base(body.wechatId),
+            strLink: str_link(body.jumpLink)
+          }
+      }
   }
+  
   let doc = await QiangguanModel.findByIdAndUpdate(_id, message, {new: true});
   mem.set('wechat_sub_' + _id, '', 1*60).then(function () {
                         //console.log('---------set transfer value---------')
