@@ -30,6 +30,7 @@ function str_link(str){
 }
 
 router.post("/create", async(req, res, next) => {
+  console.log(req.body)
   let message = {
     jumpLink: req.body.jumpLink,
     wechatId: req.body.wechatId,
@@ -45,6 +46,7 @@ router.post("/create", async(req, res, next) => {
 })
 
 router.post("/update", async(req, res, next) => {
+  console.log(req.body)
   let _id = req.body._id;
   let message = {
     jumpLink: req.body.jumpLink,
