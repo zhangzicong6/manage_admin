@@ -30,7 +30,7 @@ function str_link(str){
 }
 
 router.post("/create", async(req, res, next) => {
-  console.log(req.body.toString())
+  console.log(JSON.stringify(req.body))
   let message
   if(req.body.jumpLink){
     message = {
