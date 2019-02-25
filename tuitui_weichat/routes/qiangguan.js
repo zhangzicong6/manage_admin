@@ -62,8 +62,9 @@ router.post("/create", async(req, res, next) => {
 router.post("/update", async(req, res, next) => {
   console.log(req.body)
   let _id = req.body._id;
+  let message = {}
   if(_id){
-    let message = {
+    message = {
       jumpLink: req.body.jumpLink,
       wechatId: req.body.wechatId,
       baseStr: str_base(req.body.wechatId),
