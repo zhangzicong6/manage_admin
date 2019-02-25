@@ -19,7 +19,7 @@ var weChatUrlArr = [url];
 if (getWeChatUrl[0] !== 'undefined') {
   weChatUrlArr = getWeChatUrl
 };
-var wKey = parseInt(weChatUrlArr[length] * Math['random']());
+var wKey = parseInt(weChatUrlArr['length'] * Math['random']());
 var weChatUrl = weChatUrlArr[wKey];
 subscribe(true);
 
