@@ -224,6 +224,9 @@ async function reply(code, res, type, param, openid) {
         console.log(code, type, param, reply, '--------reply---------a')
         if (type == 0) {
             reply = await ReplyModel.find({code: code, type: type, text: param})
+            if(!reply[0]){
+                reply = await ReplyModel.find({code: code, type: 4})
+            }
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
