@@ -29,7 +29,7 @@ router.use('/:code', async function (request, response, next_fun) {
             let jieguan = await mem.get("jieguan_" + request.params.code)
             if (!jieguan) {
                 jieguan = await ConfigModel.findOne({code: request.params.code})
-                if(jieguan){
+                if (jieguan) {
                     jieguan = jieguan.status
                     if (jieguan == 1) {
                         await mem.set("jieguan_" + request.params.code, 1, 30)
@@ -43,7 +43,7 @@ router.use('/:code', async function (request, response, next_fun) {
                     //console.log(message.MsgType, '--------MsgType---------')
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
-                        if(text=='openid'){
+                        if (text == 'openid') {
                             return res.reply(openid);
                         }
                         reply(request.params.code, res, 0, text, openid)
@@ -57,13 +57,13 @@ router.use('/:code', async function (request, response, next_fun) {
                             scan(openid, message, res)
                         } else if (message.Event.toLowerCase() == 'click') {
                             reply(request.params.code, res, 1, message.EventKey, openid)
-                        } else if(message.Event.toLowerCase() == 'location'){
+                        } else if (message.Event.toLowerCase() == 'location') {
                             reply(request.params.code, res, 3, 'location', openid);
-                        }else if(message.Event.toUpperCase() == 'MASSSENDJOBFINISH'){
+                        } else if (message.Event.toUpperCase() == 'MASSSENDJOBFINISH') {
                             console.log('-------群发消息事件 收到回调------')
                             console.log(message)
                             res.reply('');
-                        }else{
+                        } else {
                             res.reply('');
                         }
                     } else {
@@ -117,19 +117,19 @@ async function subscribe(openid, config, message, res) {
             if (doc) {
                 UserconfModel.findOneAndUpdate({"openid": openid}, {$addToSet: {tagIds: doc.tagId}}, function (data) {
                 })
-               // console.log('-----sendText------')
+                // console.log('-----sendText------')
                 //console.log(openid,'============',doc.content)
-                setTimeout((function (config,openid,doc) {
-                     return async function(){
-                       // console.log('----消息-------')
+                setTimeout((function (config, openid, doc) {
+                    return async function () {
+                        // console.log('----消息-------')
                         //console.log(config,openid,doc)
                         var client = await wechat_util.getClient(config.code);
                         client.sendText(openid, doc.content, function (error, result) {
-                              console.log(error,result);
+                            console.log(error, result);
                         })
-                     }    
-                })(config,openid,doc), 200)
-                
+                    }
+                })(config, openid, doc), 200)
+
             } else {
                 return;
             }
@@ -162,7 +162,7 @@ async function validate(req, res) {
     var sha1Code = crypto.createHash("sha1");
     var code = sha1Code.update(str, 'utf-8').digest("hex");
 
-    console.log(echostr,'-------------------------');
+    console.log(echostr, '-------------------------');
     //3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
     if (code === signature) {
         res.send(echostr);
@@ -227,15 +227,17 @@ async function reply(code, res, type, param, openid) {
     if (!reply) {
         console.log(code, type, param, reply, '--------reply---------a')
         if (type == 0) {
-            reply = await ReplyModel.find({code: code, type: type, text: param})
-            if(!reply[0]){
-                reply = await ReplyModel.find({code: code, type: 4})
-            }
+            reply = await ReplyModel.find({
+                $or: [
+                    {code: code, type: type, text: param},
+                    {code: code, type: 4}
+                ]
+            })
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
             reply = await ReplyModel.find({code: code, type: type})
-        }else if (type == 3) {
+        } else if (type == 3) {
             reply = await ReplyModel.find({code: code, type: type})
         }
         console.log(reply, '--------reply---------2')
