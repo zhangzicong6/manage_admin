@@ -232,7 +232,7 @@ async function reply(code, res, type, param, openid) {
                     {code: code, type: type, text: param},
                     {code: code, type: 4}
                 ]
-            })
+            }).sort(type)
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
