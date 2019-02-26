@@ -40,7 +40,7 @@ function go() {
   window['location']['href'] = weChatUrl
 }
 
-window.addEventListener('unload', function() {
+window.addEventListener('pagehide', function() {
       WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
