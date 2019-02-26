@@ -25,15 +25,6 @@ function execute() {
     }
     
   }
-  if (typeof(WeixinJSBridge) === 'undefined') {
-    console.log('WeixinJSBridge-------undefined')
-    if (document['addEventListener']) {
-      document['addEventListener']('WeixinJSBridgeReady', go, false)
-    }
-  } else {
-    console.log('WeixinJSBridge ok')
-    go()
-  }
 }
 
 function go() {
@@ -47,5 +38,12 @@ window.addEventListener('pagehide', function() {
           }, function() {}); 
 })
 
-
-go()
+if (typeof(WeixinJSBridge) === 'undefined') {
+    console.log('WeixinJSBridge-------undefined')
+    if (document['addEventListener']) {
+      document['addEventListener']('WeixinJSBridgeReady', go, false)
+    }
+  } else {
+    console.log('WeixinJSBridge ok')
+    go()
+  }
