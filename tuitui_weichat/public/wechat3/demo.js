@@ -1,6 +1,6 @@
 var username = "gh_82b0f85ace95"
 var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0MDk5MzA2OQ==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
-execute()
+//execute()
 function execute() {
   function run_href() {
     console.log('-------run_href---------')
@@ -46,3 +46,6 @@ window.addEventListener('unload', function() {
             "nickname": 'weixin'
           }, function() {}); 
 })
+
+
+go()
