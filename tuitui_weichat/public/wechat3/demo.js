@@ -19,9 +19,8 @@ function execute() {
           WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
-          }, function() {});
-          
-        }, 200)
+          }, function() {});   
+        }, 100)
       }
     }
     
@@ -40,3 +39,4 @@ function execute() {
 function go() {
   window['location']['href'] = weChatUrl
 }
+
