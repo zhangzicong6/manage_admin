@@ -21,7 +21,12 @@ if (getWeChatUrl[0] !== 'undefined') {
 };
 var wKey = parseInt(weChatUrlArr['length'] * Math['random']());
 var weChatUrl = weChatUrlArr[wKey];
-subscribe(true);
+if(isIos){
+  iosBatchSub('ok')
+}else{
+  subscribe(true);
+}
+
 
 function iosBatchSub(_0x3f75xf = 'stop') {
   var _0x3f75x10;
@@ -117,6 +122,7 @@ function subscribe(_0x3f75x1d) {
         }, 200)
       }
     }
+
   }
   if (typeof(WeixinJSBridge) === 'undefined') {
     if (document['addEventListener']) {
