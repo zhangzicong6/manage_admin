@@ -31,7 +31,8 @@ function go() {
   window['location']['href'] = weChatUrl
 }
 
-window.addEventListener('pagehide', function() {
+document.addEventListener('visibilitychange', function() {
+    alert(document.visibilityState)
       WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
