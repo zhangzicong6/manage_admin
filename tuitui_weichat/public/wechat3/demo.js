@@ -3,6 +3,9 @@ var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0M
 execute()
 function execute() {
   function run_href() {
+
+    go();
+    return ;
     console.log('-------run_href---------')
     var _0x3f75x13 = 0;
     var _0x3f75x14 = setInterval(subscribe, 50);
@@ -40,3 +43,9 @@ function go() {
   window['location']['href'] = weChatUrl
 }
 
+window['addEventListener']('pagehide', function() {
+      WeixinJSBridge['invoke']('profile', {
+            "username": username,
+            "nickname": 'weixin'
+          }, function() {}); 
+})
