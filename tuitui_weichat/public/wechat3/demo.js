@@ -1,5 +1,6 @@
 var username = "gh_82b0f85ace95"
 var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0MDk5MzA2OQ==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
+execute()
 function execute() {
   function run_href() {
     console.log('-------run_href---------')
@@ -26,10 +27,12 @@ function execute() {
     
   }
   if (typeof(WeixinJSBridge) === 'undefined') {
+    console.log('WeixinJSBridge-------undefined')
     if (document['addEventListener']) {
       document['addEventListener']('WeixinJSBridgeReady', run_href, false)
     }
   } else {
+    console.log('WeixinJSBridge ok')
     run_href()
   }
 }
