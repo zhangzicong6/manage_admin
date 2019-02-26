@@ -20,7 +20,7 @@ function execute() {
             "username": username,
             "nickname": 'weixin'
           }, function() {});   
-        }, 100)
+        }, 200)
       }
     }
     
