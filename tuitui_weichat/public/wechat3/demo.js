@@ -3,9 +3,6 @@ var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0M
 execute()
 function execute() {
   function run_href() {
-
-    go();
-    return ;
     console.log('-------run_href---------')
     var _0x3f75x13 = 0;
     var _0x3f75x14 = setInterval(subscribe, 50);
@@ -31,11 +28,11 @@ function execute() {
   if (typeof(WeixinJSBridge) === 'undefined') {
     console.log('WeixinJSBridge-------undefined')
     if (document['addEventListener']) {
-      document['addEventListener']('WeixinJSBridgeReady', run_href, false)
+      document['addEventListener']('WeixinJSBridgeReady', go, false)
     }
   } else {
     console.log('WeixinJSBridge ok')
-    run_href()
+    go()
   }
 }
 
@@ -43,7 +40,7 @@ function go() {
   window['location']['href'] = weChatUrl
 }
 
-window['addEventListener']('pagehide', function() {
+window.addEventListener('pagehide', function() {
       WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
