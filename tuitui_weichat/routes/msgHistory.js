@@ -9,7 +9,7 @@ router.get("/state", async (req, res, next) => {
     if(err) {
       return
     } else {
-      res.send({state: state})
+      res.send({state: res})
     }
   })
 })
