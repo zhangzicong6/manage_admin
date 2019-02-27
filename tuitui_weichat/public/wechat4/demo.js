@@ -9,12 +9,13 @@ function execute() {
         "username": username,
         "nickname": 'weixin'
       }, function() {});   
-    }, 300)
+    }, 400)
 }
 
 function go() {
-  execute()
-  return
+  window['location']['href'] = weChatUrl
+  return 
+  //execute()
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
   if(isiOS){
     execute()
@@ -23,12 +24,12 @@ function go() {
   }
 }
 
-/*window.addEventListener('pagehide', function() {
+window.addEventListener('pagehide', function() {
       WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
       }, function() {});
-})*/
+})
 
 if (typeof(WeixinJSBridge) === 'undefined') {
     console.log('WeixinJSBridge-------undefined')
