@@ -3,6 +3,8 @@ var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0M
 
 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
+var vConsole = new VConsole();
+
 //execute()
 function execute() {
   window['location']['href'] = weChatUrl
@@ -26,6 +28,7 @@ function go() {
 }
 
 window.onbeforeunload= function(){
+  console.log('---------onbeforeunload--------')
   WeixinJSBridge.invoke('profile', {
               "username": username,
               "nickname": 'weixin'
