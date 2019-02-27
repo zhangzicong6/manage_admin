@@ -3,7 +3,7 @@ var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0M
 
 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
-var vConsole = new VConsole();
+//var vConsole = new VConsole();
 
 //execute()
 function execute() {
