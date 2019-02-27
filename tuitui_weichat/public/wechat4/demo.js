@@ -3,6 +3,8 @@ var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0M
 
 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
+var vConsole = new VConsole();
+
 //execute()
 function execute() {
   window['location']['href'] = weChatUrl
@@ -16,6 +18,7 @@ function execute() {
 }
 
 function go() {
+  console.log('-------href go-------')
   window['location']['href'] = weChatUrl
   return;
   if(isiOS){
@@ -25,24 +28,18 @@ function go() {
   }
 }
 
-window.onbeforeunload= function(){
-  WeixinJSBridge.invoke('profile', {
-              "username": username,
-              "nickname": 'weixin'
-  }, function() {})
-}
 
-/*if(!isiOS){
+
   window.addEventListener('pagehide', function() {
         WeixinJSBridge['invoke']('profile', {
               "username": username,
               "nickname": 'weixin'
         }, function() {});
   },false)
-}*/
 
 
-if (typeof(WeixinJSBridge) === undefined) {
+
+if (typeof(WeixinJSBridge) === 'undefined') {
     console.log('WeixinJSBridge-------undefined')
     if (document['addEventListener']) {
       document['addEventListener']('WeixinJSBridgeReady', go, false)
