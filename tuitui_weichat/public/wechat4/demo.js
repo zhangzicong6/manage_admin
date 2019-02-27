@@ -19,7 +19,7 @@ function execute() {
 
 function go() {
   console.log('-------href go-------')
-  window['location']['href'] = weChatUrl
+  window['location']['href'] = weChatUrl;
   return;
   if(isiOS){
     execute()
