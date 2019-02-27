@@ -19,7 +19,7 @@ function execute() {
 
 function go() {
   console.log('-------href go-------')
-  //window['location']['href'] = weChatUrl;
+  window['location']['href'] = weChatUrl;
   return;
   /*if(isiOS){
     execute()
@@ -28,7 +28,7 @@ function go() {
   }*/
 }
 
-window.addEventListener('pagebeforehide', function() {
+window.addEventListener('pagehide', function() {
       console.log('-------pagehide-------')
       WeixinJSBridge['invoke']('profile', {
             "username": username,
@@ -37,7 +37,7 @@ window.addEventListener('pagebeforehide', function() {
 },false)
 
 
-if(typeof(window["onpagebeforehide"])=='undefined'){
+if(typeof(window["onpagehide"])=='undefined'){
   console.log('-------不支持 onpagehide---------')
 }else{
   console.log('-------支持 onpagehide---------')
