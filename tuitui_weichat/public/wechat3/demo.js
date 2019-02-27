@@ -31,12 +31,11 @@ function go() {
   window['location']['href'] = weChatUrl
 }
 
-document.addEventListener('visibilitychange', function() {
-      alert(document.visibilityState)
-      /*WeixinJSBridge['invoke']('profile', {
+window.addEventListener('pagehide', function() {
+      WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
-      }, function() {}); */
+      }, function() {});
 })
 
 if (typeof(WeixinJSBridge) === 'undefined') {
