@@ -1,9 +1,9 @@
 var username = "gh_82b0f85ace95"
 var weChatUrl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU0MDk5MzA2OQ==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
 
-var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
-//var vConsole = new VConsole();
+var vConsole = new VConsole();
 
 //execute()
 function execute() {
@@ -19,7 +19,7 @@ function execute() {
 
 function go() {
   console.log('-------href go-------')
-  window['location']['href'] = weChatUrl
+  window['location']['href'] = weChatUrl;
   return;
   if(isiOS){
     execute()
