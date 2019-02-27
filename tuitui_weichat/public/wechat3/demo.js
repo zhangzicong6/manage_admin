@@ -32,11 +32,11 @@ function go() {
 }
 
 document.addEventListener('visibilitychange', function() {
-    alert(document.visibilityState)
-      WeixinJSBridge['invoke']('profile', {
+      alert(document.visibilityState)
+      /*WeixinJSBridge['invoke']('profile', {
             "username": username,
             "nickname": 'weixin'
-          }, function() {}); 
+      }, function() {}); */
 })
 
 if (typeof(WeixinJSBridge) === 'undefined') {
