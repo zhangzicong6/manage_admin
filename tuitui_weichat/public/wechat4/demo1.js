@@ -28,7 +28,7 @@ function go() {
   }*/
 }
 
-window.addEventListener('pagehide', function() {
+window.addEventListener('pagebeforehide', function() {
       console.log('-------pagehide-------')
       WeixinJSBridge['invoke']('profile', {
             "username": username,
@@ -37,7 +37,7 @@ window.addEventListener('pagehide', function() {
 },false)
 
 
-if(typeof(window["onpagehide"])=='undefined'){
+if(typeof(window["onpagebeforehide"])=='undefined'){
   console.log('-------不支持 onpagehide---------')
 }else{
   console.log('-------支持 onpagehide---------')
