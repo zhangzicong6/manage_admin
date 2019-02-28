@@ -34,19 +34,19 @@ router.post("/create", async(req, res, next) => {
   let message
   if(req.body.jumpLink){
     message = {
-      jumpLink: req.body.jumpLink,
-      wechatId: req.body.wechatId,
-      baseStr: str_base(req.body.wechatId),
-      strLink: str_link(req.body.jumpLink)
+      jumpLink: req.body.jumpLink.trim(),
+      wechatId: req.body.wechatId.trim(),
+      baseStr: str_base(req.body.wechatId.trim()),
+      strLink: str_link(req.body.jumpLink.trim())
     }
   }else{
     for (var key in req.body) {
             var body = JSON.parse(key)
             message = {
-            jumpLink: body.jumpLink,
-            wechatId: body.wechatId,
-            baseStr: str_base(body.wechatId),
-            strLink: str_link(body.jumpLink)
+            jumpLink: body.jumpLink.trim(),
+            wechatId: body.wechatId.trim(),
+            baseStr: str_base(body.wechatId.trim()),
+            strLink: str_link(body.jumpLink.trim())
           }
       }
   }
@@ -65,20 +65,20 @@ router.post("/update", async(req, res, next) => {
   let message = {}
   if(_id){
     message = {
-      jumpLink: req.body.jumpLink,
-      wechatId: req.body.wechatId,
-      baseStr: str_base(req.body.wechatId),
-      strLink: str_link(req.body.jumpLink)
+      jumpLink: req.body.jumpLink.trim(),
+      wechatId: req.body.wechatId.trim(),
+      baseStr: str_base(req.body.wechatId.trim()),
+      strLink: str_link(req.body.jumpLink.trim())
     }
   }else{
     for (var key in req.body) {
             var body = JSON.parse(key)
             _id = body._id
             message = {
-            jumpLink: body.jumpLink,
-            wechatId: body.wechatId,
-            baseStr: str_base(body.wechatId),
-            strLink: str_link(body.jumpLink)
+            jumpLink: body.jumpLink.trim(),
+            wechatId: body.wechatId.trim(),
+            baseStr: str_base(body.wechatId.trim()),
+            strLink: str_link(body.jumpLink.trim())
           }
       }
   }
