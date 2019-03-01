@@ -3,6 +3,17 @@ var router = express.Router();
 var MsgHistoryModel = require('../model/MsgHistory');
 var weichat_util = require('../util/get_weichat_client.js')
 
+router.get("/state", async (req, res, next) => {
+  let client = await weichat_util.getClient(req.query.code)
+  client.getMassMessageStatus(req.query.msg_id, function(err, result){
+    if(err) {
+      return
+    } else {
+      res.send({data: result})
+    }
+  })
+})
+
 router.get('/', async (req, res, next) => {
   let docs = await MsgHistoryModel.find({
     code: req.query.code,
