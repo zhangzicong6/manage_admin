@@ -64,12 +64,13 @@ router.post('/create', async(req, res, next) => {
         tagId: req.body.tagId
     }
     if (parseInt(req.body.type) == 2) {
+        let client;
         for (let code of req.body.codes) {
-            let client = await wechat_util.getClient(code);
+            client = await wechat_util.getClient(code);
             client.uploadImageMaterial(req.body.img, async function (error, result) {
-          console.log("error", error, "-----------------------")
-          console.log("result", result, "-----------------------")
-          message.mediaId = result.media_id
+              console.log("error", error, "-----------------------")
+              console.log("result", result, "-----------------------")
+              message.mediaId = result.media_id
             })
         }
     }
