@@ -89,6 +89,7 @@ router.post('/create', async(req, res, next) => {
 
 router.post('/update', async(req, res, next) => {
     var id = req.body.id;
+    var mediaId = await upload(parseInt(req.body.type), req.body.img_path, req.body.codes)
     var message = {
         codes: req.body.codes,
         sex: req.body.sex,
@@ -99,7 +100,8 @@ router.post('/update', async(req, res, next) => {
         type: parseInt(req.body.type),
         contents: req.body.contents,
         img: req.body.img,
-        tagId: req.body.tagId
+        tagId: req.body.tagId,
+        mediaId: mediaId
     }
     if (parseInt(req.body.type) == 2) {
         for (let code of req.body.codes) {
