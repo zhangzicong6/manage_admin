@@ -74,8 +74,7 @@ router.post('/create', async (req, res, next) => {
   if (parseInt(req.body.type) == 2) {
     for (let code of req.body.codes) {
       let client = await wechat_util.getClient(code);
-      var img_path = req.body.img.split("http://test.oorggt.top")[1];
-      img_path = __dirname + '../public' + img_path;
+      var img_path = req.body.img_path
       client.uploadImageMaterial(img_path, async function (error, result) {
         console.log("error", error, "-----------------------")
         console.log("result", result, "-----------------------")
