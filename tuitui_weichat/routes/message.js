@@ -82,6 +82,7 @@ router.post('/create', async (req, res, next) => {
       })
     }
   }
+  console.log(message)
   var docs = await MessageModel.create(message);
   if (docs) {
     res.send({
