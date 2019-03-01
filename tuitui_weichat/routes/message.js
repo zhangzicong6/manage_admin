@@ -64,7 +64,7 @@ router.post('/create', async(req, res, next) => {
         tagId: req.body.tagId
     }
     if (parseInt(req.body.type) == 2) {
-        for (let code of codes) {
+        for (let code of req.body.codes) {
             let client = await wechat_util.getClient(code);
             client.uploadImageMaterial(req.body.img, async function (error, result) {
                 message.mediaId = result.media_id
