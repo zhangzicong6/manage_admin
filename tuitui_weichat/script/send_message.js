@@ -38,6 +38,13 @@ async function send_users(user_id, message) {
                             callback(null)
                         }, 50)
                     })
+                } else if (message.type == 2) {
+                    client.sendImage(user.openid, message.mediaId, function (error, res) {
+                        console.log(error);
+                        setTimeout(function () {
+                            callback(null)
+                        }, 50)
+                    })
                 }
             });
         }, function (err) {

@@ -16,6 +16,7 @@ var MessageSchema = new Schema({
     timing_time: Date,
     time: String,
     tagId: Number,
+    mediaId: {type: String, default: ''},
     contents: [{
         title: String,
         description: String,

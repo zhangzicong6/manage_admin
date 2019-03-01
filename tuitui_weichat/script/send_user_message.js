@@ -39,6 +39,11 @@ async function send_users(user_id, message,tagId) {
                         console.log(error);
                         callback(null,null)
                     })
+                } else if (message.type == 2) {
+                    client.sendImage(user.openid, message.mediaId, function (error, res) {
+                        console.log(error);
+                        callback(null,null)
+                    })
                 }
             });
         }, function (err) {

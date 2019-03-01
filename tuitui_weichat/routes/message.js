@@ -4,15 +4,16 @@ var MessageModel = require('../model/Message');
 var ConfigModel = require('../model/Config');
 var send = require('../script/send_message');
 var sendUser = require('../script/send_user_message');
+var wechat_util = require('../util/get_weichat_client.js')
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', async(req, res, next) => {
     let sort = req.query.sort
     let messages = null
-    if(sort === "_id") {
-      messages = await MessageModel.find().sort({_id: -1});
-    } else if(sort === "timing_time") {
-      messages = await MessageModel.find().sort({timing_time: -1});
+    if (sort === "_id") {
+        messages = await MessageModel.find().sort({_id: -1});
+    } else if (sort === "timing_time") {
+        messages = await MessageModel.find().sort({timing_time: -1});
     }
     for (let i = 0; i < messages.length; i++) {
         let d = new Date(messages[i].timing_time);
@@ -43,13 +44,13 @@ router.get('/', async (req, res, next) => {
     res.send({messages: messages})
 })
 
-router.get('/get_code', async (req, res, next) => {
+router.get('/get_code', async(req, res, next) => {
     let doc = await ConfigModel.find()
     res.send({data: doc})
 })
 
 
-router.post('/create', async (req, res, next) => {
+router.post('/create', async(req, res, next) => {
     var message = {
         codes: req.body.codes,
         sex: req.body.sex,
@@ -62,6 +63,14 @@ router.post('/create', async (req, res, next) => {
         img: req.body.img,
         tagId: req.body.tagId
     }
+    if (parseInt(req.body.type) == 2) {
+        for (let code of codes) {
+            let client = await wechat_util.getClient(code);
+            client.uploadImageMaterial(req.body.img, async function (error, result) {
+                message.mediaId = result.media_id
+            })
+        }
+    }
     var docs = await MessageModel.create(message);
     if (docs) {
         res.send({success: '成功', data: docs})
@@ -71,7 +80,7 @@ router.post('/create', async (req, res, next) => {
 
 })
 
-router.post('/update', async (req, res, next) => {
+router.post('/update', async(req, res, next) => {
     var id = req.body.id;
     var message = {
         codes: req.body.codes,
@@ -85,6 +94,14 @@ router.post('/update', async (req, res, next) => {
         img: req.body.img,
         tagId: req.body.tagId
     }
+    if (parseInt(req.body.type) == 2) {
+        for (let code of codes) {
+            let client = await wechat_util.getClient(code);
+            client.uploadImageMaterial(req.body.img, async function (error, result) {
+                message.mediaId = result.media_id
+            })
+        }
+    }
     var docs = await MessageModel.findByIdAndUpdate(id, message)
     if (docs) {
         res.send({success: '修改成功', data: docs})
@@ -93,7 +110,7 @@ router.post('/update', async (req, res, next) => {
     }
 })
 
-router.get('/delete', async (req, res, next) => {
+router.get('/delete', async(req, res, next) => {
     var id = req.query.id;
     var doc = await MessageModel.findByIdAndRemove(id)
     if (doc) {
@@ -103,17 +120,17 @@ router.get('/delete', async (req, res, next) => {
     }
 })
 
-router.get('/remove', async (req, res, next) => {
-  var startTime = new Date(Number(req.query.startTime)), endTime = new Date(Number(req.query.endTime));
-  var docs = await MessageModel.remove({timing_time: {$gte: startTime, $lt: endTime}})
-  if (docs) {
-      res.send({success: '删除成功', data: docs})
-  } else {
-      res.send({err: '删除失败'})
-  }
+router.get('/remove', async(req, res, next) => {
+    var startTime = new Date(Number(req.query.startTime)), endTime = new Date(Number(req.query.endTime));
+    var docs = await MessageModel.remove({timing_time: {$gte: startTime, $lt: endTime}})
+    if (docs) {
+        res.send({success: '删除成功', data: docs})
+    } else {
+        res.send({err: '删除失败'})
+    }
 })
 
-router.get('/send', async (req, res, next) => {
+router.get('/send', async(req, res, next) => {
     var id = req.query.id;
     var take_over = req.query.take_over;
     if (take_over) {
