@@ -59,10 +59,7 @@ router.get('/get_code', async(req, res, next) => {
 
 
 router.post('/create', async(req, res, next) => {
-    var mediaId = ""
-    if (parseInt(req.body.type) == 2) {
-        mediaId = await upload(req.body.img_path, req.body.codes)
-    }
+    var mediaId = await upload(parseInt(req.body.type), req.body.img_path, req.body.codes)
     var message = {
         codes: req.body.codes,
         sex: req.body.sex,
@@ -74,7 +71,7 @@ router.post('/create', async(req, res, next) => {
         contents: req.body.contents,
         img: req.body.img,
         tagId: req.body.tagId,
-        mediaId:mediaId
+        mediaId: mediaId
     }
     console.log(message)
     var docs = await MessageModel.create(message);
@@ -177,16 +174,20 @@ router.get('/send', async(req, res, next) => {
     }
 })
 
-async function upload(img_path, codes) {
-    for (let code of codes) {
-        let client = await wechat_util.getClient(code);
-        client.uploadImageMaterial(img_path, async function (error, result) {
-            console.log("error", error, "-----------------------")
-            console.log("result", result, "-----------------------")
+async function upload(type, img_path, codes) {
+    if(type == 2) {
+        for (let code of codes) {
+            let client = await wechat_util.getClient(code);
             return new Promise((resolve, reject) => {
-                resolve(result.media_id)
+                client.uploadImageMaterial(img_path, async function (error, result) {
+                    console.log("error", error, "-----------------------")
+                    console.log("result", result, "-----------------------")
+                    resolve(result.media_id)
+                })
             })
-        })
+        }
+    }else{
+        return
     }
 }
 
