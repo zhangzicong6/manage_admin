@@ -201,13 +201,12 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
             if (config.real_time) {
                 wechat_util.getClient(config.code).then((client) => {
                     client.getUser(openid, function (err, info) {
-                        UserconfModel.findOneAndUpdate({openid: openid}, {
-                            nickname: info.nickname,
-                            headimgurl: info.headimgurl,
-                            sex: info.sex.toString(),
-                            sign: 1
+                        user.nickname = info.nickname;
+                        user.headimgurl = info.headimgurl;
+                        user.sex = info.sex.toString();
+                        user.save(function () {
+                            callback(null, user)
                         })
-                        callback(null, user)
                     })
                 })
             }else{
