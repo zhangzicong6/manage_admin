@@ -196,7 +196,19 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
             } else {
                 callback(null, user)
             }
-
+        },
+        async function (user, callback) {
+            if (config.real_time) {
+                let client = await wechat_util.getClient(config.code);
+                client.getUser(openid, function (err, info) {
+                    UserconfModel.findOneAndUpdate({openid: openid}, {
+                        nickname: info.nickname,
+                        headimgurl: info.headimgurl,
+                        sex: info.sex.toString(),
+                        sign: 1
+                    })
+                })
+            }
         }
     ], function (err, user) {
         if (err) {
@@ -232,7 +244,7 @@ async function reply(code, res, type, param, openid) {
                     {code: code, type: type, text: param},
                     {code: code, type: 4}
                 ]
-            }).sort({type:1})
+            }).sort({type: 1})
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {

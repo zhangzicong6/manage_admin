@@ -25,7 +25,8 @@ router.post('/create', async(req, res, next) => {
         appsecret: req.body.appsecret,
         token: req.body.token,
         EncodingAESKey: "tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
-        group: req.body.group
+        group: req.body.group,
+        real_time:req.body.real_time
     }
     let doc = await ConfigModel.create(data)
     if (doc) {
@@ -45,7 +46,8 @@ router.post('/update', async(req, res, next) => {
         appsecret: req.body.appsecret,
         token: req.body.token,
         EncodingAESKey: "tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb",
-        group: req.body.group
+        group: req.body.group,
+        real_time:req.body.real_time
     }
     let doc = await ConfigModel.findByIdAndUpdate(id, data, {new: true})
     console.log('doc-conf', doc)
