@@ -197,15 +197,17 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
                 callback(null, user)
             }
         },
-        async function (user, callback) {
+        function (user, callback) {
             if (config.real_time) {
-                let client = await wechat_util.getClient(config.code);
-                client.getUser(openid, function (err, info) {
-                    UserconfModel.findOneAndUpdate({openid: openid}, {
-                        nickname: info.nickname,
-                        headimgurl: info.headimgurl,
-                        sex: info.sex.toString(),
-                        sign: 1
+                wechat_util.getClient(config.code).then((client) => {
+                    client.getUser(openid, function (err, info) {
+                        UserconfModel.findOneAndUpdate({openid: openid}, {
+                            nickname: info.nickname,
+                            headimgurl: info.headimgurl,
+                            sex: info.sex.toString(),
+                            sign: 1
+                        })
+                        callback(null, user)
                     })
                 })
             }
