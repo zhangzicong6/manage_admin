@@ -290,10 +290,14 @@ async function reply(code, res, type, param, openid) {
     }
 }
 
+
+
 async function replyMsg(res, content, code, openid) {
     console.log(content, '--------content3---------')
     if (content.type == 0) {
-        return res.reply(content.description)
+        var dis = content.description;
+        dis = charge_openid(dis,openid);
+        return res.reply(dis)
     } else if (content.type == 1) {
         var client = await wechat_util.getClient(code);
         client.sendNews(openid, content.contents, function (err, data) {
@@ -305,5 +309,14 @@ async function replyMsg(res, content, code, openid) {
         return res.reply('')
     }
 }
+
+function charge_openid(content,openid){
+    if(content.indexOf('#openid#')==-1){
+        return content
+    }
+    content = content.split('#openid#').jion(openid)
+    return content
+}
+
 module.exports = router;
 
