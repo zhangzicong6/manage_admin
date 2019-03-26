@@ -210,6 +210,8 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
                         callback(null, user)
                     })
                 })
+            }else{
+                callback(null, user)
             }
         }
     ], function (err, user) {
