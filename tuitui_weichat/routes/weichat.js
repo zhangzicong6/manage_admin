@@ -314,7 +314,7 @@ function charge_openid(content,openid){
     if(content.indexOf('#openid#')==-1){
         return content
     }
-    content = content.split('#openid#').jion(openid)
+    content = content.split('#openid#').join(openid)
     return content
 }
 
