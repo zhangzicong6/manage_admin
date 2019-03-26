@@ -297,6 +297,8 @@ async function replyMsg(res, content, code, openid) {
     if (content.type == 0) {
         var dis = content.description;
         dis = charge_openid(dis,openid);
+        console.log('-------dis----------')
+        console.log(dis)
         return res.reply(dis)
     } else if (content.type == 1) {
         var client = await wechat_util.getClient(code);
