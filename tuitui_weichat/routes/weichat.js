@@ -199,9 +199,9 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
         },
         function (user, callback) {
             if (config.real_time) {
-                console.log(info.sex,'-----------------------sex')
                 wechat_util.getClient(config.code).then((client) => {
                     client.getUser(openid, function (err, info) {
+                        console.log(info.sex,'-----------------------sex')
                         user.nickname = info.nickname;
                         user.headimgurl = info.headimgurl;
                         user.sex = info.sex.toString();
