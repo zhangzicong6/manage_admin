@@ -125,7 +125,7 @@ router.use('/settao',function(req,res,next){
 		if(!tao){
 			tao = {content:'',kouling:''};
 		}else{
-			memcached.set('taokoulingjs',JSON.stringify(tao),60,function(err){});
+			memcached.set('taokoulingjs','',60,function(err){});
 		}
 		res.render('adzone/tao',tao.value);
 	});
