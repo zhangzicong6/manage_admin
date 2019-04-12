@@ -98,4 +98,17 @@ router.get('/jieguan', async(req, res, next) => {
     }
 })
 
+router.get('/record', async(req, res, next) => {
+    let code = req.query.code
+    let record = await mem.get("record_" + code)
+    if (!record) {
+        await ConfigModel.findOneAndUpdate({code: code}, {status: -1})
+        request('http://localhost:3002/record_users?code=' + code, function (err, response) {
+        })
+        res.send({success: '设置接管成功'})
+    } else {
+        res.send({success: '已接管'})
+    }
+})
+
 module.exports = router;
