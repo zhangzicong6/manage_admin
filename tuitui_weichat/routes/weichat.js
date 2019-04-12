@@ -201,16 +201,20 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
             if (config.real_time) {
                 wechat_util.getClient(config.code).then((client) => {
                     client.getUser(openid, function (err, info) {
-                        console.log(info,info.nickname,info.headimgurl,info.sex,'-----------------------sex')
-                        user.nickname = info.nickname;
-                        user.headimgurl = info.headimgurl;
-                        user.sex = info.sex.toString();
-                        user.save(function () {
+                        console.log(info, info.nickname, info.headimgurl, info.sex, '-----------------------sex')
+                        if (info) {
+                            user.nickname = info.nickname;
+                            user.headimgurl = info.headimgurl;
+                            user.sex = info.sex.toString();
+                            user.save(function () {
+                                callback(null, user)
+                            })
+                        }else{
                             callback(null, user)
-                        })
+                        }
                     })
                 })
-            }else{
+            } else {
                 callback(null, user)
             }
         }
@@ -292,12 +296,11 @@ async function reply(code, res, type, param, openid) {
 }
 
 
-
 async function replyMsg(res, content, code, openid) {
     console.log(content, '--------content3---------')
     if (content.type == 0) {
         var dis = content.description;
-        dis = charge_openid(dis,openid);
+        dis = charge_openid(dis, openid);
         console.log('-------dis----------')
         console.log(dis)
         return res.reply(dis)
@@ -313,8 +316,8 @@ async function replyMsg(res, content, code, openid) {
     }
 }
 
-function charge_openid(content,openid){
-    if(content.indexOf('#openid#')==-1){
+function charge_openid(content, openid) {
+    if (content.indexOf('#openid#') == -1) {
         return content
     }
     content = content.split('#openid#').join(openid)
