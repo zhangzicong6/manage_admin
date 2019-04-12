@@ -199,7 +199,7 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
         },
         function (user, callback) {
             if (config.real_time) {
-                console.log(info.sex,'-----------------------')
+                console.log(info.sex,'-----------------------sex')
                 wechat_util.getClient(config.code).then((client) => {
                     client.getUser(openid, function (err, info) {
                         user.nickname = info.nickname;
