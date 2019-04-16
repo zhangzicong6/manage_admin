@@ -7,6 +7,7 @@ async function a() {
     // await ConfigModel.update({code: code}, {status: -2})
 
     let a = await UserTagModel.find({code:48})
+    console.log(a)
     let client = await wechat_util.getClient(code)
     client.getTags(function (err,data) {
         console.log(data,'-----------------aaa')
