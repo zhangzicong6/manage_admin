@@ -36,8 +36,7 @@ router.use('/:code', async function (request, response, next_fun) {
                     }
                 }
             }
-            if (jieguan == 1) {
-                var message = req.weixin;
+            if (jieguan == 1) {                var message = req.weixin;
                 var openid = message.FromUserName;
                 getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
                     //console.log(message.MsgType, '--------MsgType---------')
