@@ -6,13 +6,13 @@ async function a() {
     let code = process.argv.slice(2)[0]
     // await ConfigModel.update({code: code}, {status: -2})
 
-    await UserTagModel.remove({code:48})
-    await UserTagModel.create({id: 106, name: "未知", code: 48})
-    await UserTagModel.create({id: 107, name: "男", code: 48})
-    await UserTagModel.create({id: 108, name: "女", code: 48})
-
-    let a = await UserTagModel.find({code:48})
-    console.log(a)
+    // await UserTagModel.remove({code:code})
+    // await UserTagModel.create({id: 106, name: "未知", code: 48})
+    // await UserTagModel.create({id: 107, name: "男", code: 48})
+    // await UserTagModel.create({id: 108, name: "女", code: 48})
+    //
+    // let a = await UserTagModel.find({code:code})
+    // console.log(a)
     let client = await wechat_util.getClient(code)
     client.getTags(function (err,data) {
         console.log(data,'-----------------aaa')
