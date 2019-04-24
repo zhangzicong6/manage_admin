@@ -5,11 +5,11 @@ var wechat_util = require('../util/get_weichat_client.js')
 async function a() {
     let code = process.argv.slice(2)[0]
     // await ConfigModel.update({code: code}, {status: -2})
-
-    await UserTagModel.remove({code:code})
-    await UserTagModel.create({id: 106, name: "未知", code: code})
-    await UserTagModel.create({id: 107, name: "男", code: code})
-    await UserTagModel.create({id: 108, name: "女", code: code})
+    //
+    // await UserTagModel.remove({code:code})
+    // await UserTagModel.create({id: 106, name: "未知", code: code})
+    // await UserTagModel.create({id: 107, name: "男", code: code})
+    // await UserTagModel.create({id: 108, name: "女", code: code})
 
     let client = await wechat_util.getClient(code)
     client.getTags(function (err,data) {
