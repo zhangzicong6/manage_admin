@@ -13,6 +13,7 @@ var ConfigSchema = new Schema({
     EncodingAESKey: {type: String, default: "tw4a1yTUv0VJURGNif96ibI4z3oWPJJWpuo2mHTvzLb"},
     status: {type: Number, default: -2},  // -2未接管,-1接管中,1已接管
     group: {type: String, default: ""},
+    attribute :{type:Number,default :0}, //0 未知,1 男,2 女 
     save_user: {type: Boolean, default: true},
     real_time: {type: Boolean, default: false}
 });
