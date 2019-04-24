@@ -15,9 +15,12 @@ router.post('/create', async(req, res, next) => {
         values: req.body.values
     }
     console.log("---------------------------------lixin-----------------------")
-    console.log(req.body)
+    console.log(req.body, 'req.body')
     console.log("---------------------------------lixin-----------------------")
     let doc = await MenuModel.create(data)
+    console.log("---------------------------------lixin-----------------------")
+    console.log(doc, 'doc')
+    console.log("---------------------------------lixin-----------------------")
     if (doc) {
         for (let code of doc.codes) {
             createMenu(code, doc.values)
