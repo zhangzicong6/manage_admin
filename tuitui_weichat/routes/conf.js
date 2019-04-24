@@ -28,7 +28,7 @@ router.post('/create', async (req, res, next) => {
     group: req.body.group,
     real_time: req.body.real_time,
     save_user: req.body.save_user,
-    attribute: req.body.attribute
+    attribute: parseInt(req.body.attribute)
   }
   let doc = await ConfigModel.create(data)
   if (doc) {
@@ -51,7 +51,7 @@ router.post('/update', async (req, res, next) => {
     group: req.body.group,
     real_time: req.body.real_time,
     save_user: req.body.save_user,
-    attribute: req.body.attribute
+    attribute: parseInt(req.body.attribute)
   }
   let doc = await ConfigModel.findByIdAndUpdate(id, data, {new: true})
   console.log('doc-conf', doc)
