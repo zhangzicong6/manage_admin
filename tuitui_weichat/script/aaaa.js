@@ -4,7 +4,7 @@ var wechat_util = require('../util/get_weichat_client.js')
 
 async function a() {
     let code = process.argv.slice(2)[0]
-    await ConfigModel.update({code: code}, {status: -1})
+    // await ConfigModel.update({code: code}, {status: -1})
     //
     // await UserTagModel.remove({code:code})
     // await UserTagModel.create({id: 106, name: "未知", code: code})
