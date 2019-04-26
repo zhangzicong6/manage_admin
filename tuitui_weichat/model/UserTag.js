@@ -6,7 +6,8 @@ var db = mongoose.createConnection(connect_url);
 var UserTagSchema = new Schema({
     id: Number,
     name: String,
-    code:Number
+    code: Number,
+    sex: String
 });
 
 var UserTagModel = db.model('UserTag', UserTagSchema);

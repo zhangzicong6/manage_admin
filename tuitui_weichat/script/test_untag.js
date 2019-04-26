@@ -39,12 +39,6 @@ async function getTag() {
                 sex = "1"
             } else if (i.name == "女") {
                 sex = "2"
-            }else if(i.name == "未知"){
-                if (config.attribute == 1) {
-                    sex = "1"
-                } else if (config.attribute == 2) {
-                    sex = "2"
-                }
             }
             update_tag(null, code, i.id, sex)
         }
