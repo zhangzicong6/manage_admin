@@ -1,6 +1,7 @@
 var wechat_util = require('../util/get_weichat_client.js')
 var UserTagModel = require('../model/UserTag')
 var SubOpenidTagModel = require('../model/SubOpenidTag');
+var ConfigModel = require('../model/Config');
 
 function update_tag(_id, code, tagId, sex) {
     SubOpenidTagModel.fetchTag(_id, code, sex, async function (error, users) {
@@ -17,9 +18,9 @@ function update_tag(_id, code, tagId, sex) {
                 console.log(res)
             })
             if (users.length == 50) {
-                setTimeout(function() {
+                setTimeout(function () {
                     update_tag(users[49]._id, code, tagId, sex)
-                },200)
+                }, 200)
             } else {
                 console.log('.........end...........')
                 return
@@ -30,6 +31,7 @@ function update_tag(_id, code, tagId, sex) {
 
 async function getTag() {
     let code = process.argv.slice(2)[0]
+    let config = await ConfigModel.findOne({code: code})
     UserTagModel.find({code: code}, function (err, data) {
         for (let i of data) {
             let sex = "0"
@@ -37,6 +39,12 @@ async function getTag() {
                 sex = "1"
             } else if (i.name == "女") {
                 sex = "2"
+            }else if(i.name == "未知"){
+                if (config.attribute == 1) {
+                    sex = "1"
+                } else if (config.attribute == 2) {
+                    sex = "2"
+                }
             }
             update_tag(null, code, i.id, sex)
         }
