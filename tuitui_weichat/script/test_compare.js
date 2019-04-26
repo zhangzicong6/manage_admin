@@ -4,8 +4,9 @@ var SubOpenidTagModel = require('../model/SubOpenidTag');
 
 var obj_users = {}
 
-function compare(id,code) {
-	UserconfModel.fetch_userSign(id,code,function(err,data){
+function compare(id) {
+    let code = process.argv.slice(2)[0]
+    UserconfModel.fetch_userSign(id,code,function(err,data){
 		var con_openids = []
 		for (var index in data) {
 			con_openids.push(data[index].openid);
@@ -70,4 +71,4 @@ var subSet = function(arr1, arr2) {
     return subset;
 };
 
-compare(null,255)
+compare(null)
