@@ -12,13 +12,13 @@ async function a() {
     // await UserTagModel.create({id: 106, name: "未知", code: code})
     // await UserTagModel.create({id: 107, name: "男", code: code})
     // await UserTagModel.create({id: 108, name: "女", code: code})
-    client.deleteTag(100, function (error, res) {
-        console.log(res)
-    })
-
-    // client.getTags(function (err,data) {
-    //     console.log(data,'-----------------aaa')
+    // client.deleteTag(100, function (error, res) {
+    //     console.log(res)
     // })
+
+    client.getTags(function (err,data) {
+        console.log(data,'-----------------aaa')
+    })
     // client.createTag("明星说女", async function (err, data) {
     //     console.log(data, '-----------------data')
     //     await UserTagModel.create({id: data.tag.id, name: "女", code: code})
