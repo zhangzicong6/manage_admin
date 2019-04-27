@@ -18,13 +18,13 @@ async function a() {
     //     console.log(res)
     // })
 
-    let openid = await OpenidModel.count({code:code})
-    console.log(openid,'--------------openid')
-    let user = await UserconfModel.count({code:code})
+    // let openid = await OpenidModel.count({code:code})
+    // console.log(openid,'--------------openid')
+    let user = await UserconfModel.remove({code:code})
     console.log(user,'-----------------user')
-    client.getTags(function (err,data) {
-        console.log(data,'-----------------aaa')
-    })
+    // client.getTags(function (err,data) {
+    //     console.log(data,'-----------------aaa')
+    // })
     // client.createTag("明星说女", async function (err, data) {
     //     console.log(data, '-----------------data')
     //     await UserTagModel.create({id: data.tag.id, name: "女", code: code})
