@@ -39,7 +39,7 @@ var qiangguan = require('./routes/qiangguan')
 var app = express();
 
 app.all('*', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+	res.header("Access-Control-Allow-Origin", "*");
 	res.header('Access-Control-Allow-Credentials', true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
