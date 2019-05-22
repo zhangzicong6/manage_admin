@@ -8,6 +8,7 @@
   "dependencies": {
     "alipay-mobile": "^2.2.6",
     "async": "~2.6.0",
+    "async-redis": "^1.1.7",
     "body-parser": "^1.18.3",
     "commander": "^2.19.0",
     "cookie-parser": "^1.4.3",
@@ -33,6 +34,7 @@
     "serve-favicon": "^2.4.5",
     "socket.io": "1.7.4",
     "urlencode": "^1.1.0",
+    "vconsole": "^3.3.0",
     "wechat": "~2.1.0",
     "wechat-api": "~1.35.1",
     "wechat-jssdk": "^3.0.12",

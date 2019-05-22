@@ -30,29 +30,19 @@ router.get('/update_links', async(req, res, next) => {
 })
 
 router.post('/create', async(req, res, next)=> {
-    console.log(req.body)
-    var message;
-    if(req.body.id){
-        message = {
-            id:req.body.id,
-            title: req.body.title,
-            links: req.body.links
-        }
-    }else{
-        for (var key in req.body) {
-            var body = JSON.parse(key)
-            message = {
-                id:body.id,
-                title: body.title,
-                links: body.links
-            }
-        }
+    var message = {
+        id:req.body.id,
+        title: req.body.title,
+        links: req.body.links,
+        type: req.body.type,
+        weights: req.body.weights,
+        status: req.body.status,
+        granularity: req.body.granularity,
+        remarks: req.body.remarks,
+        group: req.body.group || '默认',
+        back_urls: req.body.back_urls
     }
-    console.log('--------创建链接--------')
-    console.log(message)
     var result = await TransferModel.find({id: message.id})
-    console.log('--------result--------')
-    console.log(result)
     if(result.length !== 0) {
       res.send({err: "创建失败，该id已存在"})
     } else {
@@ -67,13 +57,19 @@ router.post('/create', async(req, res, next)=> {
 
 router.post('/update', async(req, res, next) => {
     var id = req.body._id;
-    console.log(req.body)
     var message = {
         id:req.body.id,
         title: req.body.title,
-        links: req.body.links
-    }
-    var docs = await TransferModel.findByIdAndUpdate(id, message)
+        links: req.body.links,
+        type: req.body.type,
+        weights: req.body.weights,
+        status: req.body.status,
+        granularity: req.body.granularity,
+        remarks: req.body.remarks,
+        group: req.body.group || '默认',
+        back_urls: req.body.back_urls
+    };
+    var docs = await TransferModel.findByIdAndUpdate(id, message);
     if (docs) {
         res.send({success: '修改成功'})
         mem.set('transfer_'+req.params.index,{},60).then(function(){

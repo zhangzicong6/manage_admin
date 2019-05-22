@@ -35,15 +35,17 @@ var recommend = require('./routes/recommend');
 var gonghaoTag = require('./routes/gonghaoTag')
 var msgHistory = require('./routes/msgHistory')
 var qiangguan = require('./routes/qiangguan')
+var tuiguangTag = require('./routes/tuiguangTag')
+var adMaterial = require('./routes/adMaterial')
 
 var app = express();
 
 app.all('*', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 	res.header('Access-Control-Allow-Credentials', true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-	res.header("X-Powered-By", ' 3.2.1')
+	res.header("X-Powered-By", ' 3.2.1');
 	next();
 });
 
@@ -97,6 +99,8 @@ app.use('/recommend',recommend)
 app.use('/gonghaoTag',gonghaoTag)
 app.use('/history',msgHistory)
 app.use('/qiangguan',qiangguan)
+app.use('/tuiguangTag',tuiguangTag)
+app.use('/adMaterial',adMaterial)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

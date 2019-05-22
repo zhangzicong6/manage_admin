@@ -2,33 +2,106 @@ var wechat_util = require('../util/get_weichat_client.js')
 
 var menu_obj={
   	"button":[
-  		{
-	  		"type":"view",
-	        "name":"总裁媳妇",
-	        "url":"https://c66481.818tu.com/referrals/index/4186741"
+  		{	
+	        "name":"玄幻",
+	        "sub_button":[
+	          { 
+	            "type":"view",
+	            "name":"我的高冷大小姐",
+	            "url":"https://c66591.818tu.com/referrals/index/4931942"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"古术医修",
+	            "url":"https://c66591.818tu.com/referrals/index/4931954"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"绝美夜色",
+	            "url":"https://c66591.818tu.com/referrals/index/4931967"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"总裁媳妇爱上我",
+	            "url":"https://c66591.818tu.com/referrals/index/4931975"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"枭雄",
+	            "url":"https://url.beihou.com/2038031"
+	          }
+	        ]
   		},
-  		{
-	  		"type":"view",
-	        "name":"贴心萌宝",
-	        "url":"https://c66481.818tu.com/referrals/index/4186749"
+  		{	
+	        "name":"惊悚",
+	        "sub_button":[
+	          { 
+	            "type":"view",
+	            "name":"最佳女婿",
+	            "url":"https://c66591.818tu.com/referrals/index/4931997"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"网红鬼主播",
+	            "url":"https://c39075.818tu.com/referrals/index/4932062"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"我是一名捞尸人",
+	            "url":"https://c66591.818tu.com/referrals/index/4932024"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"尸蛇",
+	            "url":"https://c39075.818tu.com/referrals/index/4932067"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"鬼君缠绵绕指柔",
+	            "url":"https://c39075.818tu.com/referrals/index/4932075"
+	          }
+	        ]
   		},
-  		{
-	  		"type":"view",
-	        "name":"专职高手",
-	        "url":"https://c66481.818tu.com/referrals/index/4186754"
-  		}
+  		{	
+	        "name":"言情",
+	        "sub_button":[
+	          { 
+	            "type":"view",
+	            "name":"爱过才懂情浓",
+	            "url":"https://c39075.818tu.com/referrals/index/4932108"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"贴心萌宝荒唐爹",
+	            "url":"https://c39075.818tu.com/referrals/index/4932127"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"略过岁月去爱你",
+	            "url":"https://c39075.818tu.com/referrals/index/4932142"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"冰冷少帅荒唐妻",
+	            "url":"https://c39075.818tu.com/referrals/index/4932155"
+	          },
+	          { 
+	            "type":"view",
+	            "name":"来自星星的你",
+	            "url":"https://site9328v7j7wzew6no5.66kshu.com/yun/422591"
+	          }
+	        ]
+  		},
   	]
   }
 
-/*for (var i = 156; i < 166; i++) {
-	setTimeout(create_menu,(i-156)*1000,i)
 
-}*/
 
 //create_menu(88)
 
 async function create_menu(code) {
 	console.log(code)
+	return
 	var client = await wechat_util.getClient(code)
 	//console.log(client)
 	client.removeMenu(function(err,res){
@@ -110,6 +183,15 @@ async function get_status(code,msg_id){
 	})
 }
 
-get_status(276,3147483665)
+async function get_qr(code){
+	var client = await wechat_util.getClient(code)
+	client.createLimitQRCode('test', (err, result) => {
+        console.log(err)
+        console.log(result)
+        var qrUrl = client.showQRCodeURL(result.ticket) || '';
+        console.log(qrUrl)
+    })
+}
 
-get_status(276,3147483664)
+
+remove_menu(7)
