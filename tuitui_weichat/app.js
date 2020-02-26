@@ -43,6 +43,7 @@ var customer = require('./routes/customer');
 var creator = require('./routes/creator');
 var platform = require('./routes/platform');
 var zsy = require('./routes/zsy');
+var yuewen = require('./routes/yuewen');
 var marketing = require('./routes/marketing');
 var app = express();
 
@@ -84,7 +85,7 @@ app.use('/alipay',alipay);
 app.use('/alipayLink',alipayLink);
 app.use('/piclink',piclink);
 app.use('/reading',reading);
-// app.use('/youhuiquan',youhuiquan);
+app.use('/yw',yuewen);
 app.use('/fetchlink', fetchLink);
 app.use('/goodsinfo', goodsInfo);
 app.use('/tuiguang', tuiguang);
