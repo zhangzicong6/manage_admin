@@ -4,10 +4,10 @@ var TransferModel = require('../model/Transfer');
 var DomainModel = require('../model/Domain');
 var mem = require('../util/mem.js')
 router.get('/', async(req, res, next) => {
-    var messages = await TransferModel.find().sort({_id: -1})
+    var messages = await TransferModel.find().sort({order: -1, _id: -1})
     var domain_names = await DomainModel.find();
     res.send({messages: messages, domain_names: domain_names})
-})
+});
 
 // 删除开始创建的
 // router.get("/find_count", async(req, res, next) => {
@@ -15,18 +15,24 @@ router.get('/', async(req, res, next) => {
 //   res.send({data: messages})
 // })
 
+router.post('/goTop', async(req, res, next) => {
+  let message = await TransferModel.findOne().sort({order: -1});
+  let order = message.order + 1;
+  let result = await TransferModel.findByIdAndUpdate(req.body.id, {order}, {new: true});
+  if(result) {
+    res.send({result: result, success: "置顶成功"})
+  }
+});
+
 router.get('/update_links', async(req, res, next) => {
     var domain_name = req.query.domain_name, 
     messages = await TransferModel.find(),
     domain_names = await DomainModel.findByIdAndUpdate('5b6d0b899a9fab38f48b5b10', {domain_name: domain_name})
-    for(var i=0,mLength=messages.length;i<mLength;i++){
-        messages[i].links[0] = domain_name + '/tuiguang' + messages[i].links[0].split('/tuiguang')[1]
-        var docs = await TransferModel.findByIdAndUpdate(messages[i]._id, {links: messages[i].links})
-    }
+    // for(var i=0,mLength=messages.length;i<mLength;i++){
+    //     messages[i].links[0] = domain_name + '/tuiguang' + messages[i].links[0].split('/tuiguang')[1]
+    //     var docs = await TransferModel.findByIdAndUpdate(messages[i]._id, {links: messages[i].links})
+    // }
     res.send({success: '域名修改成功'})
-    mem.set('transfer_'+req.params.index,{},60).then(function(){
-         console.log('---------set transfer value---------')
-    })
 })
 
 router.post('/create', async(req, res, next)=> {

@@ -1,7 +1,5 @@
 const TransferModel = require('../model/Transfer')
-const AdMaterialModel = require('../model/AdMaterial')
 const StaticsTuiGuangModel = require('../model/StaticsTuiGuang')
-const StaticsAdMaterialModel = require('../model/StaticsAdMaterial')
 const schedule = require("node-schedule");
 const asyncRedis = require("async-redis");
 const redis_client = asyncRedis.createClient();
@@ -21,9 +19,9 @@ async function get_one_static(transfer){
         var params = link.substr(link.lastIndexOf('/')+1)
         var index = params.split('?')[0]
         var channel = params.split('channel=')[1]
-        let uv = await redis_client.pfcount('qiyue_website_tuiguang_'+channel+'_'+index);
-        let cv = await redis_client.pfcount('qiyue_website_tuiguang_copy_'+channel+'_'+index);
-        let ip = await redis_client.pfcount('qiyue_website_tuiguang_ip_'+channel+'_'+index);
+        let uv = await redis_client.pfcount('website_tuiguang_'+channel+'_'+index);
+        let cv = await redis_client.pfcount('website_tuiguang_copy_'+channel+'_'+index);
+        let ip = await redis_client.pfcount('website_tuiguang_ip_'+channel+'_'+index);
 
         //获取时间
         let date = new Date()
@@ -39,9 +37,9 @@ async function get_one_static(transfer){
 
         let now = new Date()
         if(now.getHours() ==0 && now.getMinutes()==0){
-            await redis_client.del('qiyue_website_tuiguang_'+channel+'_'+index);
-            await redis_client.del('qiyue_website_tuiguang_copy_'+channel+'_'+index);
-            await redis_client.del('qiyue_website_tuiguang_ip_'+channel+'_'+index);
+            await redis_client.del('website_tuiguang_'+channel+'_'+index);
+            await redis_client.del('website_tuiguang_copy_'+channel+'_'+index);
+            await redis_client.del('website_tuiguang_ip_'+channel+'_'+index);
         }
 
 
@@ -87,33 +85,6 @@ async function get_one_static(transfer){
         zeng_static.uv +=zeng_uv;
 		zeng_static.ip +=zeng_ip;
 		await zeng_static.save()
-
-    }
-}
-
-async function get_material_static(meiti){
-    // pv uv ip
-    var t_id = meiti.link.split('transfer/')[1].split('/')[0].split('?')[0]
-
-    for (var i = 0; i < meiti.imgs.length; i++) {
-        var material =  meiti.imgs[i].id;
-
-        let uv = await redis_client.get('qiyue_website_tuiguang_'+channel+'_'+index);
-        let cv = await redis_client.pfcount('qiyue_website_tuiguang_copy_'+channel+'_'+index);
-        let ip = await redis_client.pfcount('qiyue_website_tuiguang_ip_'+channel+'_'+index);
-
-
-        //获取时间
-        let date = new Date()
-        date.setMilliseconds(0)
-        date.setSeconds(0)
-        let m = date.getMinutes()
-        m= m - m%5
-        date.setMinutes(m)
-        let zeng_time = date.getTime()
-        date.setMinutes(0)
-        date.setHours(0)
-        let zong_time = date.getTime()
 
     }
 }

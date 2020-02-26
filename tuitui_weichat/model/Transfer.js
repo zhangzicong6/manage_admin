@@ -7,6 +7,10 @@ var TransferSchema = new Schema({
   id:String,
   title:String,
   links: Array,
+  order : {
+    type : Number,
+    default : 0
+  },
   remarks: {
     type: String,
     default: ''

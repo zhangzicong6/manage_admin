@@ -14,15 +14,15 @@ router.get('/', async (req, res, next) => {
       data: docs
     })
   }
-})
+});
 
 router.get('/show', async (req, res, next) => {
   let docs = await MaterialModel.find({
     code: req.query.code,
     type: 'news'
   }).sort({
-    'update_time': -1
-  }).limit(10)
+    'update_time': 1
+  })
   let messages = [], arr= [], results = [], item = {};
   for (let i = 0; i < docs.length; i ++) {
     arr = docs[i].content.news_item

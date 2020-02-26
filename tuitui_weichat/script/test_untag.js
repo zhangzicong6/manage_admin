@@ -42,27 +42,22 @@ function update_tag(_id, code, tagId, sex) {
 async function getTag() {
     let code = process.argv.slice(2)[0]
     let config = await ConfigModel.findOne({code: code})
-    UserTagModel.find({code: code}, async function (err, data) {
+    await UserTagModel.find({code: code}, async function (err, data) {
         for (let i of data) {
-            let sex,tag, id
-
+            let sex, tag, id = i.id
             if (i.name == "男") {
                 sex = "1"
             } else if (i.name == "女") {
                 sex = "2"
-            }else{
-                sex = "0"
-            }
-
-            if (config.attribute == 1) {
-                tag = await UserTagModel.findOne({code: code, sex: '1'})
-                id = tag.id
-            } else if (config.attribute == 2) {
-                tag = await UserTagModel.findOne({code: code, sex: '2'})
-                id = tag.id
             } else {
-                tag = await UserTagModel.findOne({code: code, sex: '0'})
-                id = tag.id
+                sex = "0"
+                if (config.attribute == 1) {
+                    tag = await UserTagModel.findOne({code: code, sex: '1'})
+                    id = tag.id
+                } else if (config.attribute == 2) {
+                    tag = await UserTagModel.findOne({code: code, sex: '2'})
+                    id = tag.id
+                }
             }
             update_tag(null, code, id, sex)
         }

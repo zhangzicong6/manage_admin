@@ -8,15 +8,15 @@ var SubOpenidTagModel = require('../model/SubOpenidTag');
 
 async function a() {
     let code = process.argv.slice(2)[0]
-    let user = await UserconfModel.count({code: code})
-    console.log(user, '-----------------user')
-    let OpenidTag = await OpenidTagModel.count({code: code})
-    console.log(OpenidTag, '--------------OpenidTag')
-    let SubOpenidTag = await SubOpenidTagModel.count({code: code})
-    console.log(SubOpenidTag, '-----------------SubOpenidTag')
+    // let user = await UserconfModel.count({code: code})
+    // console.log(user, '-----------------user')
+    // let OpenidTag = await OpenidTagModel.count({code: code})
+    // console.log(OpenidTag, '--------------OpenidTag')
+    // let SubOpenidTag = await SubOpenidTagModel.count({code: code})
+    // console.log(SubOpenidTag, '-----------------SubOpenidTag')
     // let client = await wechat_util.getClient(code)
 
-    // await ConfigModel.update({code: code}, {status: -1})
+    await ConfigModel.update({code: code}, {status: -1})
     //
     // let result = await UserconfModel.remove({code:code})
     // console.log(result,'---result')
@@ -25,6 +25,12 @@ async function a() {
     // await UserTagModel.create({id: 107, name: "男", code: code})
     // await UserTagModel.create({id: 108, name: "女", code: code})
     // client.deleteTag(100, function (error, res) {
+    //     console.log(res)
+    // })
+    // client.deleteTag(101, function (error, res) {
+    //     console.log(res)
+    // })
+    // client.deleteTag(102, function (error, res) {
     //     console.log(res)
     // })
     // client.createTag("明星说未知", async function (err, data) {

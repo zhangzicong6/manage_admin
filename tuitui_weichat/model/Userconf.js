@@ -82,19 +82,6 @@ UserconfSchema.statics = {
                 .exec(cb);
         }
     },
-    fetch_nick(id, codes, cb){
-        if (id) {
-            return this.find({_id: {$lt: id}, code: {$in: codes}}, ['country','province','city','sex','nickname','code'])
-                .limit(1000)
-                .sort({'_id': -1})
-                .exec(cb);
-        } else {
-            return this.find({code: {$in: codes}}, ['country','province','city','sex','nickname','code'])
-                .limit(1000)
-                .sort({'_id': -1})
-                .exec(cb);
-        }
-    },
     fetch_userSign(id, code, cb){
         if (id) {
             return this.find({_id: {$lt: id}, code: code}, ['openid','sign','sex'])

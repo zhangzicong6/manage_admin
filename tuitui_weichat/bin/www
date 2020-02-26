@@ -13,7 +13,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '7000');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -31,10 +31,9 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+//require('../script/domain_wx.js');
 
 //require('../script/statics_tuiguang.js');
-
-
 // require('../script/userInfo.js');
 // require('../script/order_get.js');
 //require('../script/baokuan.js');
@@ -49,6 +48,11 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
+
+//require('../script/yuewen_data.js');
+//require('../script/tengwen_data.js');
+
+//require('../script/refresh');
 
 function normalizePort(val) {
   var port = parseInt(val, 10);

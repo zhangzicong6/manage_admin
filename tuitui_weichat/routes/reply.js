@@ -7,11 +7,11 @@ var multer = require('multer');
 var fs = require('fs')
 
 var upload = multer({
-    dest: './public/uploads'
+    dest: __dirname + '/../public/uploads'
 });
 
 router.post('/upload', upload.single('imageFile'), function (req, res, next) {
-    fs.rename(req.file.path, "./public/uploads/" + req.file.filename + '.jpg', function (err) {
+    fs.rename(req.file.path, __dirname + '/../public/uploads/' + req.file.filename + '.jpg', function (err) {
         if (err) {
             throw err;
         }
@@ -29,8 +29,8 @@ router.get('/', async(req, res, next) => {
 router.post('/create', async(req, res, next) => {
     if (req.body.replyType == 1 && req.body.url) {
         let client = await wechat_util.getClient(req.body.code);
-        console.log(req.body.code, req.body.url, client, '-------------------')
-        client.uploadImageMaterial(req.body.url, async function (error, result) {
+        console.log(req.body.code, __dirname + "/." + req.body.url, client, '-------------------')
+        client.uploadImageMaterial( __dirname + "/." + req.body.url, async function (error, result) {
             console.log(error,result,'---------------------result')
             if (result) {
                 let media = {
@@ -43,11 +43,13 @@ router.post('/create', async(req, res, next) => {
                     code: req.body.code,
                     type: req.body.type,
                     replyType: req.body.replyType,
-                    url: req.body.url,
-                    showUrl:req.body.showUrl,
+                    url: req.body.url || "",
+                    showUrl:req.body.showUrl || "",
                     media: media,
-                    text: req.body.text,
-                    key: req.body.key
+                    text: req.body.text || "",
+                    key: req.body.key || "",
+                    sex: req.body.sex,
+                    attribute: req.body.attribute
                 }
                 console.log(data,'---------------------data')
                 let doc = await ReplyModel.create(data)
@@ -72,9 +74,11 @@ router.post('/create', async(req, res, next) => {
             code: req.body.code,
             type: req.body.type,
             replyType: req.body.replyType,
-            text: req.body.text,
-            key: req.body.key,
-            msgId: req.body.msgId
+            text: req.body.text || "",
+            key: req.body.key || "",
+            msgId: req.body.msgId,
+            sex: req.body.sex,
+            attribute: req.body.attribute
         }
         let doc = await ReplyModel.create(data)
         if (doc) {
@@ -97,7 +101,7 @@ router.post('/update', async(req, res, next) => {
     let id = req.body.id
     if (req.body.replyType == 1 && req.body.url) {
         let client = await wechat_util.getClient(req.body.code);
-        client.uploadImageMaterial(req.body.url, async function (error, result) {
+        client.uploadImageMaterial( __dirname + "/." + req.body.url, async function (error, result) {
             if (result) {
                 let media = {
                     type: "image",
@@ -109,11 +113,13 @@ router.post('/update', async(req, res, next) => {
                     code: req.body.code,
                     type: req.body.type,
                     replyType: req.body.replyType,
-                    url: req.body.url,
-                    showUrl:req.body.showUrl,
+                    url: req.body.url || "",
+                    showUrl:req.body.showUrl || "",
                     media: media,
-                    text: req.body.text,
-                    key: req.body.key
+                    text: req.body.text || "",
+                    key: req.body.key || "",
+                    sex: req.body.sex,
+                    attribute: req.body.attribute
                 }
                 let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
                 if (doc) {
@@ -143,11 +149,13 @@ router.post('/update', async(req, res, next) => {
             code: req.body.code,
             type: req.body.type,
             replyType: req.body.replyType,
-            text: req.body.text,
-            key: req.body.key,
+            text: req.body.text || "",
+            key: req.body.key || "",
             url: '',
             showUrl:'',
-            msgId: req.body.msgId
+            msgId: req.body.msgId,
+            sex: req.body.sex,
+            attribute: req.body.attribute
         }
         let doc = await ReplyModel.findByIdAndUpdate(id, data, {new: true})
         console.log(doc)

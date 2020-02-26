@@ -8,7 +8,7 @@ var request = require('request');
 var UserconfModel = require('../model/Userconf');
 
 router.get('/', async (req, res, next) => {
-  let doc = await ConfigModel.find()
+  let doc = await ConfigModel.find().sort({_id: -1})
   res.send({data: doc})
 })
 
@@ -75,14 +75,14 @@ router.get('/del', async (req, res, next) => {
   }
 })
 
-router.get('/reset', async (req, res, next) => {
-  var config = new ConfigModel()
-  config.nextCount(function (err, count) {
-    config.resetCount(function (err, nextCount) {
-    });
-  });
-  res.send({success: '重置成功'})
-})
+// router.get('/reset', async (req, res, next) => {
+//   var config = new ConfigModel()
+//   config.nextCount(function (err, count) {
+//     config.resetCount(function (err, nextCount) {
+//     });
+//   });
+//   res.send({success: '重置成功'})
+// })
 
 router.get('/jieguan', async (req, res, next) => {
   let code = req.query.code

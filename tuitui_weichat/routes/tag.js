@@ -41,7 +41,7 @@ router.post('/',function(req,res,next){
 				})
 				tm.save(function(error,tm){
 					console.log(error)
-					res.send({success: "查询成功", data: tm})
+					res.send({success: "新增标签成功", data: tm})
 				});
 			}
 		}

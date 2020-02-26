@@ -13,7 +13,7 @@ var QRcodeModel = require('../model/QRcode');
 
 
 router.use('/:code', async function (request, response, next_fun) {
-    // console.log(request.query)
+    // console.log(request.query,'-------------------------------query')
     var config = await mem.get("configure_" + request.params.code);
     if (!config) {
         config = await ConfigModel.findOne({code: request.params.code})
@@ -36,28 +36,29 @@ router.use('/:code', async function (request, response, next_fun) {
                     }
                 }
             }
-            if (jieguan == 1) {                var message = req.weixin;
+            if (jieguan == 1) {
+                var message = req.weixin;
                 var openid = message.FromUserName;
-                getUserInfo(openid, config, message, request, req, res, function (openid, config, message, request, req, res) {
+                getUserInfo(openid, config, message, request, req, res, function (openid, config, message, sex, request, req, res) {
                     //console.log(message.MsgType, '--------MsgType---------')
                     if (message.MsgType === 'text') {
                         var text = message.Content.trim();
                         if (text == 'openid') {
                             return res.reply(openid);
                         }
-                        reply(request.params.code, res, 0, text, openid)
+                        reply(request.params.code, res, 0, text, openid, sex)
                     } else if (message.MsgType === 'event') {
                         //console.log(message.Event, '--------Event---------')
                         if (message.Event === 'subscribe') {
                             //var client = wechat_util.getClient(request.params.code);
-                            reply(request.params.code, res, 2, 'subscribe', openid)
+                            reply(request.params.code, res, 2, 'subscribe', openid, sex)
                             subscribe(openid, config, message, res);
                         } else if (message.Event === 'SCAN') {
                             scan(openid, message, res)
                         } else if (message.Event.toLowerCase() == 'click') {
-                            reply(request.params.code, res, 1, message.EventKey, openid)
+                            reply(request.params.code, res, 1, message.EventKey, openid, sex)
                         } else if (message.Event.toLowerCase() == 'location') {
-                            reply(request.params.code, res, 3, 'location', openid);
+                            reply(request.params.code, res, 3, 'location', openid, sex);
                         } else if (message.Event.toUpperCase() == 'MASSSENDJOBFINISH') {
                             console.log('-------群发消息事件 收到回调------')
                             console.log(message)
@@ -208,6 +209,7 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
                                 callback(null, user)
                             })
                         } else {
+                            user.sex = "0"
                             callback(null, user)
                         }
                     })
@@ -226,6 +228,11 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
                 user.subscribe_flag = true;
                 console.log(user, '--------------user')
                 user.save(function () {
+                    // if(user.sex && user.sex == 1){
+                    //     w_res.reply('亲爱的幸运小主，今天是幸运大抽奖，恭喜你获得抽奖资格！<a href="https://u.jd.com/mGCw8c">戳我抽奖</a> 坚持关注30天，领取99元大额红包！')
+                    // }else{
+                    //     w_res.reply('亲爱的幸运小主，今天是幸运大抽奖，恭喜你获得抽奖资格！ <a href="https://u.jd.com/mfcwWf">戳我抽奖</a>坚持关注30天，领取99元大额红包！')
+                    // }
                 })
             } else if (message.Event === 'unsubscribe') {
                 user.unsubscribe_time = Date.now();
@@ -234,16 +241,21 @@ async function getUserInfo(openid, config, message, request, w_req, w_res, next)
                 })
             }
         }
-        next(openid, config, message, request, w_req, w_res);
+        next(openid, config, message, parseInt(user.sex), request, w_req, w_res);
     });
 }
 
-async function reply(code, res, type, param, openid) {
+async function reply(code, res, type, param, openid, sex) {
+    if (sex == 0) {
+        let info = await ReplyModel.findOne({code: code})
+        if (info && info.attribute) {
+            sex = info.attribute
+        }
+    }
+    console.log(sex,'---------------sex')
     var reply = await mem.get("reply_" + code + "_" + param);
-    // var reply = ''
     console.log(reply, '--------reply---------1')
     if (!reply) {
-        console.log(code, type, param, reply, '--------reply---------a')
         if (type == 0) {
             reply = await ReplyModel.find({
                 $or: [
@@ -254,40 +266,42 @@ async function reply(code, res, type, param, openid) {
         } else if (type == 1) {
             reply = await ReplyModel.find({code: code, type: type, key: param})
         } else if (type == 2) {
-            reply = await ReplyModel.find({code: code, type: type})
+            reply = await ReplyModel.find({
+                $or: [
+                    {sex: sex},
+                    {sex: 3}
+                ], code: code, type: type
+            })
         } else if (type == 3) {
             reply = await ReplyModel.find({code: code, type: type})
         }
         console.log(reply, '--------reply---------2')
         if (reply[0] && reply[0].replyType == 0) {
-            reply = {type: 0, msg: reply[0].msgId}
+            reply = JSON.stringify({type: 0, msg: reply[0].msgId})
         } else if (reply[0] && reply[0].replyType == 1) {
-            reply = {type: 1, msg: reply[0].media}
+            reply = JSON.stringify({type: 1, msg: reply[0].media})
         } else {
             return res.reply('')
         }
         await mem.set("reply_" + code + "_" + param, reply, 30)
     }
 
+    reply = JSON.parse(reply)
     console.log(reply, '--------lllreply---------')
     if (reply.type == 1) {
         return res.reply(reply.msg)
     } else {
         var content = await mem.get("msg_" + reply.msg);
         if (!content) {
-            content = await MsgModel.find({msgId: reply.msg})
-            console.log(content, '------------------------content')
+            content = await MsgModel.findOne({msgId: reply.msg})
             if (content) {
-                content = content[0]
-                console.log(reply.msg, content, '------------------------cm')
+                content = content
                 await mem.set("msg_" + reply.msg, content, 30);
-                console.log(content, '--------content1---------')
                 replyMsg(res, content, code, openid)
             } else {
                 return res.replay('')
             }
         } else {
-            console.log(content, '--------content2---------')
             replyMsg(res, content, code, openid)
         }
     }
@@ -295,7 +309,7 @@ async function reply(code, res, type, param, openid) {
 
 
 async function replyMsg(res, content, code, openid) {
-    console.log(content, '--------content3---------')
+    console.log(content, '--------content---------')
     if (content.type == 0) {
         var dis = content.description;
         dis = charge_openid(dis, openid);
