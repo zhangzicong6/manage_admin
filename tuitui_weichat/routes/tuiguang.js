@@ -10,8 +10,8 @@ var PlatformDataModel = require('../model/PlatformData.js');
 var multer = require('multer');
 var fs = require('fs')
 var mem = require('../util/mem.js')
-const asyncRedis = require("async-redis");
-const redis_client = asyncRedis.createClient();
+//const asyncRedis = require("async-redis");
+//const redis_client = asyncRedis.createClient();
 
 //线上
 var juedui_lujing = '/home/work/tuiguan/project/public/images/website'
@@ -237,7 +237,7 @@ router.get('/token_arr', async (req, res, next) => {
 })
 
 
-router.get('/data', async (req, res, next) => {
+/*router.get('/data', async (req, res, next) => {
   let tid = req.query.tid
   if (!tid) {
     return res.send('请输入transfer id')
@@ -279,8 +279,8 @@ router.get('/data', async (req, res, next) => {
   }
   return res.send(data)
 })
-
-router.get('/data/del', async (req, res, next) => {
+*/
+/*router.get('/data/del', async (req, res, next) => {
   let tid = req.query.tid
   if (!tid) {
     return res.send('请输入transfer id')
@@ -302,7 +302,7 @@ router.get('/data/del', async (req, res, next) => {
 
   }
   return res.send('删除成功')
-})
+})*/
 
 
 router.get('/statics/zeng', async (req, res, next) => {

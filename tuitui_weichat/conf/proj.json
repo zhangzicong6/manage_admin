@@ -1,4 +1,4 @@
 {
-	"mongodb":"mongodb://tianqi:liujiazhi88@dds-2ze36af17eb05c042440-pub.mongodb.rds.aliyuncs.com:3717/tianqi?replicaSet=mgset-5196081",
+	"mongodb":"mongodb://tianqi:liujiazhi88@dds-bp1c0f072bb61a541.mongodb.rds.aliyuncs.com:3717,dds-bp1c0f072bb61a542.mongodb.rds.aliyuncs.com:3717/tianqi?replicaSet=mgset-23488257",
 	"send_wechat":["2","3"]
 }
