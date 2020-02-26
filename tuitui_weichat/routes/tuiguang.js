@@ -13,7 +13,7 @@ var mem = require('../util/mem.js')
 //const redis_client = asyncRedis.createClient();
 
 //线上
-var juedui_lujing = '/home/work/tuiguan/project/public/images/website'
+var juedui_lujing = '/home/work/tuiguang/project/public/images/website'
 
 //线下
 //var juedui_lujing ='../public/images/tuiguan'
