@@ -42,3 +42,5 @@ function handleIpAndUa(ip, ua) {
     }
     return uni_ip_h_ua;
 }
+
+module.exports = router;
