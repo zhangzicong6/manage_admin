@@ -49,7 +49,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-//require('../script/yuewen_data.js');
+require('../script/yuewen_data.js');
 //require('../script/tengwen_data.js');
 
 //require('../script/refresh');
