@@ -114,7 +114,7 @@ let get_order = async (params) =>{
 	//console.log(params)
 	url += '?'+args.join('&')
 	let y_res = await rp(url)
-	//console.log(y_res)
+	console.log(y_res)
 	y_res = JSON.parse(y_res)
 	if(y_res.code == 0){
 		handle(y_res.data,params)
@@ -158,7 +158,7 @@ let get = async () =>{
 //start('wxfxmswl1200')
 
 let test =() => {
-	var now_time = new Date('2020-02-20 20:58:48').getTime()
+	var now_time = new Date('2020-03-04 15:46:48').getTime()
 	var end = new Date(now_time).setSeconds(0,0)
 	var last_time = now_time-3*60*60*1000
 	var start_temp = new Date(last_time).setSeconds(0,0)
@@ -167,7 +167,7 @@ let test =() => {
 		end_time : parseInt(end/1000),
 		page : 1,
 		order_status : 2,
-		appflags : 'wxfxmswl1240'
+		appflags : 'wxfxbjyl83'
 		//last_min_id : '',
 		//last_max_id : '',
 		//total_count : '',
@@ -176,7 +176,7 @@ let test =() => {
 	get_order(params)
 }
 
-//test()
+test()
 
 
 let td_fuck =async () =>{
@@ -192,10 +192,10 @@ let td_fuck =async () =>{
 
 
 
-var rule = new schedule.RecurrenceRule();
+/*var rule = new schedule.RecurrenceRule();
 rule.second = 10;
 var j = schedule.scheduleJob(rule, function () {
     get()
 });
-
+*/
 
