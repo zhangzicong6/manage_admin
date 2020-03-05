@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "ali-oss": "^6.5.1",
     "alipay-mobile": "^2.2.6",
     "async": "~2.6.0",
     "async-redis": "^1.1.7",
