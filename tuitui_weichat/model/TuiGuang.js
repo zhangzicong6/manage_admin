@@ -18,7 +18,7 @@ var TuiGuangSchema = new Schema({
   picurl_ali :{
     type : String,
     default : ''
-  }
+  },
   capter1: String,
   capter2: String,
   linkUrl: String,
