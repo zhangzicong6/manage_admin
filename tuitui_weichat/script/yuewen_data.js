@@ -145,10 +145,10 @@ let start = (appflag)=>{
 let get = async () =>{
 	let plats = await PlatformModel.find({platform : 1})
 	for (let i =0; i<plats.length; i++ ) {
-		(function(seruid){
+		(function(seruid,i){
 			setTimeout(function(){
 				start(seruid)
-			},i*1000)
+			},i*300)
 		})(plats[i].seruid,i)
 	}
 }
@@ -176,7 +176,7 @@ let test =() => {
 	get_order(params)
 }
 
-test()
+//test()
 
 
 let td_fuck =async () =>{
@@ -192,10 +192,10 @@ let td_fuck =async () =>{
 
 
 
-/*var rule = new schedule.RecurrenceRule();
+var rule = new schedule.RecurrenceRule();
 rule.second = 10;
 var j = schedule.scheduleJob(rule, function () {
     get()
 });
-*/
+
 
