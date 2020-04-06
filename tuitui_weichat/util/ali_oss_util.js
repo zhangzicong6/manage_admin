@@ -1,9 +1,12 @@
 let OSS = require('ali-oss');
+let accessKeyId = require('../conf/proj.json').accessKeyId;
+let accessKeySecret = require('../conf/proj.json').accessKeySecret;
+
 
 let client = new OSS({
   region: 'oss-cn-hangzhou',
-  accessKeyId: 'LTAI4FgKxg5E3ABkEfVLCeZv',
-  accessKeySecret: 'jr5l6i92SdpIhXxUcj4jAne5RgdgIh',
+  accessKeyId: accessKeyId,
+  accessKeySecret: accessKeySecret,
   bucket: 'tuiguang-img'
 });
 
